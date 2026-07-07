@@ -1,4 +1,4 @@
-const whatsappNumber = "2348037793857";
+const whatsappNumber = "2348039248231";
 
 const modelStorage = {
   "iPhone 17": "128GB, 256GB, 512GB",
@@ -159,7 +159,7 @@ function createPlaceholderImage(model, condition) {
 }
 
 function createShopPlaceholderImage(index) {
-  const label = `Skyfonze Limited Shop ${index}`;
+  const label = `Formex Communications Shop ${index}`;
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="900" height="675" viewBox="0 0 900 675">
       <defs>
@@ -175,7 +175,7 @@ function createShopPlaceholderImage(index) {
       <rect width="900" height="675" fill="url(#bg)"/>
       <rect x="112" y="154" width="676" height="366" rx="28" fill="#f6f7f9"/>
       <rect x="112" y="154" width="676" height="84" rx="28" fill="#111318"/>
-      <text x="450" y="209" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#ffffff">SKYFONZE LIMITED</text>
+      <text x="450" y="209" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#ffffff">FORMEX COMMUNICATIONS</text>
       <rect x="162" y="278" width="250" height="194" rx="16" fill="url(#glass)"/>
       <rect x="488" y="278" width="250" height="194" rx="16" fill="url(#glass)"/>
       <rect x="235" y="326" width="104" height="146" rx="22" fill="#151923"/>
@@ -189,7 +189,7 @@ function createShopPlaceholderImage(index) {
 }
 
 function buildWhatsappLink(product) {
-  const message = `Hello, I want to order the ${product.condition} ${product.model}. Is it available and what is the current price?`;
+  const message = `Hello Formex Communications, I’m interested in buying the ${product.condition} ${product.model}. Is it available and what is the current price?`;
   return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
 
@@ -238,10 +238,10 @@ function renderProducts() {
         <ul class="detail-list">
           <li><strong>Storage options available:</strong> ${product.storage}</li>
           ${product.condition === "Brand New" ? "<li>Sealed or fresh stock confirmed on request</li>" : ""}
-          <li>Pickup available &bull; Nationwide delivery</li>
+          <li>Pickup in Computer Village &bull; Nationwide delivery</li>
         </ul>
         <p class="price-note">Price changes often - confirm on WhatsApp</p>
-        <a class="whatsapp-btn" href="${buildWhatsappLink(product)}" target="_blank" rel="noopener">Order on WhatsApp</a>
+        <a class="whatsapp-btn" href="${buildWhatsappLink(product)}" target="_blank" rel="noopener">Chat on WhatsApp</a>
       </div>
     `;
 
@@ -349,7 +349,7 @@ heroDots.forEach((dot) => {
 
 document.querySelectorAll(".hero-slide img").forEach((image, index) => {
   image.addEventListener("error", () => {
-    image.src = createPlaceholderImage(`Hero iPhone ${index + 1}`, "Skyfonze");
+    image.src = createPlaceholderImage(`Hero iPhone ${index + 1}`, "Formex");
   }, { once: true });
 });
 
@@ -363,7 +363,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 function watchRevealElements() {
-  document.querySelectorAll(".reveal, .product-card, .trust-item, .step, .shop-section, .why-strip, .category-card, .testimonial-card, .faq-item, .final-cta").forEach((element) => {
+  document.querySelectorAll(".reveal, .product-card, .step, .shop-section, .category-card, .testimonial-card, .faq-item, .final-cta").forEach((element) => {
     revealObserver.observe(element);
   });
 }
