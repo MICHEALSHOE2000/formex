@@ -196,7 +196,7 @@ function buildWhatsappLink(product) {
 function productMatches(product) {
   const searchTerm = searchInput.value.trim().toLowerCase();
   const matchesFilter = activeFilter === "All" || product.condition === activeFilter;
-  const matchesSearch = product.model.toLowerCase().includes(searchTerm);
+  const matchesSearch = [product.model, product.condition, product.storage, "iphone apple uk used brand new"].join(" ").toLowerCase().includes(searchTerm);
 
   return matchesFilter && matchesSearch;
 }
@@ -235,13 +235,16 @@ function renderProducts() {
       <div class="card-body">
         <span class="condition ${conditionClass}">${product.condition}</span>
         <h3>${product.model}</h3>
+        <div class="card-badges" aria-label="Product quality badges"><span>Verified</span><span>Quality Checked</span></div>
         <ul class="detail-list">
-          <li><strong>Storage options available:</strong> ${product.storage}</li>
-          ${product.condition === "Brand New" ? "<li>Sealed or fresh stock confirmed on request</li>" : ""}
+          <li><strong>Storage:</strong> ${product.storage}</li>
+          <li><strong>Condition:</strong> ${product.condition}</li>
+          <li><strong>Battery health:</strong> Available on request before payment</li>
+          ${product.condition === "Brand New" ? "<li><strong>Warranty:</strong> Sealed or fresh stock confirmed on request</li>" : "<li><strong>Warranty:</strong> Quality support confirmed on WhatsApp</li>"}
           <li>Pickup in Computer Village &bull; Nationwide delivery</li>
         </ul>
-        <p class="price-note">Price changes often - confirm on WhatsApp</p>
-        <a class="whatsapp-btn" href="${buildWhatsappLink(product)}" target="_blank" rel="noopener">Chat on WhatsApp</a>
+        <p class="price-note">Best current price - confirm on WhatsApp</p>
+        <a class="whatsapp-btn" href="${buildWhatsappLink(product)}" target="_blank" rel="noopener">Order on WhatsApp</a>
       </div>
     `;
 
