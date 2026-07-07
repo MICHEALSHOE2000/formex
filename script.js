@@ -363,7 +363,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 function watchRevealElements() {
-  document.querySelectorAll(".reveal, .product-card, .trust-item, .step, .shop-section, .why-strip, .category-card, .testimonial-card, .faq-item, .final-cta").forEach((element) => {
+  document.querySelectorAll(".reveal, .product-card, .step, .shop-section, .category-card, .testimonial-card, .faq-item, .final-cta").forEach((element) => {
     revealObserver.observe(element);
   });
 }

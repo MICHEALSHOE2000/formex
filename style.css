@@ -41,10 +41,79 @@ input {
   font: inherit;
 }
 
-.site-header {
+.why-formex-bar {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  min-height: 48px;
+  padding: 8px max(clamp(18px, 4vw, 28px), calc((100vw - 1180px) / 2 + 28px));
+  color: #fff;
+  background:
+    radial-gradient(circle at 8% 50%, rgba(216, 180, 90, 0.26), transparent 16rem),
+    linear-gradient(90deg, #07080d, #151a24 56%, #07080d);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 34px rgba(8, 11, 18, 0.16);
+  overflow: hidden;
+}
+
+.why-formex-bar strong {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  border: 1px solid rgba(216, 180, 90, 0.42);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: #f7e8b4;
+  background: rgba(216, 180, 90, 0.1);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.why-formex-marquee {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.why-formex-track {
+  display: flex;
+  width: max-content;
+  gap: 10px;
+  animation: whyFormexMarquee 46s linear infinite;
+}
+
+.why-formex-track span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.why-formex-bar:hover .why-formex-track {
+  animation-play-state: paused;
+}
+
+.site-header {
+  position: sticky;
+  top: 48px;
+  z-index: 30;
   padding: 14px clamp(18px, 4vw, 56px);
   background: rgba(255, 255, 255, 0.78);
   border-bottom: 1px solid var(--line);
@@ -132,7 +201,7 @@ input {
   align-items: center;
   gap: clamp(32px, 7vw, 90px);
   max-width: 1180px;
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - 120px);
   margin: 0 auto;
   padding: clamp(54px, 9vw, 118px) clamp(18px, 4vw, 28px) 70px;
 }
@@ -173,27 +242,6 @@ h1 {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 30px;
-}
-
-.hero-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.hero-badges span {
-  display: inline-flex;
-  min-height: 38px;
-  align-items: center;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 9px 13px;
-  color: #111318;
-  background: rgba(255, 255, 255, 0.78);
-  box-shadow: 0 10px 30px rgba(8, 11, 18, 0.05);
-  font-size: 0.84rem;
-  font-weight: 800;
 }
 
 .btn {
@@ -444,8 +492,6 @@ h1 {
 }
 
 .filters-section,
-.why-strip,
-.trust-section,
 .category-section,
 .shop-section,
 .steps-section,
@@ -455,33 +501,6 @@ h1 {
   max-width: 1180px;
   margin: 0 auto;
   padding: 70px clamp(18px, 4vw, 28px);
-}
-
-.why-strip {
-  padding-block: 22px;
-  overflow: hidden;
-}
-
-.why-strip-inner {
-  display: flex;
-  gap: 10px;
-  width: max-content;
-  animation: slideReasons 34s linear infinite;
-}
-
-.why-strip-inner span {
-  display: inline-flex;
-  align-items: center;
-  min-height: 42px;
-  padding: 10px 16px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: #111318;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 10px 30px rgba(8, 11, 18, 0.06);
-  font-size: 0.9rem;
-  font-weight: 800;
-  white-space: nowrap;
 }
 
 .section-heading {
@@ -818,7 +837,6 @@ h2 {
   font-weight: 900;
 }
 
-.trust-grid,
 .steps,
 .testimonial-grid {
   display: grid;
@@ -826,7 +844,6 @@ h2 {
   gap: 14px;
 }
 
-.trust-item,
 .step,
 .testimonial-card,
 .faq-item {
@@ -837,10 +854,8 @@ h2 {
   background: rgba(255, 255, 255, 0.84);
 }
 
-.trust-item,
 .step,
 .shop-section,
-.why-strip,
 .reveal,
 .testimonial-card,
 .faq-item {
@@ -849,10 +864,8 @@ h2 {
   transition: opacity 0.65s ease, transform 0.65s ease;
 }
 
-.trust-item.is-visible,
 .step.is-visible,
 .shop-section.is-visible,
-.why-strip.is-visible,
 .reveal.is-visible,
 .testimonial-card.is-visible,
 .faq-item.is-visible {
@@ -860,7 +873,6 @@ h2 {
   transform: translateY(0);
 }
 
-.trust-icon,
 .step span {
   display: inline-grid;
   width: 38px;
@@ -873,13 +885,11 @@ h2 {
   font-weight: 900;
 }
 
-.trust-item h3,
 .step h3 {
   margin-bottom: 10px;
   font-size: 1.05rem;
 }
 
-.trust-item p,
 .step p,
 .footer p {
   color: var(--muted);
@@ -1136,7 +1146,7 @@ address {
   }
 }
 
-@keyframes slideReasons {
+@keyframes whyFormexMarquee {
   from {
     transform: translateX(0);
   }
@@ -1189,7 +1199,6 @@ address {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .trust-grid,
   .steps,
   .testimonial-grid,
   .shop-section {
@@ -1202,7 +1211,30 @@ address {
 }
 
 @media (max-width: 680px) {
+  .why-formex-bar {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    min-height: 76px;
+    padding-block: 8px;
+  }
+
+  .why-formex-bar strong {
+    width: fit-content;
+    min-height: 26px;
+    font-size: 0.7rem;
+  }
+
+  .why-formex-track {
+    animation-duration: 58s;
+  }
+
+  .why-formex-track span {
+    min-height: 28px;
+    font-size: 0.76rem;
+  }
+
   .site-header {
+    top: 76px;
     padding-inline: 14px;
   }
 
@@ -1257,6 +1289,7 @@ address {
 
   .hero {
     padding-top: 44px;
+    min-height: auto;
   }
 
   .hero-visual {
@@ -1319,7 +1352,6 @@ address {
   }
 
   .product-grid,
-  .trust-grid,
   .steps,
   .category-grid,
   .testimonial-grid,
