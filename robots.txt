@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://formxcommunication.netlify.app/sitemap.xml
