@@ -195,6 +195,12 @@ input {
   background: var(--accent);
 }
 
+.nav-easy-buy {
+  color: #5d4510;
+  background: rgba(216, 180, 90, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(216, 180, 90, 0.32);
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
@@ -290,6 +296,61 @@ h1 {
     radial-gradient(circle at 70% 30%, rgba(216, 180, 90, 0.42), transparent 14rem),
     #080a10;
   box-shadow: var(--shadow);
+}
+
+.easy-buy-promo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.95fr) auto;
+  align-items: center;
+  gap: clamp(22px, 4vw, 48px);
+  max-width: 1180px;
+  margin: 0 auto 24px;
+  padding: clamp(26px, 4vw, 42px);
+  border: 1px solid rgba(216, 180, 90, 0.28);
+  border-radius: 30px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(216, 180, 90, 0.26), transparent 17rem),
+    linear-gradient(145deg, #080a10, #222a36);
+  box-shadow: 0 24px 70px rgba(8, 11, 18, 0.16);
+}
+
+.easy-buy-promo h2 {
+  margin-bottom: 10px;
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+}
+
+.easy-buy-promo p:not(.eyebrow) {
+  max-width: 600px;
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+}
+
+.easy-buy-promo-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.easy-buy-promo-facts span {
+  display: grid;
+  min-height: 88px;
+  align-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.easy-buy-promo-facts strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #f7e8b4;
+  font-size: 1.25rem;
 }
 
 .hero-carousel {
@@ -1186,6 +1247,14 @@ address {
 }
 
 @media (max-width: 980px) {
+  .easy-buy-promo {
+    grid-template-columns: 1fr;
+    margin-inline: clamp(18px, 4vw, 28px);
+  }
+
+  .easy-buy-promo .btn {
+    justify-self: start;
+  }
   .hero {
     grid-template-columns: 1fr;
     min-height: auto;
