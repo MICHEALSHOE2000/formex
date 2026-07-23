@@ -84,6 +84,7 @@
       <div class="nav-actions">
         <a href="/" class="nav-link">Home</a>
         <a href="#plans" class="nav-link">Down Payment</a>
+        <a href="#prices" class="nav-link">Phone Prices</a>
         <a href="#calculator" class="nav-link">Calculator</a>
         <a href="#requirements" class="nav-link">Requirements</a>
         <a href="#faq" class="nav-link">FAQs</a>
@@ -140,7 +141,7 @@
           <div class="deposit-percent">40<span>%</span></div>
           <p class="deposit-label">Down payment</p>
           <h3>iPhone 11 & 12 Series</h3>
-          <p>Pay 40% of the confirmed device price to begin your Easy Buy plan.</p>
+          <p>Your initial deposit is 40% of the confirmed device price. The remaining 60% becomes the balance used for your repayment calculation.</p>
           <a href="#calculator">Estimate this plan <span>→</span></a>
         </article>
         <article class="deposit-card deposit-card-featured reveal">
@@ -148,48 +149,110 @@
           <div class="deposit-percent">50<span>%</span></div>
           <p class="deposit-label">Down payment</p>
           <h3>iPhone 13–16 Series</h3>
-          <p>Pay 50% of the confirmed device price to begin your Easy Buy plan.</p>
+          <p>Your initial deposit is 50% of the confirmed device price. The remaining 50% becomes the balance used for your repayment calculation.</p>
           <a href="#calculator">Estimate this plan <span>→</span></a>
         </article>
         <article class="deposit-card reveal">
           <div class="deposit-percent">70<span>%</span></div>
           <p class="deposit-label">Down payment</p>
           <h3>iPhone 17 Series</h3>
-          <p>Pay 70% of the confirmed device price to begin your Easy Buy plan.</p>
+          <p>Your initial deposit is 70% of the confirmed device price. The remaining 30% becomes the balance used for your repayment calculation.</p>
           <a href="#calculator">Estimate this plan <span>→</span></a>
         </article>
       </div>
+    </section>
+
+    <section class="easy-section easy-prices" id="prices">
+      <div class="easy-section-heading reveal">
+        <p class="eyebrow">Current guide prices</p>
+        <h2>Choose a listed iPhone and calculate your plan.</h2>
+        <p>These prices help you estimate your deposit and repayments. Use the search box to find a model, then select “Calculate this phone” to load its price into the calculator.</p>
+      </div>
+      <aside class="price-change-alert reveal" role="note">
+        <strong>Prices are subject to change.</strong>
+        <p>Phone prices can change because of exchange rates, stock, storage, condition, and market movement. Always ask Formex to confirm the current device price and availability before paying a deposit.</p>
+      </aside>
+      <div class="price-toolbar reveal">
+        <label for="priceSearch">Search the price list</label>
+        <input id="priceSearch" type="search" placeholder="Search iPhone model or storage, e.g. 14 Pro 256GB">
+        <span id="priceResultCount" aria-live="polite"></span>
+      </div>
+      <div class="easy-price-grid" id="easyPriceGrid" aria-live="polite"></div>
+      <noscript><p class="price-change-alert">JavaScript is required to display the interactive price list. Please contact Formex on WhatsApp for current prices.</p></noscript>
+    </section>
+
+    <section class="easy-section repayment-explainer" id="repayment-rates">
+      <div class="easy-section-heading reveal">
+        <p class="eyebrow">How the repayment is calculated</p>
+        <h2>The deposit comes off first. The multiplier applies only to the balance.</h2>
+        <p>First calculate the initial deposit from the confirmed phone price. Subtract that deposit to get the balance. The balance is then multiplied by the factor for your chosen duration.</p>
+      </div>
+      <div class="formula-steps reveal" aria-label="Easy Buy calculation steps">
+        <article><span>1</span><div><strong>Initial deposit</strong><p>Phone price × required deposit percentage</p></div></article>
+        <article><span>2</span><div><strong>Balance</strong><p>Phone price − initial deposit</p></div></article>
+        <article><span>3</span><div><strong>Total balance repayment</strong><p>Balance × duration multiplier</p></div></article>
+        <article><span>4</span><div><strong>Each instalment</strong><p>Total balance repayment ÷ number of payments</p></div></article>
+      </div>
+      <div class="multiplier-grid">
+        <article class="multiplier-card reveal">
+          <span>1 month</span>
+          <strong>Balance × 1.2</strong>
+          <p>This adds 20% of the balance as the plan cost. For monthly repayment, the full result is due in one payment.</p>
+        </article>
+        <article class="multiplier-card multiplier-card-dark reveal">
+          <span>2 months</span>
+          <strong>Balance × 1.4</strong>
+          <p>This adds 40% of the balance as the plan cost. Monthly amount = total balance repayment ÷ 2.</p>
+        </article>
+        <article class="multiplier-card reveal">
+          <span>3 months</span>
+          <strong>Balance × 1.6</strong>
+          <p>This adds 60% of the balance as the plan cost. Monthly amount = total balance repayment ÷ 3.</p>
+        </article>
+      </div>
+      <div class="worked-example reveal">
+        <div>
+          <p class="eyebrow">Worked example</p>
+          <h3>iPhone 11 64GB at ₦230,000</h3>
+          <p>The iPhone 11 Series requires a 40% initial deposit: ₦230,000 × 40% = ₦92,000. The balance is ₦138,000.</p>
+        </div>
+        <div class="example-table-wrap">
+          <table class="example-table">
+            <thead><tr><th>Duration</th><th>Balance calculation</th><th>Monthly amount</th><th>Total paid overall</th></tr></thead>
+            <tbody>
+              <tr><td>1 month</td><td>₦138,000 × 1.2 = ₦165,600</td><td>₦165,600</td><td>₦257,600</td></tr>
+              <tr><td>2 months</td><td>₦138,000 × 1.4 = ₦193,200</td><td>₦96,600</td><td>₦285,200</td></tr>
+              <tr><td>3 months</td><td>₦138,000 × 1.6 = ₦220,800</td><td>₦73,600</td><td>₦312,800</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="formula-disclaimer reveal">The calculator below covers the supplied 1-, 2-, and 3-month multipliers. If Formex offers a 4- or 5-month plan for your application, request the current multiplier and full repayment breakdown before agreeing.</p>
     </section>
 
     <section class="easy-section calculator-section" id="calculator">
       <div class="calculator-intro reveal">
         <p class="eyebrow">Easy Buy calculator</p>
         <h2>See what your plan could look like.</h2>
-        <p>Enter the phone price and select your plan. This calculator gives you a quick planning estimate before Formex confirms the final terms.</p>
+        <p>Select a listed phone and a repayment duration. The calculator removes your initial deposit first, applies the correct multiplier to the balance, then divides the result by your chosen payment schedule.</p>
         <ul>
+          <li>1 month: balance × 1.2.</li>
+          <li>2 months: balance × 1.4.</li>
+          <li>3 months: balance × 1.6.</li>
           <li>No NIN, BVN, or bank document is collected here.</li>
-          <li>Your result can be sent directly to Formex on WhatsApp.</li>
-          <li>Final approval, fees, and due dates are confirmed by Formex.</li>
         </ul>
       </div>
       <form class="easy-calculator reveal" id="easyCalculator">
         <div class="calculator-fields">
           <label>
-            <span>Which iPhone series?</span>
-            <select id="iphoneSeries" name="series">
-              <option value="11" data-rate="0.4">iPhone 11 Series — 40% down</option>
-              <option value="12" data-rate="0.4">iPhone 12 Series — 40% down</option>
-              <option value="13" data-rate="0.5">iPhone 13 Series — 50% down</option>
-              <option value="14" data-rate="0.5">iPhone 14 Series — 50% down</option>
-              <option value="15" data-rate="0.5">iPhone 15 Series — 50% down</option>
-              <option value="16" data-rate="0.5">iPhone 16 Series — 50% down</option>
-              <option value="17" data-rate="0.7">iPhone 17 Series — 70% down</option>
-            </select>
+            <span>Choose a listed iPhone</span>
+            <select id="iphoneModel" name="model" aria-describedby="modelHelp"></select>
+            <small id="modelHelp">Selecting a phone loads its guide price and deposit rate.</small>
           </label>
           <label>
-            <span>Confirmed phone price</span>
-            <div class="price-input"><b>₦</b><input id="phonePrice" name="price" type="text" inputmode="numeric" value="500,000" aria-describedby="priceHelp"></div>
-            <small id="priceHelp">Ask Formex for the current price before applying.</small>
+            <span>Current phone price</span>
+            <div class="price-input"><b>₦</b><input id="phonePrice" name="price" type="text" inputmode="numeric" value="230,000" aria-describedby="priceHelp"></div>
+            <small id="priceHelp">Editable—replace this with the price Formex confirms today.</small>
           </label>
           <label>
             <span>Repayment schedule</span>
@@ -202,11 +265,9 @@
           <label>
             <span>Plan duration</span>
             <select id="planDuration" name="duration">
-              <option value="1">1 month</option>
-              <option value="2">2 months</option>
-              <option value="3" selected>3 months</option>
-              <option value="4">4 months</option>
-              <option value="5">5 months</option>
+              <option value="1">1 month — balance × 1.2</option>
+              <option value="2">2 months — balance × 1.4</option>
+              <option value="3">3 months — balance × 1.6</option>
             </select>
           </label>
         </div>
@@ -216,12 +277,16 @@
             <small>Required down payment</small>
             <strong id="downPayment">₦200,000</strong>
           </div>
-          <div class="result-grid">
-            <div><small>Balance after deposit</small><strong id="remainingBalance">₦300,000</strong></div>
-            <div><small id="paymentLabel">Estimated weekly repayment</small><strong id="repaymentAmount">₦25,000</strong></div>
-            <div><small>Estimated repayments</small><strong id="paymentCount">12 payments</strong></div>
+          <div class="result-grid result-grid-expanded">
+            <div><small>Balance after deposit</small><strong id="remainingBalance">₦138,000</strong></div>
+            <div><small>Duration multiplier</small><strong id="durationFactor">× 1.2</strong></div>
+            <div><small>Additional plan cost</small><strong id="planCost">₦27,600</strong></div>
+            <div><small>Total balance repayment</small><strong id="financedTotal">₦165,600</strong></div>
+            <div><small id="paymentLabel">Estimated weekly repayment</small><strong id="repaymentAmount">₦41,400</strong></div>
+            <div><small>Estimated repayments</small><strong id="paymentCount">4 payments</strong></div>
+            <div class="result-total"><small>Total paid overall: deposit + balance repayment</small><strong id="totalPaid">₦257,600</strong></div>
           </div>
-          <p class="calculator-note">Illustration only. Weekly and 14-day counts use a simple 4/2-per-month estimate. The result excludes any applicable service or processing fees. Formex will confirm the exact price, schedule, charges, and approval terms before you commit.</p>
+          <p class="calculator-note">Planning estimate only. Weekly and 14-day schedules use 4 and 2 payments per month. Prices may change, and Formex must confirm the device price, availability, eligibility, exact dates, and complete terms before payment.</p>
           <a id="calculatorWhatsapp" class="calculator-whatsapp" href="https://wa.me/2348039248231" target="_blank" rel="noopener">Send My Plan to WhatsApp <span>→</span></a>
         </div>
       </form>
@@ -296,7 +361,8 @@
         <details open><summary>What does Easy Buy mean?</summary><p>Easy Buy lets eligible customers make a down payment on an iPhone and repay the balance in smaller installments over an approved period.</p></details>
         <details><summary>What is the minimum down payment?</summary><p>It is 40% for iPhone 11 and 12 series, 50% for iPhone 13 through 16 series, and 70% for iPhone 17 series.</p></details>
         <details><summary>How often can I pay?</summary><p>You can request weekly, every 14 days, or monthly repayment. Your final schedule is confirmed during approval.</p></details>
-        <details><summary>How long can the plan run?</summary><p>Available durations are 1 to 5 months, subject to verification and Formex's final approval.</p></details>
+        <details><summary>How is the repayment calculated?</summary><p>The initial deposit is deducted from the confirmed phone price first. The remaining balance is multiplied by 1.2 for one month, 1.4 for two months, or 1.6 for three months. That total is then divided by the number of weekly, 14-day, or monthly payments.</p></details>
+        <details><summary>How long can the plan run?</summary><p>The calculator shows the supplied 1-, 2-, and 3-month formulas. A 4- or 5-month option, if available, requires a current quote and repayment breakdown from Formex.</p></details>
         <details><summary>Who can be my reference?</summary><p>Use a responsible person who knows you and can be reached by phone. Formex will explain any specific reference requirements during your application.</p></details>
         <details><summary>Does the calculator guarantee approval?</summary><p>No. It is only a planning estimate. Formex will confirm the device price, any fees, repayment amount, dates, eligibility, and collection terms before you agree.</p></details>
       </div>
@@ -321,7 +387,7 @@
     </div>
     <div class="footer-panel">
       <p class="footer-title">Easy Buy</p>
-      <ul><li><a href="#plans">Down Payments</a></li><li><a href="#calculator">Plan Calculator</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#requirements">Requirements</a></li><li><a href="#faq">FAQs</a></li></ul>
+      <ul><li><a href="#plans">Down Payments</a></li><li><a href="#prices">Phone Prices</a></li><li><a href="#repayment-rates">Repayment Formula</a></li><li><a href="#calculator">Plan Calculator</a></li><li><a href="#how-it-works">How It Works</a></li><li><a href="#requirements">Requirements</a></li><li><a href="#faq">FAQs</a></li></ul>
     </div>
     <div class="footer-panel">
       <p class="footer-title">Shop Formex</p>
