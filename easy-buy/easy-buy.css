@@ -1498,3 +1498,76 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Keep the clicked phone visible in the calculator */
+.selected-phone-preview {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(216, 180, 90, 0.32);
+  border-radius: 22px;
+  padding: 13px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(216, 180, 90, 0.24), transparent 12rem),
+    rgba(255, 255, 255, 0.08);
+}
+
+.selected-phone-image {
+  width: 72px;
+  height: 78px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #e8edf2;
+}
+
+.selected-phone-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.selected-phone-preview > div:nth-child(2) {
+  display: grid;
+  gap: 4px;
+}
+
+.selected-phone-preview small,
+.selected-phone-preview span:not(.selected-phone-check) {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.72rem;
+}
+
+.selected-phone-preview strong {
+  font-size: 1.08rem;
+}
+
+.selected-phone-check {
+  border-radius: 999px;
+  padding: 8px 11px;
+  color: #063f2d;
+  background: #dff8ed;
+  font-size: 0.7rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+  .selected-phone-preview {
+    grid-template-columns: 62px minmax(0, 1fr);
+  }
+
+  .selected-phone-image {
+    width: 62px;
+    height: 70px;
+  }
+
+  .selected-phone-check {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+}
