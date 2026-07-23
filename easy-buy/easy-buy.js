@@ -91,6 +91,8 @@ const repaymentAmount = document.querySelector("#repaymentAmount");
 const paymentLabel = document.querySelector("#paymentLabel");
 const paymentCount = document.querySelector("#paymentCount");
 const totalPaid = document.querySelector("#totalPaid");
+const frequencyHelp = document.querySelector("#frequencyHelp");
+const weeklyOption = frequencySelect ? frequencySelect.querySelector('option[value="weekly"]') : null;
 const calculatorWhatsapp = document.querySelector("#calculatorWhatsapp");
 
 const naira = new Intl.NumberFormat("en-NG", {
@@ -206,10 +208,29 @@ function selectPhone(phoneId, scrollToCalculator = false) {
   }
 }
 
+function syncFrequencyAvailability(phone) {
+  if (!frequencySelect || !weeklyOption) return;
+
+  const weeklyEligible = phone.series === 11 || phone.series === 12;
+  weeklyOption.disabled = !weeklyEligible;
+  weeklyOption.hidden = !weeklyEligible;
+
+  if (!weeklyEligible && frequencySelect.value === "weekly") {
+    frequencySelect.value = "monthly";
+  }
+
+  if (frequencyHelp) {
+    frequencyHelp.textContent = weeklyEligible
+      ? "Monthly is standard. Weekly repayment is also available for this iPhone 11/12 device."
+      : "Monthly repayment is the available schedule for this iPhone series.";
+  }
+}
+
 function updateCalculator() {
   if (!modelSelect || !priceInput || !frequencySelect || !durationSelect) return;
 
   const phone = selectedPhone();
+  syncFrequencyAvailability(phone);
   const selectedFrequency = frequencySelect.options[frequencySelect.selectedIndex];
   const price = numericPrice();
   const rate = phone.depositRate;
@@ -228,7 +249,7 @@ function updateCalculator() {
   depositRate.textContent = `${Math.round(rate * 100)}% initial deposit`;
   downPayment.textContent = naira.format(deposit);
   remainingBalance.textContent = naira.format(balance);
-  durationFactor.textContent = `× ${factor.toFixed(1)}`;
+  durationFactor.textContent = `${duration} month${duration === 1 ? "" : "s"} · × ${factor.toFixed(1)}`;
   planCost.textContent = naira.format(additionalCost);
   financedTotal.textContent = naira.format(balanceRepayment);
   repaymentAmount.textContent = naira.format(installment);
