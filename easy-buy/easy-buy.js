@@ -96,6 +96,9 @@ const weeklyOption = frequencySelect ? frequencySelect.querySelector('option[val
 const biweeklyOption = frequencySelect ? frequencySelect.querySelector('option[value="biweekly"]') : null;
 const monthlyOption = frequencySelect ? frequencySelect.querySelector('option[value="monthly"]') : null;
 const calculatorWhatsapp = document.querySelector("#calculatorWhatsapp");
+const selectedPhoneImage = document.querySelector("#selectedPhoneImage");
+const selectedPhoneName = document.querySelector("#selectedPhoneName");
+const selectedPhonePrice = document.querySelector("#selectedPhonePrice");
 
 const naira = new Intl.NumberFormat("en-NG", {
   style: "currency",
@@ -197,16 +200,47 @@ function formatInputPrice() {
   priceInput.value = price ? plainNumber.format(price) : "";
 }
 
+function rememberSelectedPhone(phoneId, moveToCalculator = false) {
+  try {
+    window.sessionStorage.setItem("formexEasyBuyPhone", phoneId);
+  } catch (error) {
+    // The URL still preserves the selection when storage is unavailable.
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set("phone", phoneId);
+  if (moveToCalculator) url.hash = "calculator";
+  window.history.replaceState({}, "", url);
+}
+
+function showSelectedPhone(phone) {
+  if (selectedPhoneName) selectedPhoneName.textContent = phoneLabel(phone);
+  if (selectedPhonePrice) selectedPhonePrice.textContent = `Guide price: ${naira.format(numericPrice() || phone.price)}`;
+
+  if (selectedPhoneImage) {
+    selectedPhoneImage.onerror = () => {
+      selectedPhoneImage.onerror = null;
+      selectedPhoneImage.src = createPricePlaceholder(phone.model);
+    };
+    selectedPhoneImage.src = phone.image;
+    selectedPhoneImage.alt = `${phoneLabel(phone)} selected for Easy Buy calculation`;
+  }
+}
+
 function selectPhone(phoneId, scrollToCalculator = false) {
   const phone = easyBuyPhones.find((item) => item.id === phoneId);
   if (!phone || !modelSelect || !priceInput) return;
 
   modelSelect.value = phone.id;
   priceInput.value = plainNumber.format(phone.price);
+  showSelectedPhone(phone);
+  rememberSelectedPhone(phone.id, scrollToCalculator);
   updateCalculator();
 
   if (scrollToCalculator) {
-    document.querySelector("#calculator").scrollIntoView({ behavior: "smooth", block: "start" });
+    window.requestAnimationFrame(() => {
+      document.querySelector("#calculator").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 }
 
@@ -265,6 +299,7 @@ function updateCalculator() {
   paymentLabel.textContent = `Estimated ${frequencyName} instalment`;
   paymentCount.textContent = `${repayments} payment${repayments === 1 ? "" : "s"}`;
   totalPaid.textContent = naira.format(overallTotal);
+  if (selectedPhonePrice) selectedPhonePrice.textContent = `Price used: ${naira.format(price)}`;
 
   const message = [
     "Hello Formex Communication, I want to apply for Easy Buy.",
@@ -293,7 +328,20 @@ if (modelSelect && priceInput && frequencySelect && durationInputs.length) {
     formatInputPrice();
     updateCalculator();
   });
-  selectPhone(easyBuyPhones[0].id);
+
+  const phoneFromUrl = new URLSearchParams(window.location.search).get("phone");
+  let savedPhone = "";
+  try {
+    savedPhone = window.sessionStorage.getItem("formexEasyBuyPhone") || "";
+  } catch (error) {
+    savedPhone = "";
+  }
+
+  const initialPhoneId = [phoneFromUrl, savedPhone]
+    .find((phoneId) => easyBuyPhones.some((phone) => phone.id === phoneId))
+    || easyBuyPhones[0].id;
+
+  selectPhone(initialPhoneId);
 }
 
 if (priceSearch) priceSearch.addEventListener("input", renderPriceList);
