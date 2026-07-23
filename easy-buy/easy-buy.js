@@ -80,7 +80,7 @@ const priceResultCount = document.querySelector("#priceResultCount");
 const modelSelect = document.querySelector("#iphoneModel");
 const priceInput = document.querySelector("#phonePrice");
 const frequencySelect = document.querySelector("#repaymentFrequency");
-const durationSelect = document.querySelector("#planDuration");
+const durationInputs = [...document.querySelectorAll('input[name="duration"]')];
 const depositRate = document.querySelector("#depositRate");
 const downPayment = document.querySelector("#downPayment");
 const remainingBalance = document.querySelector("#remainingBalance");
@@ -93,6 +93,8 @@ const paymentCount = document.querySelector("#paymentCount");
 const totalPaid = document.querySelector("#totalPaid");
 const frequencyHelp = document.querySelector("#frequencyHelp");
 const weeklyOption = frequencySelect ? frequencySelect.querySelector('option[value="weekly"]') : null;
+const biweeklyOption = frequencySelect ? frequencySelect.querySelector('option[value="biweekly"]') : null;
+const monthlyOption = frequencySelect ? frequencySelect.querySelector('option[value="monthly"]') : null;
 const calculatorWhatsapp = document.querySelector("#calculatorWhatsapp");
 
 const naira = new Intl.NumberFormat("en-NG", {
@@ -209,32 +211,39 @@ function selectPhone(phoneId, scrollToCalculator = false) {
 }
 
 function syncFrequencyAvailability(phone) {
-  if (!frequencySelect || !weeklyOption) return;
+  if (!frequencySelect || !weeklyOption || !biweeklyOption || !monthlyOption) return;
 
-  const weeklyEligible = phone.series === 11 || phone.series === 12;
-  weeklyOption.disabled = !weeklyEligible;
-  weeklyOption.hidden = !weeklyEligible;
+  const isIphone11Or12 = phone.series === 11 || phone.series === 12;
 
-  if (!weeklyEligible && frequencySelect.value === "weekly") {
-    frequencySelect.value = "monthly";
+  weeklyOption.disabled = !isIphone11Or12;
+  weeklyOption.hidden = !isIphone11Or12;
+  biweeklyOption.disabled = !isIphone11Or12;
+  biweeklyOption.hidden = !isIphone11Or12;
+  monthlyOption.disabled = isIphone11Or12;
+  monthlyOption.hidden = isIphone11Or12;
+
+  const allowedFrequencies = isIphone11Or12 ? ["weekly", "biweekly"] : ["monthly"];
+  if (!allowedFrequencies.includes(frequencySelect.value)) {
+    frequencySelect.value = isIphone11Or12 ? "weekly" : "monthly";
   }
 
   if (frequencyHelp) {
-    frequencyHelp.textContent = weeklyEligible
-      ? "Monthly is standard. Weekly repayment is also available for this iPhone 11/12 device."
-      : "Monthly repayment is the available schedule for this iPhone series.";
+    frequencyHelp.textContent = isIphone11Or12
+      ? "This iPhone can be repaid weekly or every 14 days."
+      : "This iPhone series is repaid monthly.";
   }
 }
 
 function updateCalculator() {
-  if (!modelSelect || !priceInput || !frequencySelect || !durationSelect) return;
+  if (!modelSelect || !priceInput || !frequencySelect || !durationInputs.length) return;
 
   const phone = selectedPhone();
   syncFrequencyAvailability(phone);
   const selectedFrequency = frequencySelect.options[frequencySelect.selectedIndex];
   const price = numericPrice();
   const rate = phone.depositRate;
-  const duration = Number(durationSelect.value);
+  const selectedDuration = document.querySelector('input[name="duration"]:checked');
+  const duration = Number(selectedDuration ? selectedDuration.value : 1);
   const factor = durationFactors[duration];
   const paymentsPerMonth = Number(selectedFrequency.dataset.perMonth);
   const repayments = Math.max(1, duration * paymentsPerMonth);
@@ -274,10 +283,11 @@ function updateCalculator() {
   calculatorWhatsapp.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
 
-if (modelSelect && priceInput && frequencySelect && durationSelect) {
+if (modelSelect && priceInput && frequencySelect && durationInputs.length) {
   populateModelSelect();
   modelSelect.addEventListener("change", () => selectPhone(modelSelect.value));
-  [frequencySelect, durationSelect].forEach((field) => field.addEventListener("change", updateCalculator));
+  frequencySelect.addEventListener("change", updateCalculator);
+  durationInputs.forEach((field) => field.addEventListener("change", updateCalculator));
   priceInput.addEventListener("input", updateCalculator);
   priceInput.addEventListener("blur", () => {
     formatInputPrice();
