@@ -1,24 +1,192 @@
 [
   {
     "type": "product",
-    "label": "iPhone 11",
-    "route": "/iphone-11",
+    "label": "iPhone 18 Pro Max",
+    "route": "/iphone-18-pro-max",
     "brand": "Apple",
     "storage": [
-      "64GB",
+      "256GB — Glacier / Black",
+      "256GB — Burgundy",
+      "512GB — Glacier / Black",
+      "512GB — Burgundy"
+    ],
+    "price": 2557600,
+    "image": "/images/store/18promax-1-720.webp",
+    "keywords": [
+      "iPhone 18 Pro Max",
+      "Apple",
+      "iPhone",
+      "iPhone 18 Pro Max 256GB — Glacier / Black",
+      "iPhone 18 Pro Max 256GB — Burgundy",
+      "iPhone 18 Pro Max 512GB — Glacier / Black",
+      "iPhone 18 Pro Max 512GB — Burgundy",
+      "256GB — Glacier / Black",
+      "256GB — Burgundy",
+      "512GB — Glacier / Black",
+      "512GB — Burgundy",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 18 Pro",
+    "route": "/iphone-18-pro",
+    "brand": "Apple",
+    "storage": [
+      "256GB — Glacier / Black",
+      "256GB — Burgundy"
+    ],
+    "price": 2254000,
+    "image": "/images/store/18pro-1-720.webp",
+    "keywords": [
+      "iPhone 18 Pro",
+      "Apple",
+      "iPhone",
+      "iPhone 18 Pro 256GB — Glacier / Black",
+      "iPhone 18 Pro 256GB — Burgundy",
+      "256GB — Glacier / Black",
+      "256GB — Burgundy",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 17 Pro Max",
+    "route": "/iphone-17-pro-max",
+    "brand": "Apple",
+    "storage": [
+      "256GB",
+      "512GB"
+    ],
+    "price": 1863750,
+    "image": "/images/store/17promax-1-720.webp",
+    "keywords": [
+      "iPhone 17 Pro Max",
+      "Apple",
+      "iPhone",
+      "iPhone 17 Pro Max 256GB",
+      "iPhone 17 Pro Max 512GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 17 Pro",
+    "route": "/iphone-17-pro",
+    "brand": "Apple",
+    "storage": [
+      "256GB",
+      "512GB"
+    ],
+    "price": 1606500,
+    "image": "/images/store/17pro-1-720.webp",
+    "keywords": [
+      "iPhone 17 Pro",
+      "Apple",
+      "iPhone",
+      "iPhone 17 Pro 256GB",
+      "iPhone 17 Pro 512GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 17",
+    "route": "/iphone-17",
+    "brand": "Apple",
+    "storage": [
+      "256GB"
+    ],
+    "price": 1060500,
+    "image": "/images/store/17-1-720.webp",
+    "keywords": [
+      "iPhone 17",
+      "Apple",
+      "iPhone",
+      "iPhone 17 256GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 17 Air",
+    "route": "/iphone-17-air",
+    "brand": "Apple",
+    "storage": [
+      "256GB",
+      "512GB",
+      "1TB"
+    ],
+    "price": 1113000,
+    "image": "/images/store/17air-1-720.webp",
+    "keywords": [
+      "iPhone 17 Air",
+      "Apple",
+      "iPhone",
+      "iPhone 17 Air 256GB",
+      "iPhone 17 Air 512GB",
+      "iPhone 17 Air 1TB",
+      "256GB",
+      "512GB",
+      "1TB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 16 Pro Max",
+    "route": "/iphone-16-pro-max",
+    "brand": "Apple",
+    "storage": [
+      "256GB"
+    ],
+    "price": 1249500,
+    "image": "/images/store/16promax-1-720.webp",
+    "keywords": [
+      "iPhone 16 Pro Max",
+      "Apple",
+      "iPhone",
+      "iPhone 16 Pro Max 256GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 16 Pro",
+    "route": "/iphone-16-pro",
+    "brand": "Apple",
+    "storage": [
       "128GB",
       "256GB"
     ],
-    "price": 230000,
-    "image": "/images/11-1.jpeg",
+    "price": 1071000,
+    "image": "/images/store/16pro-1-720.webp",
     "keywords": [
-      "iPhone 11",
+      "iPhone 16 Pro",
       "Apple",
       "iPhone",
-      "iPhone 11 64GB",
-      "iPhone 11 128GB",
-      "iPhone 11 256GB",
-      "64GB",
+      "iPhone 16 Pro 128GB",
+      "iPhone 16 Pro 256GB",
       "128GB",
       "256GB",
       "price in Nigeria",
@@ -28,78 +196,21 @@
   },
   {
     "type": "product",
-    "label": "iPhone 11 Pro",
-    "route": "/iphone-11-pro",
+    "label": "iPhone 16 Plus",
+    "route": "/iphone-16-plus",
     "brand": "Apple",
     "storage": [
-      "64GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": 275000,
-    "image": "/images/11pro-1.jpeg",
-    "keywords": [
-      "iPhone 11 Pro",
-      "Apple",
-      "iPhone",
-      "iPhone 11 Pro 64GB",
-      "iPhone 11 Pro 256GB",
-      "iPhone 11 Pro 512GB",
-      "64GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 11 Pro Max",
-    "route": "/iphone-11-pro-max",
-    "brand": "Apple",
-    "storage": [
-      "64GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": 320000,
-    "image": "/images/11promax-1.jpeg",
-    "keywords": [
-      "iPhone 11 Pro Max",
-      "Apple",
-      "iPhone",
-      "iPhone 11 Pro Max 64GB",
-      "iPhone 11 Pro Max 256GB",
-      "iPhone 11 Pro Max 512GB",
-      "64GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 12",
-    "route": "/iphone-12",
-    "brand": "Apple",
-    "storage": [
-      "64GB",
       "128GB",
       "256GB"
     ],
-    "price": 260000,
-    "image": "/images/12.jpeg",
+    "price": 939750,
+    "image": "/images/store/16plus-1-720.webp",
     "keywords": [
-      "iPhone 12",
+      "iPhone 16 Plus",
       "Apple",
       "iPhone",
-      "iPhone 12 64GB",
-      "iPhone 12 128GB",
-      "iPhone 12 256GB",
-      "64GB",
+      "iPhone 16 Plus 128GB",
+      "iPhone 16 Plus 256GB",
       "128GB",
       "256GB",
       "price in Nigeria",
@@ -109,23 +220,89 @@
   },
   {
     "type": "product",
-    "label": "iPhone 12 Pro",
-    "route": "/iphone-12-pro",
+    "label": "iPhone 16",
+    "route": "/iphone-16",
+    "brand": "Apple",
+    "storage": [
+      "128GB"
+    ],
+    "price": 871500,
+    "image": "/images/store/16-1-720.webp",
+    "keywords": [
+      "iPhone 16",
+      "Apple",
+      "iPhone",
+      "iPhone 16 128GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 15 Pro Max",
+    "route": "/iphone-15-pro-max",
+    "brand": "Apple",
+    "storage": [
+      "256GB"
+    ],
+    "price": 1039500,
+    "image": "/images/store/15promax-1-720.webp",
+    "keywords": [
+      "iPhone 15 Pro Max",
+      "Apple",
+      "iPhone",
+      "iPhone 15 Pro Max 256GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 15 Pro",
+    "route": "/iphone-15-pro",
+    "brand": "Apple",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 758310,
+    "image": "/images/store/15pro-1-720.webp",
+    "keywords": [
+      "iPhone 15 Pro",
+      "Apple",
+      "iPhone",
+      "iPhone 15 Pro 128GB",
+      "iPhone 15 Pro 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 15 Plus",
+    "route": "/iphone-15-plus",
     "brand": "Apple",
     "storage": [
       "128GB",
       "256GB",
       "512GB"
     ],
-    "price": 365000,
-    "image": "/images/12pro-1.jpeg",
+    "price": 656250,
+    "image": "/images/catalog/iphone-15-plus.webp",
     "keywords": [
-      "iPhone 12 Pro",
+      "iPhone 15 Plus",
       "Apple",
       "iPhone",
-      "iPhone 12 Pro 128GB",
-      "iPhone 12 Pro 256GB",
-      "iPhone 12 Pro 512GB",
+      "iPhone 15 Plus 128GB",
+      "iPhone 15 Plus 256GB",
+      "iPhone 15 Plus 512GB",
       "128GB",
       "256GB",
       "512GB",
@@ -136,170 +313,26 @@
   },
   {
     "type": "product",
-    "label": "iPhone 12 Pro Max",
-    "route": "/iphone-12-pro-max",
+    "label": "iPhone 15",
+    "route": "/iphone-15",
     "brand": "Apple",
     "storage": [
       "128GB",
       "256GB",
       "512GB"
     ],
-    "price": 430000,
-    "image": "/images/12promax-1.jpeg",
+    "price": 640500,
+    "image": "/images/store/15-1-720.webp",
     "keywords": [
-      "iPhone 12 Pro Max",
+      "iPhone 15",
       "Apple",
       "iPhone",
-      "iPhone 12 Pro Max 128GB",
-      "iPhone 12 Pro Max 256GB",
-      "iPhone 12 Pro Max 512GB",
+      "iPhone 15 128GB",
+      "iPhone 15 256GB",
+      "iPhone 15 512GB",
       "128GB",
       "256GB",
       "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 13",
-    "route": "/iphone-13",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": 380000,
-    "image": "/images/13-1.jpeg",
-    "keywords": [
-      "iPhone 13",
-      "Apple",
-      "iPhone",
-      "iPhone 13 128GB",
-      "iPhone 13 256GB",
-      "iPhone 13 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 13 Pro",
-    "route": "/iphone-13-pro",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": 500000,
-    "image": "/images/13pro-1.jpeg",
-    "keywords": [
-      "iPhone 13 Pro",
-      "Apple",
-      "iPhone",
-      "iPhone 13 Pro 128GB",
-      "iPhone 13 Pro 256GB",
-      "iPhone 13 Pro 512GB",
-      "iPhone 13 Pro 1TB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 13 Pro Max",
-    "route": "/iphone-13-pro-max",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": null,
-    "image": "/images/13promax-1.jpeg",
-    "keywords": [
-      "iPhone 13 Pro Max",
-      "Apple",
-      "iPhone",
-      "iPhone 13 Pro Max 128GB",
-      "iPhone 13 Pro Max 256GB",
-      "iPhone 13 Pro Max 512GB",
-      "iPhone 13 Pro Max 1TB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 14",
-    "route": "/iphone-14",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": 460000,
-    "image": "/images/14-1.jpeg",
-    "keywords": [
-      "iPhone 14",
-      "Apple",
-      "iPhone",
-      "iPhone 14 128GB",
-      "iPhone 14 256GB",
-      "iPhone 14 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 14 Pro",
-    "route": "/iphone-14-pro",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": 640000,
-    "image": "/images/14pro-1.jpeg",
-    "keywords": [
-      "iPhone 14 Pro",
-      "Apple",
-      "iPhone",
-      "iPhone 14 Pro 128GB",
-      "iPhone 14 Pro 256GB",
-      "iPhone 14 Pro 512GB",
-      "iPhone 14 Pro 1TB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB",
       "price in Nigeria",
       "Easy Buy",
       "swap"
@@ -316,8 +349,8 @@
       "512GB",
       "1TB"
     ],
-    "price": 770000,
-    "image": "/images/14promax-1.jpeg",
+    "price": 782250,
+    "image": "/images/store/14promax-1-720.webp",
     "keywords": [
       "iPhone 14 Pro Max",
       "Apple",
@@ -337,321 +370,21 @@
   },
   {
     "type": "product",
-    "label": "iPhone 15",
-    "route": "/iphone-15",
+    "label": "iPhone 14 Pro",
+    "route": "/iphone-14-pro",
     "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": 625000,
-    "image": "/images/15-1.jpeg",
-    "keywords": [
-      "iPhone 15",
-      "Apple",
-      "iPhone",
-      "iPhone 15 128GB",
-      "iPhone 15 256GB",
-      "iPhone 15 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 15 Pro",
-    "route": "/iphone-15-pro",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": 510000,
-    "image": "/images/15pro-1.jpeg",
-    "keywords": [
-      "iPhone 15 Pro",
-      "Apple",
-      "iPhone",
-      "iPhone 15 Pro 128GB",
-      "iPhone 15 Pro 256GB",
-      "iPhone 15 Pro 512GB",
-      "iPhone 15 Pro 1TB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 15 Pro Max",
-    "route": "/iphone-15-pro-max",
-    "brand": "Apple",
-    "storage": [
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": null,
-    "image": "/images/15promax-1.jpeg",
-    "keywords": [
-      "iPhone 15 Pro Max",
-      "Apple",
-      "iPhone",
-      "iPhone 15 Pro Max 256GB",
-      "iPhone 15 Pro Max 512GB",
-      "iPhone 15 Pro Max 1TB",
-      "256GB",
-      "512GB",
-      "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 16",
-    "route": "/iphone-16",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": 840000,
-    "image": "/images/16-1.jpg",
-    "keywords": [
-      "iPhone 16",
-      "Apple",
-      "iPhone",
-      "iPhone 16 128GB",
-      "iPhone 16 256GB",
-      "iPhone 16 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 16 Plus",
-    "route": "/iphone-16-plus",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": 940000,
-    "image": "/images/16plus-1.jpg",
-    "keywords": [
-      "iPhone 16 Plus",
-      "Apple",
-      "iPhone",
-      "iPhone 16 Plus 128GB",
-      "iPhone 16 Plus 256GB",
-      "iPhone 16 Plus 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 16 Pro",
-    "route": "/iphone-16-pro",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": 1030000,
-    "image": "/images/16pro-1.jpg",
-    "keywords": [
-      "iPhone 16 Pro",
-      "Apple",
-      "iPhone",
-      "iPhone 16 Pro 128GB",
-      "iPhone 16 Pro 256GB",
-      "iPhone 16 Pro 512GB",
-      "iPhone 16 Pro 1TB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 16 Pro Max",
-    "route": "/iphone-16-pro-max",
-    "brand": "Apple",
-    "storage": [
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": null,
-    "image": "/images/16promax-1.jpg",
-    "keywords": [
-      "iPhone 16 Pro Max",
-      "Apple",
-      "iPhone",
-      "iPhone 16 Pro Max 256GB",
-      "iPhone 16 Pro Max 512GB",
-      "iPhone 16 Pro Max 1TB",
-      "256GB",
-      "512GB",
-      "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 17",
-    "route": "/iphone-17",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": null,
-    "image": "/images/17-1.jpg",
-    "keywords": [
-      "iPhone 17",
-      "Apple",
-      "iPhone",
-      "iPhone 17 128GB",
-      "iPhone 17 256GB",
-      "iPhone 17 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 17 Air",
-    "route": "/iphone-17-air",
-    "brand": "Apple",
-    "storage": [
-      "To confirm"
-    ],
-    "price": 1140000,
-    "image": "/images/17air-1.jpg",
-    "keywords": [
-      "iPhone 17 Air",
-      "Apple",
-      "iPhone",
-      "iPhone 17 Air To confirm",
-      "To confirm",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 17 Pro",
-    "route": "/iphone-17-pro",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": null,
-    "image": "/images/17pro-1.jpg",
-    "keywords": [
-      "iPhone 17 Pro",
-      "Apple",
-      "iPhone",
-      "iPhone 17 Pro 128GB",
-      "iPhone 17 Pro 256GB",
-      "iPhone 17 Pro 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "iPhone 17 Pro Max",
-    "route": "/iphone-17-pro-max",
-    "brand": "Apple",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": null,
-    "image": "/images/17promax-1.jpg",
-    "keywords": [
-      "iPhone 17 Pro Max",
-      "Apple",
-      "iPhone",
-      "iPhone 17 Pro Max 128GB",
-      "iPhone 17 Pro Max 256GB",
-      "iPhone 17 Pro Max 512GB",
-      "iPhone 17 Pro Max 1TB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Samsung Galaxy S23",
-    "route": "/samsung-s23",
-    "brand": "Samsung",
     "storage": [
       "128GB",
       "256GB"
     ],
-    "price": null,
-    "image": null,
+    "price": 656250,
+    "image": "/images/store/14pro-1-720.webp",
     "keywords": [
-      "Samsung Galaxy S23",
-      "Samsung",
-      "Galaxy",
-      "Samsung Galaxy S23 128GB",
-      "Samsung Galaxy S23 256GB",
+      "iPhone 14 Pro",
+      "Apple",
+      "iPhone",
+      "iPhone 14 Pro 128GB",
+      "iPhone 14 Pro 256GB",
       "128GB",
       "256GB",
       "price in Nigeria",
@@ -661,21 +394,123 @@
   },
   {
     "type": "product",
-    "label": "Samsung Galaxy S23 Plus",
-    "route": "/samsung-s23-plus",
-    "brand": "Samsung",
+    "label": "iPhone 14 Plus",
+    "route": "/iphone-14-plus",
+    "brand": "Apple",
     "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 493500,
+    "image": "/images/catalog/iphone-14-plus.webp",
+    "keywords": [
+      "iPhone 14 Plus",
+      "Apple",
+      "iPhone",
+      "iPhone 14 Plus 128GB",
+      "iPhone 14 Plus 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 14",
+    "route": "/iphone-14",
+    "brand": "Apple",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 451500,
+    "image": "/images/store/14-1-720.webp",
+    "keywords": [
+      "iPhone 14",
+      "Apple",
+      "iPhone",
+      "iPhone 14 128GB",
+      "iPhone 14 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 13 Pro",
+    "route": "/iphone-13-pro",
+    "brand": "Apple",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 493500,
+    "image": "/images/store/13pro-1-720.webp",
+    "keywords": [
+      "iPhone 13 Pro",
+      "Apple",
+      "iPhone",
+      "iPhone 13 Pro 128GB",
+      "iPhone 13 Pro 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 13",
+    "route": "/iphone-13",
+    "brand": "Apple",
+    "storage": [
+      "128GB",
+      "256GB — Pink / White",
+      "256GB — Other colours"
+    ],
+    "price": 357420,
+    "image": "/images/store/13-1-720.webp",
+    "keywords": [
+      "iPhone 13",
+      "Apple",
+      "iPhone",
+      "iPhone 13 128GB",
+      "iPhone 13 256GB — Pink / White",
+      "iPhone 13 256GB — Other colours",
+      "128GB",
+      "256GB — Pink / White",
+      "256GB — Other colours",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 12 Pro Max",
+    "route": "/iphone-12-pro-max",
+    "brand": "Apple",
+    "storage": [
+      "128GB",
       "256GB",
       "512GB"
     ],
-    "price": null,
-    "image": null,
+    "price": 456750,
+    "image": "/images/store/12promax-1-720.webp",
     "keywords": [
-      "Samsung Galaxy S23 Plus",
-      "Samsung",
-      "Galaxy",
-      "Samsung Galaxy S23 Plus 256GB",
-      "Samsung Galaxy S23 Plus 512GB",
+      "iPhone 12 Pro Max",
+      "Apple",
+      "iPhone",
+      "iPhone 12 Pro Max 128GB",
+      "iPhone 12 Pro Max 256GB",
+      "iPhone 12 Pro Max 512GB",
+      "128GB",
       "256GB",
       "512GB",
       "price in Nigeria",
@@ -685,23 +520,554 @@
   },
   {
     "type": "product",
-    "label": "Samsung Galaxy S23 Ultra",
-    "route": "/samsung-s23-ultra",
-    "brand": "Samsung",
+    "label": "iPhone 12 Pro",
+    "route": "/iphone-12-pro",
+    "brand": "Apple",
+    "storage": [
+      "128GB",
+      "256GB",
+      "512GB"
+    ],
+    "price": 367500,
+    "image": "/images/store/12pro-1-720.webp",
+    "keywords": [
+      "iPhone 12 Pro",
+      "Apple",
+      "iPhone",
+      "iPhone 12 Pro 128GB",
+      "iPhone 12 Pro 256GB",
+      "iPhone 12 Pro 512GB",
+      "128GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 12",
+    "route": "/iphone-12",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "128GB",
+      "256GB"
+    ],
+    "price": 262500,
+    "image": "/images/store/12-720.webp",
+    "keywords": [
+      "iPhone 12",
+      "Apple",
+      "iPhone",
+      "iPhone 12 64GB",
+      "iPhone 12 128GB",
+      "iPhone 12 256GB",
+      "64GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 11 Pro Max",
+    "route": "/iphone-11-pro-max",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "256GB",
+      "512GB"
+    ],
+    "price": 309750,
+    "image": "/images/store/11promax-1-720.webp",
+    "keywords": [
+      "iPhone 11 Pro Max",
+      "Apple",
+      "iPhone",
+      "iPhone 11 Pro Max 64GB",
+      "iPhone 11 Pro Max 256GB",
+      "iPhone 11 Pro Max 512GB",
+      "64GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 11 Pro",
+    "route": "/iphone-11-pro",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "256GB",
+      "512GB"
+    ],
+    "price": 273000,
+    "image": "/images/store/11pro-1-720.webp",
+    "keywords": [
+      "iPhone 11 Pro",
+      "Apple",
+      "iPhone",
+      "iPhone 11 Pro 64GB",
+      "iPhone 11 Pro 256GB",
+      "iPhone 11 Pro 512GB",
+      "64GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 11",
+    "route": "/iphone-11",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "128GB",
+      "256GB"
+    ],
+    "price": 202860,
+    "image": "/images/store/11-1-720.webp",
+    "keywords": [
+      "iPhone 11",
+      "Apple",
+      "iPhone",
+      "iPhone 11 64GB",
+      "iPhone 11 128GB",
+      "iPhone 11 256GB",
+      "64GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone XS Max",
+    "route": "/iphone-xs-max",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "256GB"
+    ],
+    "price": 207900,
+    "image": "/images/catalog/iphone-xs-max.webp",
+    "keywords": [
+      "iPhone XS Max",
+      "Apple",
+      "iPhone",
+      "iPhone XS Max 64GB",
+      "iPhone XS Max 256GB",
+      "64GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone XS",
+    "route": "/iphone-xs",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "256GB",
+      "512GB"
+    ],
+    "price": 162750,
+    "image": "/images/catalog/iphone-xs.webp",
+    "keywords": [
+      "iPhone XS",
+      "Apple",
+      "iPhone",
+      "iPhone XS 64GB",
+      "iPhone XS 256GB",
+      "iPhone XS 512GB",
+      "64GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone XR",
+    "route": "/iphone-xr",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "128GB"
+    ],
+    "price": 183750,
+    "image": "/images/catalog/iphone-xr.webp",
+    "keywords": [
+      "iPhone XR",
+      "Apple",
+      "iPhone",
+      "iPhone XR 64GB",
+      "iPhone XR 128GB",
+      "64GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone X",
+    "route": "/iphone-x",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "256GB"
+    ],
+    "price": 147000,
+    "image": "/images/catalog/iphone-x.webp",
+    "keywords": [
+      "iPhone X",
+      "Apple",
+      "iPhone",
+      "iPhone X 64GB",
+      "iPhone X 256GB",
+      "64GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone SE (2nd generation)",
+    "route": "/iphone-se-2",
+    "brand": "Apple",
+    "storage": [
+      "64GB",
+      "128GB",
+      "256GB"
+    ],
+    "price": 105000,
+    "image": "/images/catalog/iphone-se-2.webp",
+    "keywords": [
+      "iPhone SE (2nd generation)",
+      "Apple",
+      "iPhone",
+      "iPhone SE (2nd generation) 64GB",
+      "iPhone SE (2nd generation) 128GB",
+      "iPhone SE (2nd generation) 256GB",
+      "64GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 8 Plus",
+    "route": "/iphone-8-plus",
+    "brand": "Apple",
+    "storage": [
+      "64GB"
+    ],
+    "price": 110250,
+    "image": "/images/catalog/iphone-8-plus.webp",
+    "keywords": [
+      "iPhone 8 Plus",
+      "Apple",
+      "iPhone",
+      "iPhone 8 Plus 64GB",
+      "64GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 8",
+    "route": "/iphone-8",
+    "brand": "Apple",
+    "storage": [
+      "64GB"
+    ],
+    "price": 81900,
+    "image": "/images/catalog/iphone-8.webp",
+    "keywords": [
+      "iPhone 8",
+      "Apple",
+      "iPhone",
+      "iPhone 8 64GB",
+      "64GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 7 Plus",
+    "route": "/iphone-7-plus",
+    "brand": "Apple",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 102900,
+    "image": "/images/catalog/iphone-7-plus.webp",
+    "keywords": [
+      "iPhone 7 Plus",
+      "Apple",
+      "iPhone",
+      "iPhone 7 Plus 128GB",
+      "iPhone 7 Plus 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 7",
+    "route": "/iphone-7",
+    "brand": "Apple",
+    "storage": [
+      "32GB",
+      "128GB",
+      "256GB"
+    ],
+    "price": 68250,
+    "image": "/images/catalog/iphone-7.webp",
+    "keywords": [
+      "iPhone 7",
+      "Apple",
+      "iPhone",
+      "iPhone 7 32GB",
+      "iPhone 7 128GB",
+      "iPhone 7 256GB",
+      "32GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 6s Plus",
+    "route": "/iphone-6s-plus",
+    "brand": "Apple",
+    "storage": [
+      "16GB",
+      "32GB",
+      "64GB",
+      "128GB"
+    ],
+    "price": 59850,
+    "image": "/images/catalog/iphone-6s-plus.webp",
+    "keywords": [
+      "iPhone 6s Plus",
+      "Apple",
+      "iPhone",
+      "iPhone 6s Plus 16GB",
+      "iPhone 6s Plus 32GB",
+      "iPhone 6s Plus 64GB",
+      "iPhone 6s Plus 128GB",
+      "16GB",
+      "32GB",
+      "64GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 6s",
+    "route": "/iphone-6s",
+    "brand": "Apple",
+    "storage": [
+      "16GB",
+      "32GB"
+    ],
+    "price": 47250,
+    "image": "/images/catalog/iphone-6s.webp",
+    "keywords": [
+      "iPhone 6s",
+      "Apple",
+      "iPhone",
+      "iPhone 6s 16GB",
+      "iPhone 6s 32GB",
+      "16GB",
+      "32GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 6",
+    "route": "/iphone-6",
+    "brand": "Apple",
+    "storage": [
+      "16GB",
+      "32GB",
+      "64GB",
+      "128GB"
+    ],
+    "price": 26250,
+    "image": "/images/catalog/iphone-6.webp",
+    "keywords": [
+      "iPhone 6",
+      "Apple",
+      "iPhone",
+      "iPhone 6 16GB",
+      "iPhone 6 32GB",
+      "iPhone 6 64GB",
+      "iPhone 6 128GB",
+      "16GB",
+      "32GB",
+      "64GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 11 Pro XL (Brand New)",
+    "route": "/google-pixel-11-pro-xl",
+    "brand": "Google",
+    "storage": [
+      "256GB · Physical SIM",
+      "512GB · Physical SIM"
+    ],
+    "price": 1590000,
+    "image": "/images/pixel/google-pixel-11-pro-xl.webp",
+    "keywords": [
+      "Google Pixel 11 Pro XL (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 11 Pro XL (Brand New) 256GB · Physical SIM",
+      "Google Pixel 11 Pro XL (Brand New) 512GB · Physical SIM",
+      "256GB · Physical SIM",
+      "512GB · Physical SIM",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 11 Pro (Brand New)",
+    "route": "/google-pixel-11-pro",
+    "brand": "Google",
+    "storage": [
+      "256GB · Physical SIM"
+    ],
+    "price": 1530000,
+    "image": "/images/pixel/google-pixel-11-pro.webp",
+    "keywords": [
+      "Google Pixel 11 Pro (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 11 Pro (Brand New) 256GB · Physical SIM",
+      "256GB · Physical SIM",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 11 (Brand New)",
+    "route": "/google-pixel-11",
+    "brand": "Google",
+    "storage": [
+      "256GB · Physical SIM"
+    ],
+    "price": 1150000,
+    "image": "/images/pixel/google-pixel-11.webp",
+    "keywords": [
+      "Google Pixel 11 (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 11 (Brand New) 256GB · Physical SIM",
+      "256GB · Physical SIM",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 10 Pro XL (UK Used)",
+    "route": "/google-pixel-10-pro-xl-uk-used",
+    "brand": "Google",
+    "storage": [
+      "256GB · Jade",
+      "256GB · Moonstone / Obsidian / Porcelain",
+      "512GB"
+    ],
+    "price": 895000,
+    "image": "/images/pixel/google-pixel-10-pro-xl-uk-used.webp",
+    "keywords": [
+      "Google Pixel 10 Pro XL (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 10 Pro XL (UK Used) 256GB · Jade",
+      "Google Pixel 10 Pro XL (UK Used) 256GB · Moonstone / Obsidian / Porcelain",
+      "Google Pixel 10 Pro XL (UK Used) 512GB",
+      "256GB · Jade",
+      "256GB · Moonstone / Obsidian / Porcelain",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 10 Pro XL (Brand New)",
+    "route": "/google-pixel-10-pro-xl",
+    "brand": "Google",
     "storage": [
       "256GB",
       "512GB",
       "1TB"
     ],
-    "price": null,
-    "image": null,
+    "price": 1350000,
+    "image": "/images/pixel/google-pixel-10-pro-xl.webp",
     "keywords": [
-      "Samsung Galaxy S23 Ultra",
-      "Samsung",
-      "Galaxy",
-      "Samsung Galaxy S23 Ultra 256GB",
-      "Samsung Galaxy S23 Ultra 512GB",
-      "Samsung Galaxy S23 Ultra 1TB",
+      "Google Pixel 10 Pro XL (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 10 Pro XL (Brand New) 256GB",
+      "Google Pixel 10 Pro XL (Brand New) 512GB",
+      "Google Pixel 10 Pro XL (Brand New) 1TB",
       "256GB",
       "512GB",
       "1TB",
@@ -712,21 +1078,21 @@
   },
   {
     "type": "product",
-    "label": "Samsung Galaxy S24",
-    "route": "/samsung-s24",
-    "brand": "Samsung",
+    "label": "Google Pixel 10 Pro (Brand New)",
+    "route": "/google-pixel-10-pro",
+    "brand": "Google",
     "storage": [
       "128GB",
       "256GB"
     ],
-    "price": null,
-    "image": null,
+    "price": 1100000,
+    "image": "/images/pixel/google-pixel-10-pro.webp",
     "keywords": [
-      "Samsung Galaxy S24",
-      "Samsung",
-      "Galaxy",
-      "Samsung Galaxy S24 128GB",
-      "Samsung Galaxy S24 256GB",
+      "Google Pixel 10 Pro (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 10 Pro (Brand New) 128GB",
+      "Google Pixel 10 Pro (Brand New) 256GB",
       "128GB",
       "256GB",
       "price in Nigeria",
@@ -736,23 +1102,23 @@
   },
   {
     "type": "product",
-    "label": "Samsung Galaxy S24 Plus",
-    "route": "/samsung-s24-plus",
-    "brand": "Samsung",
+    "label": "Google Pixel 10a (Brand New)",
+    "route": "/google-pixel-10a",
+    "brand": "Google",
     "storage": [
-      "256GB",
-      "512GB"
+      "128GB",
+      "256GB"
     ],
-    "price": null,
-    "image": null,
+    "price": 695000,
+    "image": "/images/pixel/google-pixel-10a.webp",
     "keywords": [
-      "Samsung Galaxy S24 Plus",
-      "Samsung",
-      "Galaxy",
-      "Samsung Galaxy S24 Plus 256GB",
-      "Samsung Galaxy S24 Plus 512GB",
+      "Google Pixel 10a (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 10a (Brand New) 128GB",
+      "Google Pixel 10a (Brand New) 256GB",
+      "128GB",
       "256GB",
-      "512GB",
       "price in Nigeria",
       "Easy Buy",
       "swap"
@@ -760,74 +1126,437 @@
   },
   {
     "type": "product",
-    "label": "Samsung Galaxy S24 Ultra",
-    "route": "/samsung-s24-ultra",
-    "brand": "Samsung",
+    "label": "Google Pixel 10 (Brand New)",
+    "route": "/google-pixel-10",
+    "brand": "Google",
     "storage": [
+      "128GB · eSIM",
+      "128GB · Physical SIM · Obsidian",
+      "128GB · Physical SIM · Frost / Indigo / Lemongrass",
+      "256GB · eSIM",
+      "256GB · Physical SIM · Obsidian"
+    ],
+    "price": 785000,
+    "image": "/images/pixel/google-pixel-10.webp",
+    "keywords": [
+      "Google Pixel 10 (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 10 (Brand New) 128GB · eSIM",
+      "Google Pixel 10 (Brand New) 128GB · Physical SIM · Obsidian",
+      "Google Pixel 10 (Brand New) 128GB · Physical SIM · Frost / Indigo / Lemongrass",
+      "Google Pixel 10 (Brand New) 256GB · eSIM",
+      "Google Pixel 10 (Brand New) 256GB · Physical SIM · Obsidian",
+      "128GB · eSIM",
+      "128GB · Physical SIM · Obsidian",
+      "128GB · Physical SIM · Frost / Indigo / Lemongrass",
+      "256GB · eSIM",
+      "256GB · Physical SIM · Obsidian",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 9 Pro XL (UK Used)",
+    "route": "/google-pixel-9-pro-xl-uk-used",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 680000,
+    "image": "/images/pixel/google-pixel-9-pro-xl-uk-used.webp",
+    "keywords": [
+      "Google Pixel 9 Pro XL (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 9 Pro XL (UK Used) 128GB",
+      "Google Pixel 9 Pro XL (UK Used) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 9 Pro XL (Brand New)",
+    "route": "/google-pixel-9-pro-xl",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 970000,
+    "image": "/images/pixel/google-pixel-9-pro-xl.webp",
+    "keywords": [
+      "Google Pixel 9 Pro XL (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 9 Pro XL (Brand New) 128GB",
+      "Google Pixel 9 Pro XL (Brand New) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 9 Pro (UK Used)",
+    "route": "/google-pixel-9-pro-uk-used",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 660000,
+    "image": "/images/pixel/google-pixel-9-pro-uk-used.webp",
+    "keywords": [
+      "Google Pixel 9 Pro (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 9 Pro (UK Used) 128GB",
+      "Google Pixel 9 Pro (UK Used) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 9 Pro (Brand New)",
+    "route": "/google-pixel-9-pro",
+    "brand": "Google",
+    "storage": [
+      "128GB"
+    ],
+    "price": 960000,
+    "image": "/images/pixel/google-pixel-9-pro.webp",
+    "keywords": [
+      "Google Pixel 9 Pro (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 9 Pro (Brand New) 128GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 9 (UK Used)",
+    "route": "/google-pixel-9-uk-used",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 585000,
+    "image": "/images/pixel/google-pixel-9-uk-used.webp",
+    "keywords": [
+      "Google Pixel 9 (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 9 (UK Used) 128GB",
+      "Google Pixel 9 (UK Used) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 9a (Brand New)",
+    "route": "/google-pixel-9a",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 660000,
+    "image": "/images/pixel/google-pixel-9a.webp",
+    "keywords": [
+      "Google Pixel 9a (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 9a (Brand New) 128GB",
+      "Google Pixel 9a (Brand New) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 9 (Brand New)",
+    "route": "/google-pixel-9",
+    "brand": "Google",
+    "storage": [
+      "128GB · Obsidian Black",
+      "128GB · Porcelain",
+      "128GB · Wintergreen",
+      "256GB"
+    ],
+    "price": 775000,
+    "image": "/images/pixel/google-pixel-9.webp",
+    "keywords": [
+      "Google Pixel 9 (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 9 (Brand New) 128GB · Obsidian Black",
+      "Google Pixel 9 (Brand New) 128GB · Porcelain",
+      "Google Pixel 9 (Brand New) 128GB · Wintergreen",
+      "Google Pixel 9 (Brand New) 256GB",
+      "128GB · Obsidian Black",
+      "128GB · Porcelain",
+      "128GB · Wintergreen",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 8 Pro (UK Used)",
+    "route": "/google-pixel-8-pro",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 465000,
+    "image": "/images/pixel/google-pixel-8-pro.webp",
+    "keywords": [
+      "Google Pixel 8 Pro (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 8 Pro (UK Used) 128GB",
+      "Google Pixel 8 Pro (UK Used) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 8 (UK Used)",
+    "route": "/google-pixel-8",
+    "brand": "Google",
+    "storage": [
+      "128GB"
+    ],
+    "price": 340000,
+    "image": "/images/pixel/google-pixel-8.webp",
+    "keywords": [
+      "Google Pixel 8 (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 8 (UK Used) 128GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 7 Pro (UK Used)",
+    "route": "/google-pixel-7-pro",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 335000,
+    "image": "/images/pixel/google-pixel-7-pro.webp",
+    "keywords": [
+      "Google Pixel 7 Pro (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 7 Pro (UK Used) 128GB",
+      "Google Pixel 7 Pro (UK Used) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 7 (UK Used)",
+    "route": "/google-pixel-7",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 285000,
+    "image": "/images/pixel/google-pixel-7.webp",
+    "keywords": [
+      "Google Pixel 7 (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 7 (UK Used) 128GB",
+      "Google Pixel 7 (UK Used) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 7a (UK Used)",
+    "route": "/google-pixel-7a",
+    "brand": "Google",
+    "storage": [
+      "128GB"
+    ],
+    "price": 260000,
+    "image": "/images/pixel/google-pixel-7a.webp",
+    "keywords": [
+      "Google Pixel 7a (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 7a (UK Used) 128GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 7a (Brand New)",
+    "route": "/google-pixel-7a-brand-new",
+    "brand": "Google",
+    "storage": [
+      "128GB · Charcoal",
+      "128GB · Snow / Sea"
+    ],
+    "price": 455000,
+    "image": "/images/pixel/google-pixel-7a-brand-new.webp",
+    "keywords": [
+      "Google Pixel 7a (Brand New)",
+      "Google",
+      "Pixel",
+      "Google Pixel 7a (Brand New) 128GB · Charcoal",
+      "Google Pixel 7a (Brand New) 128GB · Snow / Sea",
+      "128GB · Charcoal",
+      "128GB · Snow / Sea",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 6 Pro (UK Used)",
+    "route": "/google-pixel-6-pro",
+    "brand": "Google",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": 330000,
+    "image": "/images/pixel/google-pixel-6-pro.webp",
+    "keywords": [
+      "Google Pixel 6 Pro (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 6 Pro (UK Used) 128GB",
+      "Google Pixel 6 Pro (UK Used) 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 6a (UK Used)",
+    "route": "/google-pixel-6a",
+    "brand": "Google",
+    "storage": [
+      "128GB"
+    ],
+    "price": 245000,
+    "image": "/images/pixel/google-pixel-6a.webp",
+    "keywords": [
+      "Google Pixel 6a (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 6a (UK Used) 128GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Google Pixel 6 (UK Used)",
+    "route": "/google-pixel-6",
+    "brand": "Google",
+    "storage": [
+      "128GB"
+    ],
+    "price": 260000,
+    "image": "/images/pixel/google-pixel-6.webp",
+    "keywords": [
+      "Google Pixel 6 (UK Used)",
+      "Google",
+      "Pixel",
+      "Google Pixel 6 (UK Used) 128GB",
+      "128GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "iPhone 13 Pro Max",
+    "route": "/iphone-13-pro-max",
+    "brand": "Apple",
+    "storage": [
+      "128GB",
       "256GB",
       "512GB",
       "1TB"
     ],
     "price": null,
-    "image": null,
+    "image": "/images/store/13promax-1-720.webp",
     "keywords": [
-      "Samsung Galaxy S24 Ultra",
-      "Samsung",
-      "Galaxy",
-      "Samsung Galaxy S24 Ultra 256GB",
-      "Samsung Galaxy S24 Ultra 512GB",
-      "Samsung Galaxy S24 Ultra 1TB",
+      "iPhone 13 Pro Max",
+      "Apple",
+      "iPhone",
+      "iPhone 13 Pro Max 128GB",
+      "iPhone 13 Pro Max 256GB",
+      "iPhone 13 Pro Max 512GB",
+      "iPhone 13 Pro Max 1TB",
+      "128GB",
       "256GB",
       "512GB",
       "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Samsung Galaxy S25",
-    "route": "/samsung-s25",
-    "brand": "Samsung",
-    "storage": [
-      "128GB",
-      "256GB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Samsung Galaxy S25",
-      "Samsung",
-      "Galaxy",
-      "Samsung Galaxy S25 128GB",
-      "Samsung Galaxy S25 256GB",
-      "128GB",
-      "256GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Samsung Galaxy S25 Plus",
-    "route": "/samsung-s25-plus",
-    "brand": "Samsung",
-    "storage": [
-      "256GB",
-      "512GB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Samsung Galaxy S25 Plus",
-      "Samsung",
-      "Galaxy",
-      "Samsung Galaxy S25 Plus 256GB",
-      "Samsung Galaxy S25 Plus 512GB",
-      "256GB",
-      "512GB",
       "price in Nigeria",
       "Easy Buy",
       "swap"
@@ -862,6 +1591,204 @@
   },
   {
     "type": "product",
+    "label": "Samsung Galaxy S25 Plus",
+    "route": "/samsung-s25-plus",
+    "brand": "Samsung",
+    "storage": [
+      "256GB",
+      "512GB"
+    ],
+    "price": null,
+    "image": null,
+    "keywords": [
+      "Samsung Galaxy S25 Plus",
+      "Samsung",
+      "Galaxy",
+      "Samsung Galaxy S25 Plus 256GB",
+      "Samsung Galaxy S25 Plus 512GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Samsung Galaxy S25",
+    "route": "/samsung-s25",
+    "brand": "Samsung",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": null,
+    "image": null,
+    "keywords": [
+      "Samsung Galaxy S25",
+      "Samsung",
+      "Galaxy",
+      "Samsung Galaxy S25 128GB",
+      "Samsung Galaxy S25 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Samsung Galaxy S24 Ultra",
+    "route": "/samsung-s24-ultra",
+    "brand": "Samsung",
+    "storage": [
+      "256GB",
+      "512GB",
+      "1TB"
+    ],
+    "price": null,
+    "image": null,
+    "keywords": [
+      "Samsung Galaxy S24 Ultra",
+      "Samsung",
+      "Galaxy",
+      "Samsung Galaxy S24 Ultra 256GB",
+      "Samsung Galaxy S24 Ultra 512GB",
+      "Samsung Galaxy S24 Ultra 1TB",
+      "256GB",
+      "512GB",
+      "1TB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Samsung Galaxy S24 Plus",
+    "route": "/samsung-s24-plus",
+    "brand": "Samsung",
+    "storage": [
+      "256GB",
+      "512GB"
+    ],
+    "price": null,
+    "image": null,
+    "keywords": [
+      "Samsung Galaxy S24 Plus",
+      "Samsung",
+      "Galaxy",
+      "Samsung Galaxy S24 Plus 256GB",
+      "Samsung Galaxy S24 Plus 512GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Samsung Galaxy S24",
+    "route": "/samsung-s24",
+    "brand": "Samsung",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": null,
+    "image": null,
+    "keywords": [
+      "Samsung Galaxy S24",
+      "Samsung",
+      "Galaxy",
+      "Samsung Galaxy S24 128GB",
+      "Samsung Galaxy S24 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Samsung Galaxy S23 Ultra",
+    "route": "/samsung-s23-ultra",
+    "brand": "Samsung",
+    "storage": [
+      "256GB",
+      "512GB",
+      "1TB"
+    ],
+    "price": null,
+    "image": null,
+    "keywords": [
+      "Samsung Galaxy S23 Ultra",
+      "Samsung",
+      "Galaxy",
+      "Samsung Galaxy S23 Ultra 256GB",
+      "Samsung Galaxy S23 Ultra 512GB",
+      "Samsung Galaxy S23 Ultra 1TB",
+      "256GB",
+      "512GB",
+      "1TB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Samsung Galaxy S23 Plus",
+    "route": "/samsung-s23-plus",
+    "brand": "Samsung",
+    "storage": [
+      "256GB",
+      "512GB"
+    ],
+    "price": null,
+    "image": null,
+    "keywords": [
+      "Samsung Galaxy S23 Plus",
+      "Samsung",
+      "Galaxy",
+      "Samsung Galaxy S23 Plus 256GB",
+      "Samsung Galaxy S23 Plus 512GB",
+      "256GB",
+      "512GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
+    "label": "Samsung Galaxy S23",
+    "route": "/samsung-s23",
+    "brand": "Samsung",
+    "storage": [
+      "128GB",
+      "256GB"
+    ],
+    "price": null,
+    "image": null,
+    "keywords": [
+      "Samsung Galaxy S23",
+      "Samsung",
+      "Galaxy",
+      "Samsung Galaxy S23 128GB",
+      "Samsung Galaxy S23 256GB",
+      "128GB",
+      "256GB",
+      "price in Nigeria",
+      "Easy Buy",
+      "swap"
+    ]
+  },
+  {
+    "type": "product",
     "label": "Samsung Galaxy Z Fold 7",
     "route": "/samsung-z-fold-7",
     "brand": "Samsung",
@@ -888,189 +1815,6 @@
     ]
   },
   {
-    "type": "product",
-    "label": "Google Pixel 7",
-    "route": "/google-pixel-7",
-    "brand": "Google",
-    "storage": [
-      "128GB",
-      "256GB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Google Pixel 7",
-      "Google",
-      "Pixel",
-      "Google Pixel 7 128GB",
-      "Google Pixel 7 256GB",
-      "128GB",
-      "256GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Google Pixel 7 Pro",
-    "route": "/google-pixel-7-pro",
-    "brand": "Google",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Google Pixel 7 Pro",
-      "Google",
-      "Pixel",
-      "Google Pixel 7 Pro 128GB",
-      "Google Pixel 7 Pro 256GB",
-      "Google Pixel 7 Pro 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Google Pixel 8",
-    "route": "/google-pixel-8",
-    "brand": "Google",
-    "storage": [
-      "128GB",
-      "256GB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Google Pixel 8",
-      "Google",
-      "Pixel",
-      "Google Pixel 8 128GB",
-      "Google Pixel 8 256GB",
-      "128GB",
-      "256GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Google Pixel 8 Pro",
-    "route": "/google-pixel-8-pro",
-    "brand": "Google",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Google Pixel 8 Pro",
-      "Google",
-      "Pixel",
-      "Google Pixel 8 Pro 128GB",
-      "Google Pixel 8 Pro 256GB",
-      "Google Pixel 8 Pro 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Google Pixel 9",
-    "route": "/google-pixel-9",
-    "brand": "Google",
-    "storage": [
-      "128GB",
-      "256GB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Google Pixel 9",
-      "Google",
-      "Pixel",
-      "Google Pixel 9 128GB",
-      "Google Pixel 9 256GB",
-      "128GB",
-      "256GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Google Pixel 9 Pro",
-    "route": "/google-pixel-9-pro",
-    "brand": "Google",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Google Pixel 9 Pro",
-      "Google",
-      "Pixel",
-      "Google Pixel 9 Pro 128GB",
-      "Google Pixel 9 Pro 256GB",
-      "Google Pixel 9 Pro 512GB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
-    "type": "product",
-    "label": "Google Pixel 9 Pro XL",
-    "route": "/google-pixel-9-pro-xl",
-    "brand": "Google",
-    "storage": [
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB"
-    ],
-    "price": null,
-    "image": null,
-    "keywords": [
-      "Google Pixel 9 Pro XL",
-      "Google",
-      "Pixel",
-      "Google Pixel 9 Pro XL 128GB",
-      "Google Pixel 9 Pro XL 256GB",
-      "Google Pixel 9 Pro XL 512GB",
-      "Google Pixel 9 Pro XL 1TB",
-      "128GB",
-      "256GB",
-      "512GB",
-      "1TB",
-      "price in Nigeria",
-      "Easy Buy",
-      "swap"
-    ]
-  },
-  {
     "type": "category",
     "label": "Buy iPhones in Nigeria",
     "route": "/iphones",
@@ -1080,7 +1824,7 @@
     "image": null,
     "keywords": [
       "Buy iPhones in Nigeria",
-      "Buy iPhones in Nigeria | UK Used, New & Easy Buy | FORMEX",
+      "Buy iPhones in Nigeria | UK Used, New & Easy Buy | Formex Communication",
       "Apple iPhone catalogue"
     ]
   },
@@ -1094,7 +1838,7 @@
     "image": null,
     "keywords": [
       "Shop UK-Used iPhones in Nigeria",
-      "UK-Used iPhones in Nigeria | Battery Health Above 83% | FORMEX",
+      "UK-Used iPhones in Nigeria | Battery Health Above 83% | Formex Communication",
       "Inspected-device enquiries"
     ]
   },
@@ -1108,7 +1852,7 @@
     "image": null,
     "keywords": [
       "Find a More Affordable iPhone",
-      "Affordable iPhones in Nigeria | Compare Supplied Prices | FORMEX",
+      "Affordable iPhones in Nigeria | Compare Supplied Prices | Formex Communication",
       "Lower-price iPhone options"
     ]
   },
@@ -1122,7 +1866,7 @@
     "image": null,
     "keywords": [
       "Get an iPhone With Easy Buy",
-      "iPhone Easy Buy Nigeria | Calculator & Models | FORMEX",
+      "iPhone Easy Buy Nigeria | Calculator & Models | Formex Communication",
       "Pay in stages"
     ]
   },
@@ -1130,13 +1874,13 @@
     "type": "category",
     "label": "Phones on Installment in Nigeria",
     "route": "/phones-on-installment",
-    "brand": "FORMEX",
+    "brand": "Formex Communication",
     "storage": [],
     "price": null,
     "image": null,
     "keywords": [
       "Phones on Installment in Nigeria",
-      "Phones on Installment in Nigeria | Easy Buy Options | FORMEX",
+      "Phones on Installment in Nigeria | Easy Buy Options | Formex Communication",
       "Flexible payment enquiries"
     ]
   },
@@ -1150,7 +1894,7 @@
     "image": null,
     "keywords": [
       "Buy Samsung Phones in Nigeria",
-      "Buy Samsung Phones in Nigeria | Galaxy Price Enquiries | FORMEX",
+      "Buy Samsung Phones in Nigeria | Galaxy Price Enquiries | Formex Communication",
       "Samsung Galaxy catalogue"
     ]
   },
@@ -1164,7 +1908,7 @@
     "image": null,
     "keywords": [
       "Ask About UK-Used Samsung Phones",
-      "UK-Used Samsung Phones in Nigeria | FORMEX",
+      "UK-Used Samsung Phones in Nigeria | Formex Communication",
       "Used Samsung enquiries"
     ]
   },
@@ -1178,7 +1922,7 @@
     "image": null,
     "keywords": [
       "Buy Google Pixel Phones in Nigeria",
-      "Buy Google Pixel Phones in Nigeria | FORMEX",
+      "Buy Google Pixel Phones in Nigeria | Formex Communication",
       "Google Pixel catalogue"
     ]
   },
@@ -1186,27 +1930,27 @@
     "type": "category",
     "label": "Swap Your Current Phone for an Upgrade",
     "route": "/phone-swap",
-    "brand": "FORMEX",
+    "brand": "Formex Communication",
     "storage": [],
     "price": null,
     "image": null,
     "keywords": [
       "Swap Your Current Phone for an Upgrade",
-      "Phone Swap in Lagos, Nigeria | Get a WhatsApp Quote | FORMEX",
+      "Phone Swap in Lagos, Nigeria | Get a WhatsApp Quote | Formex Communication",
       "Trade in and upgrade"
     ]
   },
   {
     "type": "category",
-    "label": "Ask About Laptops Available From FORMEX",
+    "label": "Ask About Laptops Available From Formex Communication",
     "route": "/laptops",
-    "brand": "FORMEX",
+    "brand": "Formex Communication",
     "storage": [],
     "price": null,
     "image": null,
     "keywords": [
-      "Ask About Laptops Available From FORMEX",
-      "Laptops in Computer Village, Ikeja | FORMEX",
+      "Ask About Laptops Available From Formex Communication",
+      "Laptops in Computer Village, Ikeja | Formex Communication",
       "Work, school and business"
     ]
   },
@@ -1214,13 +1958,13 @@
     "type": "category",
     "label": "Phone and Gadget Accessories",
     "route": "/gadget-accessories",
-    "brand": "FORMEX",
+    "brand": "Formex Communication",
     "storage": [],
     "price": null,
     "image": null,
     "keywords": [
       "Phone and Gadget Accessories",
-      "Phone & Gadget Accessories in Ikeja | FORMEX",
+      "Phone & Gadget Accessories in Ikeja | Formex Communication",
       "Complete your setup"
     ]
   }

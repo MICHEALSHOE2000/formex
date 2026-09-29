@@ -1,3 +1,10 @@
+import { newestFirst } from "./catalog-order.mjs";
+import { productImages } from "./product-images.mjs";
+import { getSellingPrice } from "./pricing.mjs";
+import { priceList, suppliedPrices } from "./price-list.mjs";
+import { merchantListings } from './merchant-listings.mjs';
+import { pixelCatalog } from './pixel-catalog.mjs';
+import { availableConditions } from './conditions.mjs';
 export const commerceSite = Object.freeze({
   name: "Formex Communication",
   legalName: "FORMEX COMMUNICATION",
@@ -11,48 +18,10 @@ export const commerceSite = Object.freeze({
   delivery: "Delivery is available in Lagos and across Nigeria. Confirm the delivery fee, timing and payment arrangement before placing an order.",
   warranty: "Ask for the written warranty or after-sales terms that apply to the exact device before payment.",
   usedIphoneBattery: "UK-used iPhones are supplied with battery health above 83%. Ask for the exact reading for the unit offered and confirm it during inspection.",
-  easyBuyUrl: "/easy-buy/",
-  easyBuyDepositRate: 0.4
+  easyBuyUrl: "/easy-buy/"
 });
 
-const suppliedPrices = {
-  "iPhone 11|64GB": 230000,
-  "iPhone 11|128GB": 280000,
-  "iPhone 11 Pro|64GB": 275000,
-  "iPhone 11 Pro|256GB": 315000,
-  "iPhone 11 Pro Max|64GB": 320000,
-  "iPhone 11 Pro Max|256GB": 355000,
-  "iPhone 12|64GB": 260000,
-  "iPhone 12|128GB": 295000,
-  "iPhone 12 Pro|128GB": 365000,
-  "iPhone 12 Pro|256GB": 395000,
-  "iPhone 12 Pro Max|128GB": 430000,
-  "iPhone 12 Pro Max|256GB": 490000,
-  "iPhone 13|128GB": 380000,
-  "iPhone 13|256GB": 410000,
-  "iPhone 13 Pro|128GB": 500000,
-  "iPhone 13 Pro|256GB": 530000,
-  "iPhone 14|128GB": 460000,
-  "iPhone 14|256GB": 520000,
-  "iPhone 14 Pro|128GB": 640000,
-  "iPhone 14 Pro|256GB": 700000,
-  "iPhone 14 Pro Max|128GB": 770000,
-  "iPhone 14 Pro Max|256GB": 835000,
-  "iPhone 15|128GB": 625000,
-  "iPhone 15|256GB": 670000,
-  "iPhone 15 Pro|128GB": 800000,
-  "iPhone 15 Pro|256GB": 840000,
-  "iPhone 15 Pro|512GB": 510000,
-  "iPhone 16|128GB": 840000,
-  "iPhone 16|256GB": 925000,
-  "iPhone 16|512GB": 1000000,
-  "iPhone 16 Plus|128GB": 940000,
-  "iPhone 16 Pro|128GB": 1030000,
-  "iPhone 16 Pro|256GB": 1160000,
-  "iPhone 17 Air|To confirm": 1140000
-};
-
-const priceNeedsExtraConfirmation = new Set(["iPhone 15 Pro|512GB"]);
+const priceNeedsExtraConfirmation = new Set();
 
 const iphoneImages = {
   "iPhone 11": ["/images/11-1.jpeg", "/images/11-2.jpeg", "/images/11-3.jpeg"],
@@ -187,7 +156,7 @@ const iphoneSpecs = {
   }
 };
 
-const iphoneDefinitions = [
+const legacyIphoneDefinitions = [
   ["iPhone 11", "iphone-11", ["64GB", "128GB", "256GB"], "128GB", "11"],
   ["iPhone 11 Pro", "iphone-11-pro", ["64GB", "256GB", "512GB"], "256GB", "11-pro"],
   ["iPhone 11 Pro Max", "iphone-11-pro-max", ["64GB", "256GB", "512GB"], "256GB", "11-pro"],
@@ -211,6 +180,16 @@ const iphoneDefinitions = [
   ["iPhone 17 Air", "iphone-17-air", ["To confirm"], "To confirm", "17"],
   ["iPhone 17 Pro", "iphone-17-pro", ["128GB", "256GB", "512GB"], "256GB", "17"],
   ["iPhone 17 Pro Max", "iphone-17-pro-max", ["128GB", "256GB", "512GB", "1TB"], "256GB", "17"]
+];
+
+const iphoneDefinitions = [
+  ...Object.entries(merchantListings).map(([model,p])=>[model,p.slug,p.variants.map(([storage])=>storage),p.variants[0][0],'confirm']),
+  ...priceList.map(([model, slug, variants]) => {
+    const previous = legacyIphoneDefinitions.find(item => item[1] === slug);
+    const storage = variants.map(([size]) => size);
+    return [model, slug, storage, storage.includes(previous?.[3]) ? previous[3] : storage[0], previous?.[4] || 'confirm'];
+  }),
+  ...legacyIphoneDefinitions.filter(item => !priceList.some(([,slug]) => item[1] === slug))
 ];
 
 const galaxyDefinitions = [
@@ -276,7 +255,7 @@ const galaxyDefinitions = [
   }
 ];
 
-const pixelDefinitions = [
+const previousPixelSpecs = [
   ["Google Pixel 7", "google-pixel-7", ["128GB", "256GB"], ["OLED display", "50MP dual-camera system", "Google Tensor G2", "5G", "Fingerprint and face unlock"]],
   ["Google Pixel 7 Pro", "google-pixel-7-pro", ["128GB", "256GB", "512GB"], ["LTPO OLED display", "50MP triple-camera system", "Google Tensor G2", "5G", "Fingerprint and face unlock"]],
   ["Google Pixel 8", "google-pixel-8", ["128GB", "256GB"], ["Actua OLED display", "50MP dual-camera system", "Google Tensor G3", "5G", "Fingerprint and face unlock"]],
@@ -288,9 +267,14 @@ const pixelDefinitions = [
 
 const makeVariant = (model, storage) => {
   const key = `${model}|${storage}`;
+  const sellingPrice=merchantListings[model]?.variants.find(([label])=>label===storage)?.[1];
   return {
     storage,
-    price: suppliedPrices[key] ?? null,
+    basePrice: suppliedPrices[key] ?? null,
+    sellingPrice: sellingPrice ?? (suppliedPrices[key] ? getSellingPrice(suppliedPrices[key]) : null),
+    price: sellingPrice ?? (suppliedPrices[key] ? getSellingPrice(suppliedPrices[key]) : null),
+    color: storage.includes('—') ? storage.split('—')[1].trim() : null,
+    availability: model === 'iPhone 7 Plus' ? 'Few pieces — confirm availability' : 'Confirm availability',
     priceNeedsExtraConfirmation: priceNeedsExtraConfirmation.has(key),
     oldPrice: null
   };
@@ -302,19 +286,26 @@ const makeIphone = ([model, slug, storage, defaultStorage, specKey]) => ({
   slug,
   route: `/${slug}`,
   family: "iPhone",
+  listingPending: false,
+  specificationsPending: Boolean(merchantListings[model]),
   variants: storage.map((value) => makeVariant(model, value)),
   defaultStorage,
-  colors: ["Ask for today’s available colours"],
-  conditions: ["UK Used", "Brand New"],
-  images: iphoneImages[model] ?? [],
-  stockStatus: "Available to enquire about — confirm the exact variant",
+  colors: merchantListings[model] ? ['Glacier','Black','Burgundy'] : ["Choose with your device"],
+  conditions: availableConditions(slug, merchantListings[model] ? ["Confirm condition"] : /^iphone-(1[6-8])(?:-|$)/.test(slug) ? ["Confirm available condition"] : ["UK Used"]),
+  images: productImages[model]?.image === "" ? [] : productImages[model]?.preferred ? [productImages[model].preferred, ...(iphoneImages[model] ?? []).slice(1)] : productImages[model] ? [productImages[model].image, ...(iphoneImages[model] ?? [])] : iphoneImages[model] ?? [],
+  stockStatus: merchantListings[model] ? "Merchant-supplied listing — confirm exact unit and availability" : "Stock and condition checked before payment",
   easyBuyEligible: true,
   swapEligible: true,
   warranty: commerceSite.warranty,
   batteryHealth: commerceSite.usedIphoneBattery,
-  specifications: iphoneSpecs[specKey],
-  description: `Choose ${storage.join(", ")} storage where available, then confirm today’s price, colour and condition with FORMEX.`,
-  seoTitle: `Buy ${model} in Nigeria | Storage & Easy Buy | FORMEX`,
+  specifications: merchantListings[model] ? Object.fromEntries(["display","camera","processor","network","security","sim"].map(key=>[key,"Confirm specifications for the exact unit with Formex"])) : iphoneSpecs[specKey] || {
+    display: "Confirm the exact unit’s display", camera: "Ask for camera condition and specifications",
+    processor: "Confirm the exact model", network: "Confirm network compatibility",
+    security: /iphone-(6|7|8|se)/.test(slug) ? "Touch ID — confirm it works" : "Face ID — confirm it works",
+    sim: "Confirm available SIM and network options"
+  },
+  description: `Choose ${storage.join(", ")} storage where available, then confirm today’s price, colour and condition with Formex Communication.`,
+  seoTitle: `Buy ${model} in Nigeria | Storage & Easy Buy | Formex Communication`,
   metaDescription: `Buy ${model} in Nigeria. Compare ${storage.join(", ")}, request today’s price, pay outright or ask about Easy Buy, swap and nationwide delivery.`
 });
 
@@ -342,45 +333,51 @@ const makeGalaxy = ({ model, slug, storage, specs }) => ({
     security: specs[4],
     sim: "SIM options vary by unit and market; confirm before buying"
   },
-  description: `Choose your preferred ${model} storage, condition and payment option, then ask FORMEX to confirm current price and availability.`,
-  seoTitle: `Buy ${model} in Nigeria | FORMEX`,
+  description: `Choose your preferred ${model} storage, condition and payment option, then ask Formex Communication to confirm current price and availability.`,
+  seoTitle: `Buy ${model} in Nigeria | Formex Communication`,
   metaDescription: `Buy ${model} in Nigeria. Check storage, condition and current price, then pay outright or ask about Easy Buy, swap and nationwide delivery.`
 });
 
-const makePixel = ([model, slug, storage, specs]) => ({
+const pixelSpecs = Object.fromEntries(previousPixelSpecs.map(([model,, ,specs]) => [model,specs]));
+const makePixel = ({model,slug,condition,ram,variants,images}) => ({
   brand: "Google",
-  model,
+  model: `${model} (${condition})`,
   slug,
   route: `/${slug}`,
   family: "Pixel",
-  variants: storage.map((value) => makeVariant(model, value)),
-  defaultStorage: storage[0],
-  colors: ["Ask for today’s available colours"],
-  conditions: ["Confirm available condition"],
-  images: [],
-  stockStatus: "Available to enquire about — confirm the exact variant",
-  easyBuyEligible: "confirm",
+  ram,
+  variants: variants.map(({storage,price,color,ram:variantRam,availability}) => {
+    const existing = makeVariant(model, storage);
+    return {...existing, storage, price:existing.price ?? price, sellingPrice:existing.sellingPrice ?? price,
+      basePrice:existing.basePrice ?? null, color, ram:variantRam, availability};
+  }),
+  defaultStorage: variants[0].storage,
+  colors: [...new Set(variants.flatMap(v=>v.color.split(' / ')))],
+  conditions: [condition],
+  images,
+  stockStatus: `${condition} · Confirm the exact unit and stock before payment`,
+  easyBuyEligible: true,
   swapEligible: true,
   warranty: commerceSite.warranty,
   batteryHealth: "Ask for battery-condition details when considering a used unit.",
   specifications: {
-    display: specs[0],
-    camera: specs[1],
-    processor: specs[2],
-    network: specs[3],
-    security: specs[4],
+    display: pixelSpecs[model]?.[0] || "Confirm the exact unit’s display",
+    camera: pixelSpecs[model]?.[1] || "Confirm the exact camera configuration",
+    processor: pixelSpecs[model]?.[2] || "Confirm the chipset for the exact unit",
+    network: pixelSpecs[model]?.[3] || "Confirm network compatibility",
+    security: pixelSpecs[model]?.[4] || "Confirm fingerprint and face unlock features",
     sim: "Physical SIM and eSIM support can vary by unit; confirm before buying"
   },
-  description: `Compare ${model} storage options and ask FORMEX to confirm today’s price, colour, condition and delivery arrangement.`,
-  seoTitle: `Buy ${model} in Nigeria | Price & Storage | FORMEX`,
-  metaDescription: `Buy ${model} in Nigeria. Check storage, condition and current price, then ask about outright payment, Easy Buy, swap and nationwide delivery.`
+  description: `Compare ${model} ${condition} storage options${ram ? ` and ${ram} RAM` : ''}, then confirm today's price, colour, stock and delivery with Formex Communication.`,
+  seoTitle: `Buy ${model} ${condition} in Nigeria | Formex Communication`,
+  metaDescription: `Shop ${model} ${condition} in Nigeria. Compare storage and Naira prices, then ask about outright payment, EasyBuy, swap and nationwide delivery.`
 });
 
 export const products = Object.freeze([
   ...iphoneDefinitions.map(makeIphone),
   ...galaxyDefinitions.map(makeGalaxy),
-  ...pixelDefinitions.map(makePixel)
-]);
+  ...pixelCatalog.map(makePixel)
+].sort(newestFirst));
 
 export const accessories = Object.freeze([
   { name: "Compatible charger", detail: "Ask which charger is recommended for this exact phone." },
@@ -396,7 +393,7 @@ export const categoryPages = Object.freeze([
     route: "/iphones",
     eyebrow: "Apple iPhone catalogue",
     h1: "Buy iPhones in Nigeria",
-    title: "Buy iPhones in Nigeria | UK Used, New & Easy Buy | FORMEX",
+    title: "Buy iPhones in Nigeria | UK Used, New & Easy Buy | Formex Communication",
     description: "Compare iPhone models, storage and supplied guide prices. Pay outright, ask about Easy Buy, swap a phone or order through WhatsApp.",
     brand: "Apple"
   },
@@ -404,8 +401,8 @@ export const categoryPages = Object.freeze([
     route: "/uk-used-iphones",
     eyebrow: "Inspected-device enquiries",
     h1: "Shop UK-Used iPhones in Nigeria",
-    title: "UK-Used iPhones in Nigeria | Battery Health Above 83% | FORMEX",
-    description: "Compare UK-used iPhones from FORMEX. Ask for the exact unit, supplied price, battery health above 83%, condition and delivery options.",
+    title: "UK-Used iPhones in Nigeria | Battery Health Above 83% | Formex Communication",
+    description: "Compare UK-used iPhones from Formex Communication. Ask for the exact unit, supplied price, battery health above 83%, condition and delivery options.",
     brand: "Apple",
     condition: "UK Used"
   },
@@ -413,7 +410,7 @@ export const categoryPages = Object.freeze([
     route: "/cheap-iphones",
     eyebrow: "Lower-price iPhone options",
     h1: "Find a More Affordable iPhone",
-    title: "Affordable iPhones in Nigeria | Compare Supplied Prices | FORMEX",
+    title: "Affordable iPhones in Nigeria | Compare Supplied Prices | Formex Communication",
     description: "Start with iPhone options that have lower supplied guide prices, then confirm today’s condition, storage, price and Easy Buy terms.",
     brand: "Apple",
     sort: "price-ascending"
@@ -422,8 +419,8 @@ export const categoryPages = Object.freeze([
     route: "/iphone-easy-buy",
     eyebrow: "Pay in stages",
     h1: "Get an iPhone With Easy Buy",
-    title: "iPhone Easy Buy Nigeria | Calculator & Models | FORMEX",
-    description: "Choose an iPhone, review the 40% initial-deposit estimate and continue to FORMEX Easy Buy for final eligibility and terms.",
+    title: "iPhone Easy Buy Nigeria | Calculator & Models | Formex Communication",
+    description: "Choose an iPhone and see the model-specific down payment and monthly repayment over one to three months.",
     brand: "Apple",
     easyBuy: true
   },
@@ -431,23 +428,23 @@ export const categoryPages = Object.freeze([
     route: "/phones-on-installment",
     eyebrow: "Flexible payment enquiries",
     h1: "Phones on Installment in Nigeria",
-    title: "Phones on Installment in Nigeria | Easy Buy Options | FORMEX",
-    description: "Compare phones and ask FORMEX which models qualify for Easy Buy. Final prices, eligibility, dates and terms must be confirmed.",
+    title: "Phones on Installment in Nigeria | Easy Buy Options | Formex Communication",
+    description: "Compare phones and ask Formex Communication which models qualify for Easy Buy. Final prices, eligibility, dates and terms must be confirmed.",
     easyBuy: true
   },
   {
     route: "/samsung-phones",
     eyebrow: "Samsung Galaxy catalogue",
     h1: "Buy Samsung Phones in Nigeria",
-    title: "Buy Samsung Phones in Nigeria | Galaxy Price Enquiries | FORMEX",
-    description: "Compare Samsung Galaxy models and storage, then ask FORMEX for today’s condition, current price, Easy Buy eligibility and delivery.",
+    title: "Buy Samsung Phones in Nigeria | Galaxy Price Enquiries | Formex Communication",
+    description: "Compare Samsung Galaxy models and storage, then ask Formex Communication for today’s condition, current price, Easy Buy eligibility and delivery.",
     brand: "Samsung"
   },
   {
     route: "/uk-used-samsung",
     eyebrow: "Used Samsung enquiries",
     h1: "Ask About UK-Used Samsung Phones",
-    title: "UK-Used Samsung Phones in Nigeria | FORMEX",
+    title: "UK-Used Samsung Phones in Nigeria | Formex Communication",
     description: "Compare Samsung models and ask which UK-used units are available, including exact condition, storage, battery information and price.",
     brand: "Samsung",
     condition: "UK Used"
@@ -456,32 +453,32 @@ export const categoryPages = Object.freeze([
     route: "/google-pixel-phones",
     eyebrow: "Google Pixel catalogue",
     h1: "Buy Google Pixel Phones in Nigeria",
-    title: "Buy Google Pixel Phones in Nigeria | FORMEX",
-    description: "Compare Google Pixel models and storage, then ask FORMEX for today’s condition, current price, swap and delivery options.",
+    title: "Buy Google Pixel Phones in Nigeria | Formex Communication",
+    description: "Compare Google Pixel models and storage, then ask Formex Communication for today’s condition, current price, swap and delivery options.",
     brand: "Google"
   },
   {
     route: "/phone-swap",
     eyebrow: "Trade in and upgrade",
     h1: "Swap Your Current Phone for an Upgrade",
-    title: "Phone Swap in Lagos, Nigeria | Get a WhatsApp Quote | FORMEX",
-    description: "Send your current phone details to FORMEX, request a valuation and compare eligible upgrade options before accepting a swap quote.",
+    title: "Phone Swap in Lagos, Nigeria | Get a WhatsApp Quote | Formex Communication",
+    description: "Send your current phone details to Formex Communication, request a valuation and compare eligible upgrade options before accepting a swap quote.",
     swap: true
   },
   {
     route: "/laptops",
     eyebrow: "Work, school and business",
-    h1: "Ask About Laptops Available From FORMEX",
-    title: "Laptops in Computer Village, Ikeja | FORMEX",
-    description: "Ask FORMEX for currently available laptops, specifications, condition, price, pickup and nationwide delivery options.",
+    h1: "Ask About Laptops Available From Formex Communication",
+    title: "Laptops in Computer Village, Ikeja | Formex Communication",
+    description: "Ask Formex Communication for currently available laptops, specifications, condition, price, pickup and nationwide delivery options.",
     contentOnly: "laptops"
   },
   {
     route: "/gadget-accessories",
     eyebrow: "Complete your setup",
     h1: "Phone and Gadget Accessories",
-    title: "Phone & Gadget Accessories in Ikeja | FORMEX",
-    description: "Ask about chargers, phone cases, screen protectors, power banks, earbuds and smartwatches available from FORMEX.",
+    title: "Phone & Gadget Accessories in Ikeja | Formex Communication",
+    description: "Ask about chargers, phone cases, screen protectors, power banks, earbuds and smartwatches available from Formex Communication.",
     contentOnly: "accessories"
   }
 ]);

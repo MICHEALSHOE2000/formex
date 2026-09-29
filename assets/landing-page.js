@@ -4,6 +4,8 @@
   const body = document.body;
   const attributionKeys = [
     "gclid",
+    "fbclid",
+    "ttclid",
     "wbraid",
     "gbraid",
     "utm_source",
@@ -12,7 +14,7 @@
     "utm_term",
     "utm_content"
   ];
-  const attributionStorageKey = "formex_ad_attribution";
+  const attributionStorageKey = "formex-communication_ad_attribution";
   const context = {
     ad_group_id: body.dataset.adGroupId || "",
     ad_group_name: body.dataset.adGroupName || "",
@@ -25,6 +27,46 @@
   };
 
   window.dataLayer = window.dataLayer || [];
+
+  const tiktokEvents = {
+    view_product: "ViewContent",
+    view_landing_page: "PageView",
+    search: "Search",
+    select_phone: "ViewContent",
+    select_storage: "CustomizeProduct",
+    select_condition: "CustomizeProduct",
+    begin_easy_buy_application: "InitiateCheckout",
+    start_easybuy: "InitiateCheckout",
+    easybuy_calculated: "AddPaymentInfo",
+    pay_small_small_selected: "InitiateCheckout",
+    buy_outright_selected: "AddToCart",
+    swap_selected: "AddToCart",
+    target_swap_phone_selected: "ViewContent",
+    current_swap_phone_selected: "CustomizeProduct",
+    swap_calculation_completed: "AddPaymentInfo",
+    repayment_duration_selected: "AddPaymentInfo",
+    standard_plan_selected: "AddPaymentInfo",
+    lower_interest_plan_selected: "AddPaymentInfo",
+    check_eligibility_clicked: "InitiateCheckout",
+    whatsapp_click: "Contact",
+    call_click: "Contact",
+    directions_click: "Contact"
+  };
+
+  function pushTikTokEvent(event, parameters = {}) {
+    if (!window.ttq?.track) return;
+    const standardEvent = tiktokEvents[event];
+    if (!standardEvent || standardEvent === "PageView") return;
+    const productId = parameters.product_id || context.product_name || context.phone_model || undefined;
+    const payload = {
+      ...(productId ? { content_id: String(productId), content_type: "product" } : {}),
+      ...(context.product_name ? { content_name: context.product_name } : {}),
+      ...(parameters.value != null ? { value: Number(parameters.value), currency: "NGN" } : {}),
+      ...(parameters.total != null ? { value: Number(parameters.total), currency: "NGN" } : {}),
+      ...(parameters.search_term ? { query: parameters.search_term } : {})
+    };
+    window.ttq.track(standardEvent, payload);
+  }
 
   function readAttribution() {
     const current = Object.fromEntries(
@@ -59,6 +101,7 @@
       ...parameters,
       page_location: location.href
     });
+    pushTikTokEvent(event, parameters);
   }
 
   function decorateInternalLink(anchor) {
@@ -71,23 +114,8 @@
     anchor.href = url.toString();
   }
 
-  function decorateWhatsappLink(anchor) {
-    if (!anchor.href.includes("wa.me/")) return;
-    const url = new URL(anchor.href);
-    const values = Object.entries(attribution).filter(([, value]) => value);
-    if (!values.length) return;
-
-    const existing = url.searchParams.get("text") || `Hello ${body.dataset.adGroupName || "FORMEX Communication"}.`;
-    const source = values.map(([key, value]) => `${key}: ${value}`).join(" | ");
-    if (!existing.includes("Campaign reference:")) {
-      url.searchParams.set("text", `${existing}\nCampaign reference: ${source}`);
-    }
-    anchor.href = url.toString();
-  }
-
   document.querySelectorAll("a").forEach((anchor) => {
     decorateInternalLink(anchor);
-    decorateWhatsappLink(anchor);
   });
 
   const menuButton = document.querySelector(".intent-menu-button");
@@ -108,6 +136,12 @@
     const link = event.target.closest("a");
     if (!link) return;
 
+    const path=link.dataset.buyingPath||link.dataset.action||link.dataset.method;
+    const action={buy:'buy_outright_selected',easyBuy:'pay_small_small_selected',swap:'swap_selected',easy:'pay_small_small_selected',outright:'buy_outright_selected'}[path];
+    if(action)pushEvent(action,{product_id:link.dataset.productId||body.dataset.phoneModel||undefined,value:link.dataset.value?Number(link.dataset.value):undefined});
+    if(link.dataset.checkEligibility==='true')pushEvent('check_eligibility_clicked');
+
+    decorateInternalLink(link);
     const isWhatsapp = link.dataset.track === "whatsapp" || link.href.includes("wa.me/");
     const isCall = link.dataset.track === "call" || link.href.startsWith("tel:");
     const isDirections = link.dataset.track === "directions" || link.href.includes("google.com/maps");
@@ -118,19 +152,22 @@
         pushEvent("begin_easy_buy_application");
       }
       pushEvent("click_whatsapp", { link_url: link.href });
+      pushEvent("whatsapp_click", { link_url: link.href });
     }
     if (isCall) {
       pushEvent("click_call", { link_url: link.href });
+      pushEvent("call_click", { link_url: link.href });
     }
     if (isDirections) {
       pushEvent("click_directions", { link_url: link.href });
+      pushEvent("directions_click", { link_url: link.href });
     }
     if (link.dataset.primaryAction === "select_phone") {
       pushEvent("select_phone");
     }
   });
 
-  document.addEventListener("formex:lead-success", (event) => {
+  document.addEventListener("formex-communication:lead-success", (event) => {
     pushEvent("submit_lead", {
       form_name: event.detail?.form_name || "lead_form",
       lead_type: event.detail?.lead_type || context.lead_type
@@ -142,10 +179,10 @@
     pushEvent("view_product");
   }
 
-  window.FormexTracking = Object.freeze({
+  window.FormexGadgetPlugTracking = Object.freeze({
     pushEvent,
     submitLead(detail = {}) {
-      document.dispatchEvent(new CustomEvent("formex:lead-success", { detail }));
+      document.dispatchEvent(new CustomEvent("formex-communication:lead-success", { detail }));
     }
   });
 })();
