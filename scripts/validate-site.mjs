@@ -3,7 +3,8 @@ import { dirname, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { landingPages, site } from "../landing-pages/config.mjs";
 import { categoryPages, commerceSite, products } from "../commerce/catalog.mjs";
-import { allowedFrequencies, calculatePlan, DEPOSIT_RATE } from "../easy-buy/easy-buy-core.mjs";
+import { shopCategories } from "../commerce/storefront-data.mjs";
+import { allowedFrequencies, calculatePlan, DEPOSIT_RATE, MAX_FINANCED, PROCESSING_FEE, minimumDeposit } from "../easy-buy/easy-buy-core.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const errors = [];
@@ -42,12 +43,14 @@ assert(new Set(landingPages.map((page) => page.metaDescription)).size === landin
 assert(new Set(landingPages.map((page) => page.h1)).size === landingPages.length, "H1 values must be unique.");
 
 const monthlyIphone11 = calculatePlan({ price: 230000, duration: 1, frequency: "monthly", series: 11 });
-assert(monthlyIphone11.depositRate === DEPOSIT_RATE, "Easy Buy must use a 40% initial deposit.");
-assert(monthlyIphone11.deposit === 92000, "Easy Buy 40% deposit calculation is incorrect.");
-assert(monthlyIphone11.balance === 138000, "Easy Buy remaining-balance calculation is incorrect.");
-assert(monthlyIphone11.installment === 165600, "Easy Buy monthly instalment calculation is incorrect.");
-assert(allowedFrequencies(11).join(",") === "monthly,weekly,biweekly", "iPhone 11 must offer monthly, weekly and bi-weekly schedules.");
-assert(allowedFrequencies(12).join(",") === "monthly,weekly,biweekly", "iPhone 12 must offer monthly, weekly and bi-weekly schedules.");
+assert(monthlyIphone11.depositRate === .5, "iPhone 11 must use a 50% initial down payment.");
+assert(monthlyIphone11.deposit === 115000, "Easy Buy 50% down payment calculation is incorrect.");
+assert(monthlyIphone11.balance === 115000, "Easy Buy remaining-balance calculation is incorrect.");
+assert(monthlyIphone11.installment === 138000, "Easy Buy 20% monthly instalment calculation is incorrect.");
+assert(monthlyIphone11.processingFee === 0 && monthlyIphone11.totalPayable === 253000, "The standard Apple plan must not include the qualification processing fee.");
+assert(minimumDeposit(500000) === 250000 && minimumDeposit(1000000) === 750000 && MAX_FINANCED === 250000, "Non-Apple financing must stay under ₦250,000.");
+assert(allowedFrequencies(11).join(",") === "monthly", "iPhone 11 must offer monthly repayments.");
+assert(allowedFrequencies(12).join(",") === "monthly", "iPhone 12 must offer monthly repayments.");
 assert(allowedFrequencies(13).join(",") === "monthly", "Models above iPhone 12 must only offer monthly repayment.");
 try {
   calculatePlan({ price: 380000, duration: 1, frequency: "weekly", series: 13 });
@@ -113,7 +116,7 @@ for (const product of products) {
   }
 
   assert(count(html, /<h1(?:\s|>)/g) === 1, `${product.slug}: product page must contain exactly one H1.`);
-  assert(html.includes(`<h1>Buy ${escapeHtml(product.model)} in Nigeria</h1>`), `${product.slug}: model-specific H1 is missing.`);
+  assert(html.includes(`<h1>${escapeHtml(product.model)}</h1>`), `${product.slug}: model-specific H1 is missing.`);
   assert(html.includes(`<title>${escapeHtml(product.seoTitle)}</title>`), `${product.slug}: SEO title does not match product data.`);
   assert(html.includes(`content="${escapeHtml(product.metaDescription)}"`), `${product.slug}: product meta description does not match.`);
   assert(html.includes(`rel="canonical" href="${commerceSite.baseUrl}${product.route}"`), `${product.slug}: canonical URL is incorrect.`);
@@ -128,7 +131,7 @@ for (const product of products) {
   assert(html.includes(`wa.me/${commerceSite.whatsappNumber}?text=`), `${product.slug}: prefilled WhatsApp link is missing.`);
   assert(count(html, /data-storage="/g) === product.variants.length, `${product.slug}: rendered storage selector does not match product data.`);
   assert(count(html, /data-variant-card="/g) === product.variants.length, `${product.slug}: rendered variant cards do not match product data.`);
-  assert(count(html, /<details(?:\s|>)/g) === 7, `${product.slug}: expected seven visible product FAQs.`);
+  assert(count(html, /<details class="product-faq"/g) === 7, `${product.slug}: expected seven product FAQs.`);
   assert(!html.includes("InStock"), `${product.slug}: schema must not invent a stock availability claim.`);
   assert(!html.includes("aggregateRating"), `${product.slug}: page must not invent product reviews or ratings.`);
 }
@@ -144,7 +147,7 @@ for (const category of categoryPages) {
   }
 
   assert(count(html, /<h1(?:\s|>)/g) === 1, `${category.route}: category page must contain exactly one H1.`);
-  assert(html.includes(`<h1>${escapeHtml(category.h1)}</h1>`), `${category.route}: category H1 does not match configuration.`);
+  assert(html.includes(`<h1>${category.swap ? "Know what to add." : escapeHtml(category.h1)}</h1>`), `${category.route}: category H1 does not match configuration.`);
   assert(html.includes(`<title>${escapeHtml(category.title)}</title>`), `${category.route}: category SEO title does not match.`);
   assert(html.includes(`rel="canonical" href="${commerceSite.baseUrl}${category.route}"`), `${category.route}: category canonical URL is incorrect.`);
   assert(html.includes(`wa.me/${commerceSite.whatsappNumber}?text=`), `${category.route}: category WhatsApp path is missing.`);
@@ -170,6 +173,22 @@ for (const product of products) {
 }
 for (const category of categoryPages) {
   assert(sitemap.includes(`<loc>${commerceSite.baseUrl}${category.route}</loc>`), `${category.route}: category route is missing from sitemap.xml.`);
+}
+
+const routeManifest = JSON.parse(await readFile(join(root, "commerce", "route-manifest.json"), "utf8"));
+for (const category of shopCategories) {
+  const html = await readFile(join(root, category.route, "index.html"), "utf8");
+  const url = `${commerceSite.baseUrl}${category.route}`;
+  assert(sitemap.includes(`<loc>${url}</loc>`), `${category.route}: shop route is missing from sitemap.xml.`);
+  assert(routeManifest.categories.includes(category.route), `${category.route}: shop route is missing from the route manifest.`);
+  assert(html.includes(`data-landing-page="${category.route}" data-page-type="category"`), `${category.route}: analytics must use the category route.`);
+  assert(html.includes(`<meta property="og:url" content="${url}">`), `${category.route}: sharing URL must match the category.`);
+  assert(html.includes(`<link rel="canonical" href="${url}" />`), `${category.route}: incorrect canonical URL.`);
+  for (const property of ["og:title", "og:description"]) {
+    const content = html.match(new RegExp(`<meta property="${property}" content="([^"]+)"`))?.[1];
+    assert(content?.includes(category.name), `${category.route}: ${property} must describe the category.`);
+  }
+  assert(html.includes(`<meta property="og:image" content="${commerceSite.baseUrl}${category.image}">`), `${category.route}: sharing image must be an absolute category image URL.`);
 }
 
 const catalogSearch = JSON.parse(await readFile(join(root, "assets", "catalog-search.json"), "utf8"));
@@ -205,10 +224,19 @@ for (const filePath of htmlFiles) {
   const html = await readFile(filePath, "utf8");
   const relative = filePath.replace(`${root}/`, "");
   assert(!html.includes("2348039248231"), `${relative}: old phone number is present.`);
+  assert(!/Mikee Gadget Plug|mikeegadget\.com\.ng|2347086865133|Formex(?:%20|\s)Gadget(?:%20|\s)Plug|<strong>FORMEX<\/strong><small>Gadget Plug/i.test(html), `${relative}: source brand or contact details remain.`);
   assert(!html.includes("0803 924 8231"), `${relative}: old display phone number is present.`);
   assert(!/\b(?:10k\+|4\.9|free shipping nationwide|24\/7 customer support|quality guaranteed|verified buyer)\b/i.test(html), `${relative}: an unverified claim is present.`);
+  if (!relative.startsWith("docs/")) {
+    assert(html.includes("AW-18302944156"), `${relative}: Formex Google Ads tag is missing.`);
+    assert(!html.includes("assets/tiktok-pixel.js"), `${relative}: source store pixel must not load.`);
+  }
 
   const references = [...html.matchAll(/\b(?:href|src)="([^"]+)"/g)].map((match) => match[1]);
+  for (const href of references.filter((reference) => reference.includes("wa.me/"))) {
+    const message = new URL(href).searchParams.get("text") || "";
+    assert(!/Campaign reference|Source page:|utm_source|utm_medium|utm_campaign|ttclid|fbclid|gclid/i.test(message), `${relative}: WhatsApp message exposes attribution.`);
+  }
   for (const reference of references) {
     if (
       !reference

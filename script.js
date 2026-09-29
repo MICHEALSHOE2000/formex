@@ -175,7 +175,7 @@ function createShopPlaceholderImage(index) {
       <rect width="900" height="675" fill="url(#bg)"/>
       <rect x="112" y="154" width="676" height="366" rx="28" fill="#f6f7f9"/>
       <rect x="112" y="154" width="676" height="84" rx="28" fill="#111318"/>
-      <text x="450" y="209" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#ffffff">FORMEX COMMUNICATIONS</text>
+      <text x="450" y="209" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#ffffff">FORMEX COMMUNICATION</text>
       <rect x="162" y="278" width="250" height="194" rx="16" fill="url(#glass)"/>
       <rect x="488" y="278" width="250" height="194" rx="16" fill="url(#glass)"/>
       <rect x="235" y="326" width="104" height="146" rx="22" fill="#151923"/>
@@ -352,7 +352,7 @@ heroDots.forEach((dot) => {
 
 document.querySelectorAll(".hero-slide img").forEach((image, index) => {
   image.addEventListener("error", () => {
-    image.src = createPlaceholderImage(`Hero iPhone ${index + 1}`, "Formex");
+    image.src = createPlaceholderImage(`Hero iPhone ${index + 1}`, "Formex Communication");
   }, { once: true });
 });
 

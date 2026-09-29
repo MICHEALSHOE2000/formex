@@ -16,8 +16,7 @@ const escapeJson = (value) => JSON.stringify(value).replaceAll("<", "\\u003c");
 const cleanGeneratedOutput = (value) => value.replace(/[ \t]+$/gm, "");
 
 const whatsappHref = (page) => {
-  const source = `Source page: ${page.adGroupId} — ${page.adGroupName}.`;
-  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(`${page.whatsappMessage}\n\n${source}`)}`;
+  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(page.whatsappMessage)}`;
 };
 
 const breadcrumbs = (page) => {
@@ -84,14 +83,14 @@ const localBusinessSchema = {
 };
 
 const renderHeader = (page) => `
-  <aside class="intent-topbar" aria-label="FORMEX store highlights">
-    <span>FORMEX Communication</span>
+  <aside class="intent-topbar" aria-label="Formex Communication store highlights">
+    <span>Formex Communication</span>
     <span>Physical store in Ikeja</span>
     <span>Delivery in Lagos and across Nigeria</span>
   </aside>
   <header class="intent-header">
     <nav class="intent-nav" aria-label="Main navigation">
-      <a class="intent-brand" href="/" aria-label="FORMEX Communication home">
+      <a class="intent-brand" href="/" aria-label="Formex Communication home">
         <span class="intent-brand-mark" aria-hidden="true"></span>
         <span><strong>FORMEX</strong><small>Communication</small></span>
       </a>
@@ -142,7 +141,7 @@ const renderHero = (page, localHeroImage) => `
       <div class="intent-availability">
         <span>What to confirm</span>
         <strong>${escapeHtml(page.badge)}</strong>
-        <small>Price and availability confirmed by FORMEX</small>
+        <small>Price and availability confirmed by Formex Communication</small>
       </div>
     </div>
   </section>`;
@@ -160,7 +159,7 @@ const renderOfferInformation = (page) => `
           <span>${escapeHtml(card.kicker)}</span>
           <h3>${escapeHtml(card.title)}</h3>
           <p>${escapeHtml(card.text)}</p>
-          <a data-track="whatsapp" data-select-phone="${page.pageType === "series" ? "true" : "false"}" href="${whatsappHref(page)}" target="_blank" rel="noopener">Ask FORMEX <span aria-hidden="true">→</span></a>
+          <a data-track="whatsapp" data-select-phone="${page.pageType === "series" ? "true" : "false"}" href="${whatsappHref(page)}" target="_blank" rel="noopener">Ask Formex Communication <span aria-hidden="true">→</span></a>
         </article>`).join("")}
     </div>
   </section>`;
@@ -182,7 +181,7 @@ const renderBuyerDecision = (page) => `
 const renderTrust = (page) => `
   <section class="intent-section intent-store" id="store" aria-labelledby="store-details">
     <div class="intent-store-card">
-      <p class="intent-eyebrow">FORMEX store details</p>
+      <p class="intent-eyebrow">Formex Communication store details</p>
       <h2 id="store-details">Speak with the store or visit in Ikeja</h2>
       <address>${escapeHtml(site.address)}</address>
       <div class="intent-contact-grid">
@@ -197,7 +196,7 @@ const renderTrust = (page) => `
         </a>
       </div>
       <p class="intent-delivery-note">${escapeHtml(site.delivery)}</p>
-      <p class="intent-terms-note">Ask FORMEX to confirm stock, the exact device condition, current price, delivery details and any written warranty or after-sales terms before payment.</p>
+      <p class="intent-terms-note">Ask Formex Communication to confirm stock, the exact device condition, current price, delivery details and any written warranty or after-sales terms before payment.</p>
     </div>
   </section>`;
 
@@ -266,11 +265,11 @@ const renderFooter = (page) => `
       <a href="tel:${site.telephoneHref}">${site.telephoneDisplay}</a>
       <span>${escapeHtml(site.address)}</span>
     </div>
-    <small>© 2026 FORMEX Communication.</small>
+    <small>© 2026 Formex Communication.</small>
   </footer>
   <div class="intent-mobile-bar" aria-label="Quick contact actions">
     <a data-track="call" href="tel:${site.telephoneHref}"><span>Call</span><strong>${site.telephoneDisplay}</strong></a>
-    <a data-track="whatsapp" href="${whatsappHref(page)}" target="_blank" rel="noopener"><span>WhatsApp</span><strong>Ask FORMEX</strong></a>
+    <a data-track="whatsapp" href="${whatsappHref(page)}" target="_blank" rel="noopener"><span>WhatsApp</span><strong>Ask Formex Communication</strong></a>
   </div>`;
 
 const renderPage = (page) => {
@@ -307,6 +306,7 @@ const renderPage = (page) => {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="${localRoot}assets/landing-page.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18302944156"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','AW-18302944156');</script>
   ${schemas.map((schema) => `<script type="application/ld+json">${escapeJson(schema)}</script>`).join("\n  ")}
 </head>
 <body
@@ -316,7 +316,7 @@ const renderPage = (page) => {
   data-page-type="${page.pageType}"
   data-product-name="${escapeHtml(page.productName || page.adGroupName)}"
   data-phone-model="${escapeHtml(page.productName || "")}"
-  data-device-condition="${escapeHtml(page.condition || "Confirm with FORMEX")}"
+  data-device-condition="${escapeHtml(page.condition || "Confirm with Formex Communication")}"
   data-lead-type="${page.leadType}"
 >
   ${renderHeader(page)}

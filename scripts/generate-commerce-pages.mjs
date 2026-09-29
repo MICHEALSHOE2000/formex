@@ -2,13 +2,17 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { landingPages } from "../landing-pages/config.mjs";
+import {media} from '../assets/storefront-ui.mjs';
+import {shopCategories} from '../commerce/storefront-data.mjs';
 import {
   accessories,
   categoryPages,
   commerceSite,
-  products
+  products as baseProducts
 } from "../commerce/catalog.mjs";
 
+import {offerProduct,isComplete} from '../commerce/offers.mjs';
+const products=baseProducts.map(offerProduct);
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 const escapeHtml = (value = "") => String(value)
@@ -50,21 +54,23 @@ const productFaqs = (product) => {
     ? `Do you sell UK-used ${product.model}?`
     : `What condition is the ${product.model} available in?`;
   const conditionAnswer = product.brand === "Apple"
-    ? `FORMEX lists UK-used and brand-new iPhone enquiries. Ask which ${product.model} units are available today and request the exact condition before payment.`
-    : `Condition depends on the current device available. Ask FORMEX whether the exact ${product.model} offered is new or used and request inspection details.`;
+    ? `Formex Communication lists UK-used and brand-new iPhone enquiries. Ask which ${product.model} units are available today and request the exact condition before payment.`
+    : product.brand === "Google"
+      ? `This listing is for ${product.conditions[0]}. Ask Formex Communication to confirm the exact unit, its condition and current stock before payment.`
+      : `Condition depends on the current device available. Ask Formex Communication whether the exact ${product.model} offered is new or used and request inspection details.`;
 
   return [
     {
       question: `What is the price of ${product.model} in Nigeria?`,
-      answer: `The price depends on storage, condition, colour and current market availability. This page shows supplied guide prices where FORMEX has provided them; confirm today’s exact price before payment.`
+      answer: `The price depends on storage, condition, colour and current market availability. This page shows prices where available. Confirm today’s price and stock before payment.`
     },
     {
       question: `How much is ${product.model} ${exampleStorage}?`,
-      answer: `Select ${exampleStorage} on this page to see the supplied guide price where available, or use WhatsApp to request today’s price for that exact variant.`
+      answer: `Select ${exampleStorage} on this page to see the price where available, or use WhatsApp to request today’s price for that exact variant.`
     },
     {
       question: `Can I buy ${product.model} and pay in installments?`,
-      answer: `Ask FORMEX to confirm Easy Buy eligibility for the exact device. The calculator is an estimate only; approval, deposit, due dates and complete terms are confirmed before commitment.`
+      answer: `Ask Formex Communication to confirm Easy Buy eligibility for the exact device. The calculator is an estimate only; approval, deposit, due dates and complete terms are confirmed before commitment.`
     },
     {
       question: conditionQuestion,
@@ -72,7 +78,7 @@ const productFaqs = (product) => {
     },
     {
       question: `Can I swap my old phone for ${product.model}?`,
-      answer: `You can request a valuation on WhatsApp. FORMEX must inspect or review your current phone before confirming a swap value or balance.`
+      answer: `You can request a valuation on WhatsApp. Formex Communication must inspect or review your current phone before confirming a swap value or balance.`
     },
     {
       question: "Do you deliver outside Lagos?",
@@ -165,6 +171,7 @@ const renderHeader = () => `
         <a href="/google-pixel-phones">Google Pixel</a>
         <a href="/easy-buy/">Easy Buy</a>
         <a href="/phone-swap">Swap</a>
+        <a href="/deals/">Deals</a>
         <a href="/phone-shop-ikeja">Visit store</a>
       </div>
       <div class="commerce-nav-actions">
@@ -190,16 +197,19 @@ const renderHeader = () => `
   </dialog>`;
 
 const renderProductArtwork = (product) => {
+  const galleryImages = product.images.map(image => /\.jpe?g$/i.test(image) ? `/images/store/${image.split('/').pop().replace(/\.jpe?g$/i,'')}-720.webp` : image);
   if (product.images.length) {
     return `
       <div class="product-gallery" data-product-gallery>
         <div class="product-main-image">
-          <img src="${escapeHtml(product.images[0])}" alt="${escapeHtml(product.model)} available from FORMEX" data-main-image>
+          ${media(product.images[0],product.model,true)
+            .replace('sizes="(max-width:600px) 45vw, 280px"', 'sizes="(max-width:800px) 100vw, 52vw"')
+            .replace('<img ', '<img data-main-image ')}
         </div>
         <div class="product-thumbnails" aria-label="${escapeHtml(product.model)} images">
-          ${product.images.map((image, index) => `
+          ${galleryImages.map((image, index) => `
             <button type="button" class="${index === 0 ? "is-active" : ""}" data-gallery-image="${escapeHtml(image)}" aria-label="Show ${escapeHtml(product.model)} image ${index + 1}">
-              <img src="${escapeHtml(image)}" alt="" loading="lazy">
+              <img src="${escapeHtml(image.replace('-720.webp','-160.webp'))}" alt="" width="80" height="80" loading="lazy">
             </button>`).join("")}
         </div>
       </div>`;
@@ -210,7 +220,7 @@ const renderProductArtwork = (product) => {
       <span>${escapeHtml(product.brand)}</span>
       <div class="device-silhouette"><i></i><i></i><i></i></div>
       <strong>${escapeHtml(product.model)}</strong>
-      <small>Add an approved product image in commerce/catalog.mjs</small>
+      <small>Photo coming soon.</small>
     </div>`;
 };
 
@@ -227,7 +237,7 @@ const renderVariantSelector = (product) => `
           data-price="${variant.price ?? ""}"
           data-price-confirm="${variant.priceNeedsExtraConfirmation ? "true" : "false"}"
           aria-pressed="${variant.storage === product.defaultStorage ? "true" : "false"}"
-        >${escapeHtml(variant.storage)}</button>`).join("")}
+        ><span class="storage-name">${escapeHtml(variant.storage)}</span><span class="storage-price">${variant.price ? formatNaira(variant.price) : 'Confirm price'}</span></button>`).join("")}
     </div>
     <div class="selection-grid">
       <label>
@@ -236,15 +246,10 @@ const renderVariantSelector = (product) => `
           ${product.colors.map((color) => `<option>${escapeHtml(color)}</option>`).join("")}
         </select>
       </label>
-      <label>
-        <span>Condition</span>
-        <select data-condition-select>
-          ${product.conditions.map((condition) => `<option>${escapeHtml(condition)}</option>`).join("")}
-        </select>
-      </label>
+      ${product.conditions.length > 1 ? `<label><span>Condition</span><select data-condition-select>${product.conditions.map((condition) => `<option>${escapeHtml(condition)}</option>`).join("")}</select></label>` : `<div class="condition-badge" aria-label="Condition">${escapeHtml(product.conditions[0] || 'Confirm available condition')}</div>`}
     </div>
     <div class="buying-facts">
-      <span><b>Battery health</b>${product.brand === "Apple" ? "UK-used units: above 83%; confirm exact reading" : "Ask for details on the exact used unit"}</span>
+      <span><b>Battery health</b>${product.listingPending ? "Details coming soon" : product.brand === "Apple" ? "UK-used units: above 83%; confirm exact reading" : "Reading available for the exact used unit"}</span>
       <span><b>Warranty</b>Confirm written terms for the exact unit</span>
       <span><b>Delivery</b>Lagos and nationwide options</span>
     </div>
@@ -253,80 +258,31 @@ const renderVariantSelector = (product) => `
       <strong data-product-price>${escapeHtml(
         product.variants.find((variant) => variant.storage === product.defaultStorage)?.price
           ? formatNaira(product.variants.find((variant) => variant.storage === product.defaultStorage).price)
-          : "Request today’s price"
+          : "Confirm price"
       )}</strong>
-      <small data-price-note>Supplied guide price where shown. Confirm today’s exact price and availability before payment.</small>
+      <small data-price-note>Confirm today’s price, condition and stock before payment.</small>
     </div>
     <div class="purchase-actions">
-      <a class="commerce-button commerce-button-primary" data-action="buy" href="${whatsappHref(productMessage(product))}" target="_blank" rel="noopener">Buy Now</a>
-      <a class="commerce-button commerce-button-dark" data-action="easyBuy" href="${whatsappHref(productMessage(product, product.defaultStorage, "easyBuy"))}" target="_blank" rel="noopener">Buy With Easy Buy</a>
-      <a class="commerce-button commerce-button-ghost" data-action="price" href="${whatsappHref(productMessage(product, product.defaultStorage, "price"))}" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      <a class="commerce-button commerce-button-primary" data-action="buy" href="/buy/?phone=${encodeURIComponent(`${product.slug}|${product.defaultStorage}`)}">Buy Now on WhatsApp</a>
+      <a class="commerce-button commerce-button-dark" data-action="easyBuy" href="/easybuy/?phone=${encodeURIComponent(`${product.slug}|${product.defaultStorage}`)}">Check Pay Small Small Plan</a>
+      <a class="commerce-button commerce-button-ghost" data-action="swap" href="/swap/?target=${encodeURIComponent(`${product.slug}|${product.defaultStorage}`)}">Swap to this phone →</a>
     </div>
-    <p class="purchase-safety">Confirm the exact unit, current price, warranty terms and payment details with FORMEX before sending money.</p>
+    <p class="purchase-action-help">Trade in your current phone and pay the difference. Or get this phone now and spread your payment.</p>
+    <p class="purchase-safety"><a data-action="price" href="${whatsappHref(productMessage(product, product.defaultStorage, 'price'))}" target="_blank" rel="noopener">Have a question? Chat on WhatsApp ↗</a></p>
   </div>`;
 
 const renderVariantCards = (product) => `
   <section class="commerce-section product-options" id="options">
-    <div class="section-heading-row">
-      <div><p class="commerce-eyebrow">Choose the exact match</p><h2>${escapeHtml(product.model)} storage options</h2></div>
-      <p>Select a card to update the buying panel and prefilled WhatsApp message.</p>
-    </div>
+    <details class="storage-comparison" open><summary>Compare storage prices <span>+</span></summary>
     <div class="variant-card-grid">
       ${product.variants.map((variant) => `
         <article class="variant-card" data-variant-card="${escapeHtml(variant.storage)}">
           <div class="variant-card-top"><span>${escapeHtml(product.brand)}</span><span>${escapeHtml(product.stockStatus)}</span></div>
           <h3>${escapeHtml(product.model)} ${escapeHtml(variant.storage)}</h3>
-          <p class="variant-price">${variant.price ? formatNaira(variant.price) : "Request today’s price"}</p>
-          <ul>
-            <li>Colours: confirm today’s options</li>
-            <li>Condition: ${escapeHtml(product.conditions.join(" / "))}</li>
-            <li>${escapeHtml(product.warranty)}</li>
-          </ul>
-          <button type="button" data-select-variant="${escapeHtml(variant.storage)}">Choose ${escapeHtml(variant.storage)}</button>
+          <p class="variant-price">${variant.price ? formatNaira(variant.price) : "Confirm price"}</p>
+          <button type="button" data-select-variant="${escapeHtml(variant.storage)}" aria-pressed="${variant.storage===product.defaultStorage}">Choose ${escapeHtml(variant.storage)}</button>
         </article>`).join("")}
-    </div>
-  </section>`;
-
-const renderPaymentPaths = (product) => `
-  <section class="commerce-section payment-section" id="payment">
-    <div class="section-heading-row">
-      <div><p class="commerce-eyebrow">Choose how to buy</p><h2>Two clear payment paths</h2></div>
-      <p>Use the option that matches what you can pay today.</p>
-    </div>
-    <div class="payment-grid">
-      <article class="payment-card payment-card-outright">
-        <span class="payment-number">01</span>
-        <p class="commerce-eyebrow">Pay outright</p>
-        <h3>Ready to own your device today?</h3>
-        <p>Ask FORMEX to confirm the exact phone, final price and collection or delivery arrangement, then pay the full amount.</p>
-        <div>
-          <a class="commerce-button commerce-button-primary" data-action="buy" href="${whatsappHref(productMessage(product))}" target="_blank" rel="noopener">Buy Now</a>
-          <a class="text-link" data-action="price" href="${whatsappHref(productMessage(product, product.defaultStorage, "price"))}" target="_blank" rel="noopener">Chat with us on WhatsApp →</a>
-        </div>
-      </article>
-      <article class="payment-card payment-card-easy">
-        <span class="payment-number">02</span>
-        <p class="commerce-eyebrow">Easy Buy</p>
-        <h3>Don’t have the full payment?</h3>
-        <ul><li>Start with an initial deposit</li><li>Review a 1–3 month estimate</li><li>Complete the required verification</li><li>Get final terms before commitment</li></ul>
-        <div>
-          <a class="commerce-button commerce-button-light" href="/easy-buy/?phone=${escapeHtml(product.slug)}#calculator">Check Easy Buy Options</a>
-          <a class="text-link text-link-light" data-action="easyBuy" href="${whatsappHref(productMessage(product, product.defaultStorage, "easyBuy"))}" target="_blank" rel="noopener">Ask about eligibility →</a>
-        </div>
-      </article>
-    </div>
-  </section>`;
-
-const renderTrust = () => `
-  <section class="commerce-section compact-section">
-    <div class="trust-strip">
-      <article><span>✓</span><strong>Exact-device checks</strong><small>Ask to inspect the unit offered.</small></article>
-      <article><span>CV</span><strong>Physical store</strong><small>Computer Village, Ikeja.</small></article>
-      <article><span>NG</span><strong>Nationwide delivery</strong><small>Confirm fee and timing.</small></article>
-      <article><span>₦</span><strong>Easy Buy</strong><small>Eligibility and terms apply.</small></article>
-      <article><span>↻</span><strong>Swap enquiries</strong><small>Valuation required.</small></article>
-      <article><span>WA</span><strong>WhatsApp support</strong><small>Send the exact model fast.</small></article>
-    </div>
+    </div></details>
   </section>`;
 
 const renderDetails = (product) => `
@@ -334,75 +290,27 @@ const renderDetails = (product) => `
     <div class="details-copy">
       <p class="commerce-eyebrow">Device details</p>
       <h2>Know what you’re choosing</h2>
-      <p>These model-level details help you compare. Storage, SIM configuration, colour and condition must still be confirmed for the exact unit.</p>
-      <div class="spec-grid">
+      <p>We’ll confirm the colour, condition and SIM options for your exact device.</p>
+      ${product.specificationsPending ? '<p>Ask Formex for the specifications of the exact unit before ordering.</p>' : `<div class="spec-grid">
+        ${product.ram ? `<article><span>RAM</span><strong>${escapeHtml(product.ram)}</strong></article>` : ''}
         <article><span>Display</span><strong>${escapeHtml(product.specifications.display)}</strong></article>
         <article><span>Camera</span><strong>${escapeHtml(product.specifications.camera)}</strong></article>
         <article><span>Processor</span><strong>${escapeHtml(product.specifications.processor)}</strong></article>
         <article><span>Network</span><strong>${escapeHtml(product.specifications.network)}</strong></article>
         <article><span>Security</span><strong>${escapeHtml(product.specifications.security)}</strong></article>
         <article><span>SIM options</span><strong>${escapeHtml(product.specifications.sim)}</strong></article>
-      </div>
+      </div>`}
     </div>
     <aside class="condition-panel">
       <p class="commerce-eyebrow">Condition guide</p>
-      <article><span>01</span><div><h3>Brand New</h3><p>Unused device in original or new packaging where applicable. Ask what comes in the box.</p></div></article>
-      <article><span>02</span><div><h3>UK Used</h3><p>Imported used device. Request photos, exact condition and battery information before payment.</p></div></article>
-      <article><span>03</span><div><h3>Nigerian Used</h3><p>Locally used and inspected device where available. Ask for repair history and the checks completed.</p></div></article>
+      ${product.conditions.includes('UK Used') ? '<article><span>01</span><div><h3>UK Used</h3><p>Request photos, battery information and the condition of the exact device before payment.</p></div></article>' : ''}
+      ${product.conditions.includes('Brand New') ? '<article><span>02</span><div><h3>Brand New</h3><p>Ask what comes with the exact unit and confirm availability.</p></div></article>' : ''}
+      ${!product.conditions.includes('UK Used') && !product.conditions.includes('Brand New') ? '<article><span>01</span><div><h3>Condition to confirm</h3><p>Ask Formex for the exact unit details before payment.</p></div></article>' : ''}
     </aside>
   </section>`;
 
-const renderCalculator = (product) => `
-  <section class="commerce-section calculator-section" id="calculator">
-    <div class="calculator-copy">
-      <p class="commerce-eyebrow">Easy Buy estimate</p>
-      <h2>Plan the initial payment before you apply</h2>
-      <p>Where a supplied guide price exists, the calculator starts with it. You can replace it with the current price FORMEX confirms.</p>
-      <ul>
-        <li>40% initial-deposit estimate</li>
-        <li>Balance factor: ×1.2 for one month, ×1.4 for two, ×1.6 for three</li>
-        <li>Final eligibility, price, dates and terms are confirmed by FORMEX</li>
-      </ul>
-    </div>
-    <form class="mini-calculator" data-easy-buy-calculator>
-      <label>
-        <span>Phone price</span>
-        <div class="money-input"><b>₦</b><input type="text" inputmode="numeric" data-calculator-price placeholder="Enter confirmed price"></div>
-      </label>
-      <label>
-        <span>Payment duration</span>
-        <select data-calculator-duration><option value="1">1 month</option><option value="2">2 months</option><option value="3">3 months</option></select>
-      </label>
-      <div class="calculator-results">
-        <article><span>Initial payment (40%)</span><strong data-calculator-deposit>Enter a price</strong></article>
-        <article><span>Estimated monthly payment</span><strong data-calculator-payment>Enter a price</strong></article>
-        <article><span>Estimated total after deposit</span><strong data-calculator-total>Enter a price</strong></article>
-      </div>
-      <a class="commerce-button commerce-button-dark" data-calculator-whatsapp href="${whatsappHref(productMessage(product, product.defaultStorage, "easyBuy"))}" target="_blank" rel="noopener">Apply for Easy Buy</a>
-      <small>This calculator is a planning estimate, not an offer or approval.</small>
-    </form>
-  </section>`;
-
-const renderSwapAndCommunity = (product) => `
-  <section class="commerce-section split-conversion">
-    <article class="swap-card">
-      <span class="conversion-icon">↻</span>
-      <p class="commerce-eyebrow">Swap and upgrade</p>
-      <h2>Have an old phone?</h2>
-      <p>Send the model, storage, condition, battery information and clear photos. FORMEX will explain the inspection and valuation process.</p>
-      <a class="commerce-button commerce-button-primary" data-action="swap" href="${whatsappHref(productMessage(product, product.defaultStorage, "swap"))}" target="_blank" rel="noopener">Get a Swap Quote on WhatsApp</a>
-    </article>
-    <article class="community-card">
-      <span class="conversion-icon">WA</span>
-      <p class="commerce-eyebrow">Not ready to buy yet?</p>
-      <h2>Join our WhatsApp Gadget Community</h2>
-      <p>Get new arrivals, flash sales, UK-used deals, price drops, swap offers, Easy Buy updates, accessories and limited-stock alerts.</p>
-      <a class="commerce-button commerce-button-light" href="${escapeHtml(communityHref)}" target="_blank" rel="noopener">${commerceSite.communityUrl ? "Join Our WhatsApp Gadget Group" : "Request the WhatsApp Group Link"}</a>
-    </article>
-  </section>`;
-
 const relatedProducts = (product) => {
-  const sameBrand = products.filter((item) => item.brand === product.brand);
+  const sameBrand = products.filter((item) => item.brand === product.brand && isComplete(item));
   const index = sameBrand.findIndex((item) => item.slug === product.slug);
   const candidates = [
     sameBrand[index - 2],
@@ -411,7 +319,7 @@ const relatedProducts = (product) => {
     sameBrand[index + 2],
     sameBrand[index + 3]
   ].filter(Boolean);
-  return [...new Map(candidates.map((item) => [item.slug, item])).values()].slice(0, 5);
+  return [...new Map(candidates.map((item) => [item.slug, item])).values()].slice(0, 4);
 };
 
 const renderRelated = (product) => {
@@ -420,30 +328,18 @@ const renderRelated = (product) => {
     <section class="commerce-section related-section">
       <div class="section-heading-row">
         <div><p class="commerce-eyebrow">Compare other phones</p><h2>Keep your options open</h2></div>
-        <p>Move down for a lower-cost starting point or up for a more powerful model.</p>
+        <p>Another model in mind?</p>
       </div>
       <div class="related-grid">
         ${related.map((item, index) => `
           <a href="${item.route}">
-            <span>${index < 2 ? "Looking for something cheaper?" : "Want something more powerful?"}</span>
+            <span>Compare model</span>
             <strong>${escapeHtml(item.model)}</strong>
             <small>${escapeHtml(item.variants.map((variant) => variant.storage).join(" · "))}</small>
           </a>`).join("")}
       </div>
     </section>`;
 };
-
-const renderAccessories = () => `
-  <section class="commerce-section accessory-section">
-    <div class="section-heading-row">
-      <div><p class="commerce-eyebrow">Complete your setup</p><h2>Add only what you need</h2></div>
-      <p>Accessory prices and availability are confirmed separately so the phone remains the main decision.</p>
-    </div>
-    <div class="accessory-grid">
-      ${accessories.map((item, index) => `
-        <article><span>${String(index + 1).padStart(2, "0")}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.detail)}</p></article>`).join("")}
-    </div>
-  </section>`;
 
 const renderDelivery = () => `
   <section class="commerce-section delivery-section" id="delivery">
@@ -465,7 +361,7 @@ const renderFaq = (faqs) => `
     <div><p class="commerce-eyebrow">Questions buyers ask</p><h2>Frequently asked questions</h2></div>
     <div class="faq-list">
       ${faqs.map((faq, index) => `
-        <details ${index === 0 ? "open" : ""}>
+        <details class="product-faq" ${index === 0 ? "open" : ""}>
           <summary>${escapeHtml(faq.question)}<span>+</span></summary>
           <p>${escapeHtml(faq.answer)}</p>
         </details>`).join("")}
@@ -479,8 +375,8 @@ const renderFooter = () => `
         <span class="commerce-brand-mark" aria-hidden="true">F</span>
         <span><strong>FORMEX</strong><small>Communication</small></span>
       </a>
-      <p>Model-specific phone pages built to help Nigerian buyers choose, confirm and order the exact device they want.</p>
-      <a class="commerce-button commerce-button-light" href="${whatsappHref("Hello Formex Communication, I need help choosing a phone.")}" target="_blank" rel="noopener">Ask FORMEX on WhatsApp</a>
+      <p>Original devices. Better deals.<br>Visit Formex Communication in Computer Village, Ikeja.</p>
+      <a class="commerce-button commerce-button-light" href="${whatsappHref("Hello Formex Communication, I need help choosing a phone.")}" target="_blank" rel="noopener">Ask Formex Communication on WhatsApp</a>
     </div>
     <div><strong>Shop phones</strong><a href="/iphones">All iPhones</a><a href="/samsung-phones">Samsung phones</a><a href="/google-pixel-phones">Google Pixel</a><a href="/uk-used-iphones">UK-used iPhones</a></div>
     <div><strong>Ways to buy</strong><a href="/easy-buy/">Easy Buy calculator</a><a href="/phones-on-installment">Phones on installment</a><a href="/phone-swap">Swap your phone</a><a href="${escapeHtml(communityHref)}" target="_blank" rel="noopener">WhatsApp community</a></div>
@@ -505,7 +401,7 @@ const renderProductPage = (product) => {
     conditions: product.conditions,
     whatsappNumber: commerceSite.whatsappNumber
   };
-  const firstImage = product.images[0] || "/images/shop.webp";
+  const firstImage = product.images[0] || "/images/shop.jpeg";
 
   return `<!doctype html>
 <html lang="en-NG">
@@ -528,10 +424,11 @@ const renderProductPage = (product) => {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/commerce.css">
+  <link rel="stylesheet" href="/assets/media.css"><link rel="stylesheet" href="/assets/commerce.css"><link rel="stylesheet" href="/assets/sales.css">
   <script type="application/ld+json">${escapeJson(productSchema(product))}</script>
   <script type="application/ld+json">${escapeJson(breadcrumbSchema(breadcrumbs))}</script>
   <script type="application/ld+json">${escapeJson(faqSchema(faqs))}</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18302944156"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','AW-18302944156');</script>
 </head>
 <body data-page-type="product" data-product-name="${escapeHtml(product.model)}" data-product-slug="${escapeHtml(product.slug)}" data-landing-page="${escapeHtml(product.route)}">
   ${renderHeader()}
@@ -547,43 +444,32 @@ const renderProductPage = (product) => {
       </div>
       <div class="product-hero-copy">
         <p class="commerce-eyebrow">${escapeHtml(product.brand)} · Buy in Nigeria</p>
-        <h1>Buy ${escapeHtml(product.model)} in Nigeria</h1>
-        <p class="product-lead">${escapeHtml(product.description)}</p>
+        <h1>${escapeHtml(product.model)}</h1>
+        <p class="product-lead">${product.listingPending ? "Price, specifications and availability have not been supplied yet. Contact the store for updates." : `${escapeHtml(product.conditions.join(' / ') || 'Condition to confirm')}. Confirm the exact unit and stock before payment.`}</p>
         <div class="hero-fact-row">
           <span><strong>Storage</strong>${escapeHtml(product.variants.map((variant) => variant.storage).join(" · "))}</span>
           <span><strong>Delivery</strong>Lagos & nationwide</span>
-          <span><strong>Payment</strong>Outright or Easy Buy</span>
+          <span><strong>Payment</strong>${product.listingPending ? "Options pending" : "Outright or Easy Buy"}</span>
         </div>
-        ${renderVariantSelector(product)}
+        ${renderVariantSelector(product)}<div class="product-trust"><span>Inspect before payment</span><span>Computer Village store</span><span>Nationwide delivery</span><span>Device checked before payment</span></div>
       </div>
     </section>
     ${renderVariantCards(product)}
-    ${renderPaymentPaths(product)}
-    ${renderTrust()}
     ${renderDetails(product)}
-    ${renderCalculator(product)}
-    ${renderSwapAndCommunity(product)}
     ${renderRelated(product)}
-    ${renderAccessories()}
     ${renderDelivery()}
-    <section class="commerce-section seo-copy">
-      <p class="commerce-eyebrow">${escapeHtml(product.model)} price in Nigeria</p>
-      <h2>What changes the price of ${escapeHtml(product.model)}?</h2>
-      <p>The current price depends on storage, condition, colour, exchange-rate movement and the exact unit available. Supplied guide prices are shown on this page where FORMEX has provided them. Select your preferred storage, then request today’s final price and availability before paying.</p>
-      <div class="seo-variant-list">${product.variants.map((variant) => `<span>${escapeHtml(product.model)} ${escapeHtml(variant.storage)} — ${variant.price ? formatNaira(variant.price) : "price on request"}</span>`).join("")}</div>
-    </section>
     ${renderFaq(faqs)}
   </main>
   ${renderFooter()}
   <div class="mobile-purchase-bar" aria-label="Quick purchase actions">
-    <a data-action="price" href="${whatsappHref(productMessage(product, product.defaultStorage, "price"))}" target="_blank" rel="noopener"><span>WA</span>WhatsApp</a>
-    <a data-action="buy" href="${whatsappHref(productMessage(product))}" target="_blank" rel="noopener"><span>₦</span>Buy Now</a>
-    <a data-action="easyBuy" href="${whatsappHref(productMessage(product, product.defaultStorage, "easyBuy"))}" target="_blank" rel="noopener"><span>↗</span>Easy Buy</a>
+    <a data-action="buy" href="/buy/?phone=${encodeURIComponent(`${product.slug}|${product.defaultStorage}`)}"><span>₦</span>Buy outright</a>
+    <a data-action="easyBuy" href="/easybuy/?phone=${encodeURIComponent(`${product.slug}|${product.defaultStorage}`)}"><span>◷</span>Pay Small Small</a>
+    <a data-action="swap" href="/swap/?target=${encodeURIComponent(`${product.slug}|${product.defaultStorage}`)}"><span>↔</span>Swap to this phone →</a>
   </div>
   <script type="application/json" id="product-data">${escapeJson(productData)}</script>
   <script type="module" src="/assets/commerce.js"></script>
   <script src="/assets/landing-page.js" defer></script>
-</body>
+<script type="module" src="/assets/sales.js"></script></body>
 </html>`;
 };
 
@@ -593,7 +479,7 @@ const minimumKnownPrice = (product) => {
 };
 
 const categoryProducts = (category) => {
-  let matches = category.contentOnly ? [] : [...products];
+  let matches = category.contentOnly ? [] : [...products].sort((a,b)=>Number(isComplete(b))-Number(isComplete(a)));
   if (category.brand) matches = matches.filter((product) => product.brand === category.brand);
   if (category.easyBuy) matches = matches.filter((product) => Boolean(product.easyBuyEligible));
   if (category.swap) matches = matches.filter((product) => product.swapEligible);
@@ -606,16 +492,15 @@ const renderCategoryCard = (product) => {
   return `
     <article class="catalog-product-card" data-catalog-card data-search-value="${escapeHtml(`${product.model} ${product.variants.map((variant) => variant.storage).join(" ")}`.toLowerCase())}">
       <a class="catalog-card-media" href="${product.route}">
-        ${product.images.length
-          ? `<img src="${product.images[0]}" alt="${escapeHtml(product.model)}" loading="lazy">`
-          : `<span class="catalog-card-placeholder"><i>${escapeHtml(product.brand)}</i><strong>${escapeHtml(product.model)}</strong></span>`}
+        ${media(product.images[0],product.model)}
       </a>
       <div>
-        <span class="catalog-brand">${escapeHtml(product.brand)}</span>
+        <span class="catalog-brand">${!isComplete(product)?"COMING SOON · ":""}${escapeHtml(product.conditions.includes('Details coming soon')?'Details coming soon':product.brand === 'Apple' ? 'UK Used / Brand New' : product.brand === 'Google' ? `Google · ${product.conditions[0]}` : product.brand)}</span>
         <h2><a href="${product.route}">${escapeHtml(product.model)}</a></h2>
         <p>${escapeHtml(product.variants.map((variant) => variant.storage).join(" · "))}</p>
-        <strong>${Number.isFinite(minPrice) ? `From supplied guide price ${formatNaira(minPrice)}` : "Request today’s price"}</strong>
-        <div><a href="${product.route}">View phone</a><a href="${whatsappHref(productMessage(product, product.defaultStorage, "price"))}" target="_blank" rel="noopener">Ask on WhatsApp</a></div>
+        <strong>${Number.isFinite(minPrice) ? `From ${formatNaira(minPrice)}` : "Confirm price"}</strong>
+        <p class="catalog-availability">Confirm stock · EasyBuy & swap enquiries</p>
+        <div><a ${product.brand === 'Google' ? 'class="pixel-view-button"' : ''} href="${product.route}">${product.brand === 'Google' ? 'View Phone →' : 'View phone →'}</a></div>
       </div>
     </article>`;
 };
@@ -628,7 +513,7 @@ const renderContentOnly = (category) => {
 
   return `<div class="content-only-grid">
     <article><span>01</span><h2>Tell us what you need</h2><p>Share your preferred brand, processor, RAM, storage, screen size, condition and budget.</p></article>
-    <article><span>02</span><h2>Get current options</h2><p>FORMEX will send the laptops currently available with their exact specifications and prices.</p></article>
+    <article><span>02</span><h2>Get current options</h2><p>Formex Communication will send the laptops currently available with their exact specifications and prices.</p></article>
     <article><span>03</span><h2>Confirm before payment</h2><p>Ask for photos, condition, battery information where relevant, warranty terms and delivery arrangements.</p></article>
   </div>`;
 };
@@ -665,8 +550,9 @@ const renderCategoryPage = (category) => {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/commerce.css">
+  <link rel="stylesheet" href="/assets/media.css"><link rel="stylesheet" href="/assets/commerce.css"><link rel="stylesheet" href="/assets/sales.css">
   <script type="application/ld+json">${escapeJson(breadcrumbSchema(breadcrumbs))}</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18302944156"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','AW-18302944156');</script>
 </head>
 <body data-page-type="category" data-landing-page="${escapeHtml(category.route)}">
   ${renderHeader()}
@@ -678,14 +564,14 @@ const renderCategoryPage = (category) => {
         <h1>${escapeHtml(category.h1)}</h1>
         <p>${escapeHtml(category.description)}</p>
         <div class="category-actions">
-          <a class="commerce-button commerce-button-primary" href="${whatsappHref(categoryMessage)}" target="_blank" rel="noopener">Ask FORMEX on WhatsApp</a>
+          <a class="commerce-button commerce-button-primary" href="${whatsappHref(categoryMessage)}" target="_blank" rel="noopener">Ask Formex Communication on WhatsApp</a>
           ${category.easyBuy ? `<a class="commerce-button commerce-button-dark" href="/easy-buy/#calculator">Open Easy Buy Calculator</a>` : ""}
         </div>
       </div>
       <aside>
         <span>${matches.length || "Current"} ${matches.length === 1 ? "model" : "options"}</span>
         <strong>Choose → Confirm → Buy</strong>
-        <p>No fake stock count. No assumed warranty. Missing prices are clearly marked for confirmation.</p>
+        <p>Pay outright, spread your payment or swap your current phone. Collect in Ikeja or arrange delivery.</p>
       </aside>
     </section>
     ${category.contentOnly ? `
@@ -693,7 +579,7 @@ const renderCategoryPage = (category) => {
         ${renderContentOnly(category)}
         <div class="content-only-cta">
           <h2>Get the current list on WhatsApp</h2>
-          <p>FORMEX will confirm the exact products, specifications, condition, price and pickup or delivery arrangement.</p>
+          <p>Formex Communication will confirm the exact products, specifications, condition, price and pickup or delivery arrangement.</p>
           <a class="commerce-button commerce-button-dark" href="${whatsappHref(categoryMessage)}" target="_blank" rel="noopener">Request Current Options</a>
         </div>
       </section>` : `
@@ -716,14 +602,14 @@ const renderCategoryPage = (category) => {
       <a href="/phone-swap"><span>Upgrade</span><strong>Swap your phone</strong></a>
     </section>
     <section class="commerce-section community-banner">
-      <div><p class="commerce-eyebrow">Not ready to buy?</p><h2>Join the FORMEX gadget deals community</h2><p>Get arrival alerts, price drops, UK-used deals, swap updates, Easy Buy offers and accessory deals.</p></div>
+      <div><p class="commerce-eyebrow">Not ready to buy?</p><h2>Join the Formex Communication gadget deals community</h2><p>Get arrival alerts, price drops, UK-used deals, swap updates, Easy Buy offers and accessory deals.</p></div>
       <a class="commerce-button commerce-button-light" href="${escapeHtml(communityHref)}" target="_blank" rel="noopener">${commerceSite.communityUrl ? "Join the WhatsApp Group" : "Request the Group Link"}</a>
     </section>
   </main>
   ${renderFooter()}
   <script type="module" src="/assets/commerce.js"></script>
   <script src="/assets/landing-page.js" defer></script>
-</body>
+<script type="module" src="/assets/sales.js"></script></body>
 </html>`;
 };
 
@@ -740,7 +626,7 @@ for (const category of categoryPages) {
 }
 
 const searchIndex = [
-  ...products.map((product) => ({
+  ...products.slice().sort((a,b)=>Number(isComplete(b))-Number(isComplete(a))).map((product) => ({
     type: "product",
     label: product.model,
     route: product.route,
@@ -763,7 +649,7 @@ const searchIndex = [
     type: "category",
     label: category.h1,
     route: category.route,
-    brand: category.brand || "FORMEX",
+    brand: category.brand || "Formex Communication",
     storage: [],
     price: null,
     image: null,
@@ -781,12 +667,16 @@ await writeFile(
   join(root, "commerce", "route-manifest.json"),
   `${JSON.stringify({
     products: products.map((product) => product.route),
-    categories: categoryPages.map((category) => category.route)
+    categories: [...categoryPages, ...shopCategories].map((category) => category.route)
   }, null, 2)}\n`,
   "utf8"
 );
 
 const fixedRoutes = [
+  "/easybuy/",
+  "/swap/",
+  "/buy/",
+  "/deals/",
   "/",
   "/easy-buy/",
   "/blog/best-uk-used-iphone-shop",
@@ -800,7 +690,8 @@ const sitemapRoutes = [
     ...fixedRoutes,
     ...landingPages.map((page) => page.route),
     ...products.map((product) => product.route),
-    ...categoryPages.map((category) => category.route)
+    ...categoryPages.map((category) => category.route),
+    ...shopCategories.map((category) => category.route)
   ])
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

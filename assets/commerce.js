@@ -1,3 +1,8 @@
+import {activateImages} from './storefront-ui.mjs';
+activateImages();
+import { calculatePlan } from "../easy-buy/easy-buy-core.mjs";
+import {selectedCondition as conditionFor} from '../commerce/conditions.mjs';
+
 const naira = new Intl.NumberFormat("en-NG", {
   style: "currency",
   currency: "NGN",
@@ -130,9 +135,9 @@ function activateSearch(root) {
 }
 
 if (searchDialog) {
-  activateSearch(searchDialog);
   searchOpenButtons.forEach((button) => {
     button.addEventListener("click", () => {
+      if (!searchDialog.dataset.ready) { activateSearch(searchDialog); searchDialog.dataset.ready = 'true'; }
       searchDialog.showModal();
       window.requestAnimationFrame(() => searchDialog.querySelector("input")?.focus());
     });
@@ -170,6 +175,8 @@ document.querySelectorAll("[data-gallery-image]").forEach((button) => {
     const gallery = button.closest("[data-product-gallery]");
     const mainImage = gallery?.querySelector("[data-main-image]");
     if (!gallery || !mainImage) return;
+    mainImage.closest('.device-media')?.classList.add('is-loading');
+    mainImage.removeAttribute('srcset');
     mainImage.src = button.dataset.galleryImage;
     gallery.querySelectorAll("[data-gallery-image]").forEach((item) => {
       item.classList.toggle("is-active", item === button);
@@ -200,7 +207,7 @@ if (productDataElement) {
     product.variants.find((variant) => variant.storage === selectedStorage) || product.variants[0];
 
   const selectedColor = () => colorSelect?.value || "Confirm available colour";
-  const selectedCondition = () => conditionSelect?.value || "Confirm available condition";
+  const selectedCondition = () => conditionFor(product, conditionSelect?.value);
 
   function messageFor(intent) {
     const name = `${product.model} ${selectedStorage}`.trim();
@@ -216,7 +223,20 @@ if (productDataElement) {
 
   function updateActionLinks() {
     document.querySelectorAll("[data-action]").forEach((link) => {
-      link.href = whatsappHref(product.whatsappNumber, messageFor(link.dataset.action));
+      if (['swap', 'easyBuy', 'buy'].includes(link.dataset.action)) {
+        const variant=product.variants.find(v=>v.storage===selectedStorage), price=variant?.price;
+        link.dataset.productId=`${product.slug}|${selectedStorage}`;
+        link.dataset.value=price||'';
+        const q=new URLSearchParams({phone:`${product.slug}|${selectedStorage}`,condition:selectedCondition(),color:selectedColor()});
+        if(link.dataset.action==='buy') {link.href=whatsappHref(product.whatsappNumber,`${messageFor('buy')}\nListed price: ${price?naira.format(price):'Please confirm'}${variant?.offerId?' (Hot Deal)':''}`);link.textContent=price?'Buy Now on WhatsApp': 'Ask for Price';}
+        if(link.dataset.action==='easyBuy'){link.href=`/easybuy/?${q}`;link.textContent='Check Pay Small Small Plan';}
+        if(link.dataset.action==='swap'){q.set('target',q.get('phone'));link.href=`/swap/?${q}`;link.textContent='Swap to this phone →';}
+        if(!price && link.dataset.action!=='buy'){link.href=whatsappHref(product.whatsappNumber,messageFor(link.dataset.action));link.textContent=link.dataset.action==='easyBuy'?'Ask About Pay Small Small':'Ask About a Swap';}
+        link.removeAttribute('target');
+
+      } else {
+        link.href = whatsappHref(product.whatsappNumber, messageFor(link.dataset.action));
+      }
     });
   }
 
@@ -236,11 +256,10 @@ if (productDataElement) {
     }
 
     const duration = Number(durationSelect.value);
-    const factor = { 1: 1.2, 2: 1.4, 3: 1.6 }[duration];
-    const deposit = price * 0.4;
-    const balance = price - deposit;
-    const totalAfterDeposit = balance * factor;
-    const monthlyPayment = totalAfterDeposit / duration;
+    const plan = calculatePlan({ price, duration, phone:product });
+    const deposit = plan.deposit;
+    const totalAfterDeposit = plan.balanceRepayment;
+    const monthlyPayment = plan.installment;
     depositOutput.textContent = naira.format(deposit);
     paymentOutput.textContent = naira.format(monthlyPayment);
     totalOutput.textContent = naira.format(totalAfterDeposit);
@@ -251,7 +270,7 @@ if (productDataElement) {
       `Preferred colour: ${selectedColor()}`,
       `Condition: ${selectedCondition()}`,
       `Price used for estimate: ${naira.format(price)}`,
-      `Initial payment estimate: ${naira.format(deposit)} (40%)`,
+      `Initial payment estimate: ${naira.format(deposit)} (${Math.round(plan.depositRate*100)}%)`,
       `Duration: ${duration} month${duration === 1 ? "" : "s"}`,
       `Estimated monthly payment: ${naira.format(monthlyPayment)}`,
       `Estimated total after deposit: ${naira.format(totalAfterDeposit)}`,
@@ -264,6 +283,14 @@ if (productDataElement) {
     const variant = product.variants.find((item) => item.storage === storage);
     if (!variant) return;
     selectedStorage = variant.storage;
+    // Colour groups carry different supplied prices. Keep the selector inside
+    // the chosen group so a Burgundy quote cannot use the Glacier/Black price.
+    if (colorSelect && (product.slug.startsWith('iphone-18-') || product.slug.startsWith('google-pixel-')) && variant.color) {
+      const colors=variant.color.split('/').map(value=>value.trim());
+      const previous=colorSelect.value;
+      colorSelect.replaceChildren(...colors.map(color=>{const option=document.createElement('option');option.value=color;option.textContent=color;return option;}));
+      if(colors.includes(previous)) colorSelect.value=previous;
+    }
 
     storageButtons.forEach((button) => {
       const active = button.dataset.storage === selectedStorage;
@@ -272,18 +299,23 @@ if (productDataElement) {
     });
 
     variantButtons.forEach((button) => {
+      const active=button.dataset.selectVariant===selectedStorage;
+      button.setAttribute('aria-pressed',String(active));
+      button.closest('[data-variant-card]')?.classList.toggle('is-active',active);
       button.textContent = button.dataset.selectVariant === selectedStorage
         ? `Selected ${selectedStorage}`
         : `Choose ${button.dataset.selectVariant}`;
     });
 
     if (variantLabel) variantLabel.textContent = `${product.model} ${selectedStorage}`;
-    if (productPrice) productPrice.textContent = variant.price ? naira.format(variant.price) : "Request today’s price";
+    if (productPrice) productPrice.textContent = variant.price ? naira.format(variant.price) : "Confirm price";
     if (priceNote) {
-      priceNote.textContent = variant.priceNeedsExtraConfirmation
-        ? "This supplied guide price needs extra confirmation. Ask FORMEX for today’s exact price before planning."
+      priceNote.textContent = variant.availability?.includes('out of stock')
+        ? "This source variant was out of stock when checked. Ask Formex Communication to confirm availability and today's price."
+        : variant.priceNeedsExtraConfirmation
+        ? "This supplied guide price needs extra confirmation. Ask Formex Communication for today’s exact price before planning."
         : variant.price
-          ? "Supplied guide price. Confirm today’s exact price, condition and availability before payment."
+          ? (variant.offerId ? `Hot Deal · regular price ${naira.format(variant.regularPrice)}. Confirm the exact unit before payment.` : "Confirm today’s price, condition and stock before payment.")
           : "No price was supplied for this variant. Request today’s exact price before payment.";
     }
 
@@ -300,12 +332,14 @@ if (productDataElement) {
       window.history.replaceState({}, "", url);
     }
 
-    window.FormexTracking?.pushEvent("select_phone", {
+    window.FormexGadgetPlugTracking?.pushEvent("select_storage", {
       phone_model: product.model,
       product_name: `${product.model} ${selectedStorage}`,
       storage: selectedStorage,
       device_condition: selectedCondition(),
-      lead_type: "price_availability"
+      lead_type: "price_availability",
+      value: variant.price ?? undefined,
+      regular_price: variant.regularPrice ?? undefined
     });
   }
 
@@ -326,6 +360,7 @@ if (productDataElement) {
   });
 
   conditionSelect?.addEventListener("change", () => {
+    window.FormexGadgetPlugTracking?.pushEvent("select_condition",{product_name:product.model,device_condition:selectedCondition()});
     updateActionLinks();
     updateCalculator();
   });
