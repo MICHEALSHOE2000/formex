@@ -1,3 +1,4 @@
+import {catalogueEnabled} from '../commerce/enabled.mjs';
 import {activateImages} from './storefront-ui.mjs';
 activateImages();
 import { calculatePlan } from "../easy-buy/easy-buy-core.mjs";
@@ -42,7 +43,7 @@ let searchIndexPromise;
 
 function loadSearchIndex() {
   if (!searchIndexPromise) {
-    searchIndexPromise = fetch("/assets/catalog-search.json")
+    searchIndexPromise = fetch(catalogueEnabled?"/api/catalog?view=search":"/assets/catalog-search.json")
       .then((response) => {
         if (!response.ok) throw new Error("The phone search index could not be loaded.");
         return response.json();
@@ -222,6 +223,8 @@ if (productDataElement) {
   }
 
   function updateActionLinks() {
+    const checkout=document.querySelector('[data-checkout]');
+    if(checkout)checkout.href='/checkout/?'+new URLSearchParams({slug:product.slug,storage:selectedStorage,condition:selectedCondition(),color:selectedColor()});
     document.querySelectorAll("[data-action]").forEach((link) => {
       if (['swap', 'easyBuy', 'buy'].includes(link.dataset.action)) {
         const variant=product.variants.find(v=>v.storage===selectedStorage), price=variant?.price;

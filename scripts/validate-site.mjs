@@ -25,7 +25,7 @@ const htmlFiles = [];
 async function collectHtml(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   for (const entry of entries) {
-    if (entry.name === ".git" || entry.name === "node_modules") continue;
+    if (entry.name === "dist" || entry.name === ".git" || entry.name === "node_modules") continue;
     const fullPath = join(directory, entry.name);
     if (entry.isDirectory()) {
       await collectHtml(fullPath);
@@ -228,7 +228,7 @@ for (const filePath of htmlFiles) {
   assert(!html.includes("0803 924 8231"), `${relative}: old display phone number is present.`);
   assert(!/\b(?:10k\+|4\.9|free shipping nationwide|24\/7 customer support|quality guaranteed|verified buyer)\b/i.test(html), `${relative}: an unverified claim is present.`);
   if (!relative.startsWith("docs/")) {
-    assert(html.includes("AW-18302944156"), `${relative}: Formex Google Ads tag is missing.`);
+    if (!["admin/index.html","checkout/index.html"].includes(relative)) assert(html.includes("AW-18302944156"), `${relative}: Formex Google Ads tag is missing.`);
     assert(!html.includes("assets/tiktok-pixel.js"), `${relative}: source store pixel must not load.`);
   }
 

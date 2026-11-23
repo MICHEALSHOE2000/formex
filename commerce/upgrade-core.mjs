@@ -4,6 +4,7 @@ import { FINANCE_PLATFORMS, FINANCE_DURATIONS, calculatePlan } from '../easy-buy
 export { FINANCE_PLATFORMS, FINANCE_DURATIONS };
 export const money = value => new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value);
 export const choices = products.flatMap(product => product.variants.map(variant => ({
+  cataloguePrice:variant.cataloguePrice,offerId:variant.offerId,regularPrice:variant.regularPrice,
   id: `${product.slug}|${variant.storage}`, slug: product.slug, model: product.model,
   storage: variant.storage, basePrice: variant.basePrice, color: variant.color, availability:variant.availability, category:product.family, sellingPrice:variant.sellingPrice, price: variant.priceNeedsExtraConfirmation ? null : variant.price,
   image: product.images[0], brand: product.brand,

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en-NG">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Shop administration | Formex Communication</title>
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/assets/commerce.css" />
+    <link rel="stylesheet" href="/assets/formex-service.css" />
+  </head>
+  <body>
+    <main class="service">
+      <a href="/" class="wordmark">Formex Communication</a>
+      <h1>Shop administration</h1>
+      <p id="notice" role="status" aria-live="polite"></p>
+      <form id="login">
+        <label
+          >Staff email<input
+            name="email"
+            type="email"
+            autocomplete="username"
+            required /></label
+        ><label
+          >Password<input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required /></label
+        ><button>Sign in</button>
+      </form>
+      <section id="desk" hidden>
+        <button id="logout">Sign out</button>
+        <h2>Catalogue</h2>
+        <label
+          >Select a product or add a model<select id="selection"></select
+        ></label>
+        <form id="product">
+          <label
+            >Permanent slug<input
+              name="slug"
+              placeholder="formex-device-model"
+              required /></label
+          ><label>Model<input name="model" required /></label
+          ><label
+            >Brand<select name="brand">
+              <option>Apple</option>
+              <option>Samsung</option>
+              <option>Google</option>
+            </select></label
+          ><label
+            >Conditions (comma separated)<input
+              name="conditions"
+              required /></label
+          ><label><input type="checkbox" name="archived" /> Archived</label
+          ><label><input type="checkbox" name="featured" /> Featured</label
+          ><label><input type="checkbox" name="hot" /> Hot Deal</label
+          ><button>Save product</button>
+        </form>
+        <section id="editor">
+          <h3>Variants</h3>
+          <select id="variantSelect" aria-label="Select variant"></select>
+          <form id="variant">
+            <label
+              >Storage / colour group<input name="storage" required /></label
+            ><label>Variant condition<select name="condition"></select></label
+            ><label
+              >Selling price (₦)<input
+                type="number"
+                min="1"
+                name="price" /></label
+            ><label
+              >Regular price before discount (₦)<input
+                type="number"
+                min="1"
+                name="regular" /></label
+            ><label
+              ><input type="checkbox" name="available" /> Staff confirmed this
+              variant for checkout</label
+            ><button>Save variant</button>
+          </form>
+          <form id="image">
+            <label
+              >Product photo (up to 2 MB)<input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                name="photo"
+                required /></label
+            ><button>Upload photo</button>
+          </form>
+        </section>
+        <h2>Orders</h2>
+        <div id="orders"></div>
+        <h2>Customer enquiries</h2>
+        <div id="enquiries"></div>
+        <button id="prev">Previous page</button>
+        <button id="next">Next page</button>
+        <h2>Shop settings</h2>
+        <form id="settings">
+          <label
+            >Delivery fee in naira (blank disables delivery)<input
+              type="number"
+              min="0"
+              name="fee" /></label
+          ><label>Pickup instructions<textarea name="pickup"></textarea></label
+          ><button>Save settings</button>
+        </form>
+      </section>
+    </main>
+    <script type="module" src="/assets/formex-admin.js"></script>
+  </body>
+</html>
