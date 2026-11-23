@@ -1,0 +1,12 @@
+# Formex commerce migration
+## Compatibility audit before implementation
+Formex f7b1d66 generates static pages through four Node generators. commerce/catalog.mjs combines Apple, Samsung and Pixel listings, merchant price amendments and local image mappings. Its 73 models contain 167 storage/colour variants. 28 variants lack a payable price and 10 models lack photos. The generated homepage catalogue has 71 entries including nine category navigation cards. The route manifest and embedded Product, FAQ and breadcrumb data serve existing product URLs. WhatsApp purchase, EasyBuy estimates and swap valuation have their own selectors and scripts. The original project has no order API or authentication. Vite and jsdom are development dependencies. Existing Vercel configuration sets image cache headers.
+
+Mikee 1c297c8 uses fetch from Vercel Node handlers to PostgREST, Supabase Auth and Paystack. api/shop exposes catalog, deals, settings, create, verify and webhook. api/admin exposes login, manage, order, image, settings and deals. Its migrations cover catalogue editing, order lines, payment verification, reservations, transfer confirmation, admin roles, image staging, discounts and unrelated AI, merchant and financing functions. Its generators, product SQL, rollback scripts and owner provisioning are unsuitable imports. Its auth helper hardcodes an email and can provision a missing admin. Payment, transfer, pickup, shipping, contact, notification and financing configuration belong to Mikee. No remote Mikee data is needed.
+
+## Implementation sequence
+1. Create Formex-prefixed tables, explicit privileges and atomic order/payment functions in an independent project. Only server endpoints may access commerce records.
+2. Import complete product metadata, every variant and ordered image from Formex using immutable slugs and conflict-safe inserts. Preserve null prices, existing discount calculations and confirmation-only availability.
+3. Feed the existing generators a public catalogue snapshot for SEO and the same presentation. Use current database prices and availability for ordering. Keep swap, EasyBuy and WhatsApp flows available.
+4. Add staff management, separately configured payment methods, pickup reservations and server-verified payment confirmation. Delivery requires a configured fee.
+5. Test against fixtures and an isolated database where available. Review before connecting a dedicated project. No production promotion is part of this branch.
