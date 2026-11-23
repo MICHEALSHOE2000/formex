@@ -1,0 +1,52 @@
+.service {
+  max-width: 44rem;
+  margin: 2rem auto;
+  padding: 1rem;
+  color: #191919;
+  font-family: system-ui, sans-serif;
+  overflow-wrap: anywhere;
+}
+.wordmark {
+  font-weight: 800;
+}
+.service form,
+.service article {
+  padding: 1rem 0;
+  border-bottom: 1px solid #ddd;
+}
+.service label {
+  display: block;
+  margin: 0.8rem 0;
+}
+.service input:not([type="checkbox"]),
+.service select,
+.service textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.65rem;
+  font: inherit;
+}
+.service button {
+  background: #191919;
+  color: white;
+  border: 0;
+  border-radius: 0.4rem;
+  padding: 0.7rem 1rem;
+  margin: 0.25rem 0;
+  font: inherit;
+  cursor: pointer;
+}
+.service button:disabled {
+  opacity: 0.5;
+}
+.service [hidden] {
+  display: none !important;
+}
+.service #notice {
+  white-space: pre-line;
+}
+.service summary {
+  cursor: pointer;
+  padding: 1rem 0;
+}

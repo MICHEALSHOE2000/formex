@@ -8,7 +8,7 @@ import {selectedCondition as conditionFor} from '../commerce/conditions.mjs';
 const choices=baseChoices.map(offerChoice);
 const $ = id => document.getElementById(id);
 const form = $('buy-flow');
-if (form) {
+if (form && choices.length) {
   const query = new URLSearchParams(location.search);
   const find = id => choices.find(phone => phone.id === id);
   const radio = name => form.querySelector(`input[name="${name}"]:checked`)?.value;
@@ -16,7 +16,7 @@ if (form) {
   const models = [...new Map(choices.map(phone => [phone.slug,phone])).values()];
   const track=(event,data={})=>window.FormexGadgetPlugTracking?.pushEvent(event,{journey:'buy',...data});
   const legacyId = query.get('phone');
-  const initial = find(legacyId) || find(query.get('target')) || choices.find(p => p.slug === legacyId || `${p.slug}-${p.storage.replace('GB','')}` === legacyId) || find('iphone-13|128GB');
+  const initial = find(legacyId) || find(query.get('target')) || choices.find(p => p.slug === legacyId || `${p.slug}-${p.storage.replace('GB','')}` === legacyId) || find('iphone-13|128GB') || choices[0];
   let step = 1, reached = 1, lastSwapQuote='', lastAmount=null;
   let targetCondition=conditionFor(initial,query.get('condition'));
   const summaryPanel = document.querySelector('.order-summary');
@@ -42,7 +42,7 @@ if (form) {
     }
   }
   modelOptions($('buy-model'),models,initial.slug); variants('buy',initial.id);
-  const previous = find(query.get('current')) || find('iphone-x|64GB');
+  const previous = find(query.get('current')) || find('iphone-x|64GB') || choices[0];
   const swapModels=()=>models.filter(p=>p.brand===selected()?.brand&&suitableCurrentPhone(p,selected()));
   function refreshSwapOptions(term='',preferred=oldPhone()?.id){
     const matching=swapModels().filter(p=>term.split(/\s+/).every(token=>p.model.toLowerCase().includes(token)));
@@ -98,7 +98,11 @@ if (form) {
     const heading = form.querySelector(`[data-screen="${step}"] h2`); heading.tabIndex = -1; heading.focus({preventScroll:true});
     document.querySelector('.flow-main').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',block:'start'});
   }
+  const checkout=document.createElement('a');
+  checkout.className='button';checkout.textContent='Checkout or reserve pickup';checkout.hidden=true;
+  $('order-whatsapp').after(checkout);
   function render() {
+    checkout.hidden=true;
     queueMicrotask(() => activateImages(form.parentElement.parentElement));
     const phone = selected(), old = oldPhone();
     const isSwap = radio('purchase') === 'swap', easy = radio('payment') === 'easy';
@@ -159,6 +163,8 @@ if (form) {
     if (easy) message.push('Please confirm approval, any fees, actual due dates and collection arrangements.');
     $('order-summary').innerHTML = summary;
     const ready = step === 3 && !q.pending && !depositError && (!isSwap || !missingAnswers().length);
+    checkout.hidden=!(phone.cataloguePrice&&ready&&!isSwap&&!easy);
+    checkout.href='/checkout/?'+new URLSearchParams({slug:phone.slug,storage:phone.storage,condition:targetCondition});
     $('order-whatsapp').hidden = !ready;
     $('order-whatsapp').href = `https://wa.me/${commerceSite.whatsappNumber}?text=${encodeURIComponent(message.join('\n'))}`;
     $('order-whatsapp').textContent = q.manual ? 'Ask for my final quote ↗' : 'Send my selection on WhatsApp ↗';

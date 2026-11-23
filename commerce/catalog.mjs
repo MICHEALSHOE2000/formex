@@ -373,7 +373,15 @@ const makePixel = ({model,slug,condition,ram,variants,images}) => ({
   metaDescription: `Shop ${model} ${condition} in Nigeria. Compare storage and Naira prices, then ask about outright payment, EasyBuy, swap and nationwide delivery.`
 });
 
-export const products = Object.freeze([
+import snapshot from './snapshot.mjs';
+let current = snapshot;
+if (snapshot && typeof window !== 'undefined') {
+  try {
+    const response = await fetch('/api/catalog', {signal:AbortSignal.timeout(5000)});
+    if(response.ok) current = (await response.json()).products;
+  } catch { /* Retain the last published browsing snapshot during an outage. */ }
+}
+export const products = Object.freeze(current || [
   ...iphoneDefinitions.map(makeIphone),
   ...galaxyDefinitions.map(makeGalaxy),
   ...pixelCatalog.map(makePixel)
