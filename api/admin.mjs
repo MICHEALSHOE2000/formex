@@ -95,6 +95,43 @@ export default endpoint(async (req, res) => {
       body: { hot: b.hot === true, featured: b.featured === true },
     });
     if (!updated?.length) reject(404, "Product not found.");
+  } else if (b.action === "variant_prices") {
+    const key = new URLSearchParams({
+      slug: "eq." + slug(b.slug),
+      storage: "eq." + field(b.storage, 160),
+    });
+    const path = "formex_variants?" + key;
+    const [variant] = await db(path + "&select=price,available,details");
+    if (!variant) reject(404, "Variant no longer exists.");
+    const regularPrice = variant.details.regularPrice ?? null;
+    const original = b.original ?? {};
+    const price = amount(b.price);
+    const regular = amount(b.regular);
+    if (regular !== null && (!price || regular <= price))
+      reject(400, "Regular price must exceed the selling price.");
+    if (typeof b.available !== "boolean")
+      reject(400, "Choose a checkout availability.");
+    if (price === variant.price && regular === regularPrice && b.available === variant.available)
+      return res.json({ saved: true });
+    if (variant.price !== original.price || regularPrice !== original.regular || variant.available !== original.available)
+      reject(409, "This variant changed since you opened it. Discard your changes and try again.");
+    // Match the current row so a concurrent edit cannot overwrite variant details.
+    key.set("price", variant.price === null ? "is.null" : "eq." + variant.price);
+    key.set("available", "eq." + variant.available);
+    key.set("details", "eq." + JSON.stringify(variant.details));
+    const details = { ...variant.details, regularPrice: regular };
+    if (price !== variant.price) {
+      details.sellingPrice = price;
+      details.priceNeedsExtraConfirmation = false;
+    }
+    if (b.available !== variant.available)
+      details.availability = b.available ? "Available" : "Confirm availability";
+    const updated = await db("formex_variants?" + key.toString(), {
+      method: "PATCH",
+      headers: { Prefer: "return=representation" },
+      body: { price, available: b.available, details },
+    });
+    if (!updated?.length) reject(409, "This variant changed while saving. Try again.");
   } else if (b.action === "variant") {
     const price = amount(b.price),
       regular = amount(b.regular);

@@ -86,3 +86,46 @@ test("Formex project isolation, staff authorization and test provider verificati
   assert.equal(await verify(ref), "pending");
   assert.equal(confirm, 1);
 });
+
+test("bulk price edit preserves variant details and detects stale prices", async (t) => {
+  process.env.FORMEX_PROJECT_REF = "aaaaaaaaaaaaaaaaaaaa";
+  process.env.FORMEX_SERVICE_ROLE_KEY = "fixture";
+  process.env.FORMEX_ORIGIN = url;
+  const user = { id: randomUUID(), email_confirmed_at: "test" };
+  const details = { position: 1, condition: "UK Used", regularPrice: 250000, color: "Black" };
+  let variant = { price: 220000, available: false, details };
+  let writes = 0;
+  t.mock.method(globalThis, "fetch", async (path, args) => {
+    if (path.includes("/auth/v1/user")) return Response.json(user);
+    if (path.includes("formex_admins?")) return Response.json([{ user_id: user.id }]);
+    if (path.includes("formex_variants?")) {
+      const query = new URL(path).searchParams;
+      assert.equal(query.get("storage"), "eq.128GB · Black");
+      if (args.method === "PATCH") {
+        assert.equal(query.get("details"), "eq." + JSON.stringify(variant.details));
+        variant = JSON.parse(args.body);
+        writes++;
+      }
+      return Response.json([variant]);
+    }
+    throw Error("Unexpected path");
+  });
+  const req = {
+    method: "POST",
+    headers: { origin: url, authorization: "Bearer test", "content-type": "application/json" },
+    body: {
+      action: "variant_prices", slug: "iphone-11", storage: "128GB · Black",
+      original: { price: 220000, regular: 250000, available: false },
+      price: 230000, regular: 250000, available: true,
+    },
+  };
+  assert.equal((await invoke(admin, req)).code, 200);
+  assert.equal(variant.price, 230000);
+  assert.equal(variant.details.condition, "UK Used");
+  assert.equal(variant.details.color, "Black");
+  assert.equal((await invoke(admin, req)).code, 200);
+  assert.equal(writes, 1);
+  assert.equal((await invoke(admin, { ...req, body: { ...req.body, price: 235000 } })).code, 409);
+  assert.equal((await invoke(admin, { ...req, body: { ...req.body, regular: 1000 } })).code, 400);
+  assert.equal(writes, 1);
+});

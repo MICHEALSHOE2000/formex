@@ -1,3 +1,5 @@
+import { setupBulkPrices, setupPhotoQueue } from "./formex-bulk-admin.js";
+
 const $ = (id) => document.getElementById(id);
 const panels = [...document.querySelectorAll("[data-panel]")];
 const tabs = [...document.querySelectorAll("[data-section]")];
@@ -60,6 +62,7 @@ async function call(body, pageNumber = page) {
 function pagination() {
   const count = {
     products: state.products.length,
+    bulk: state.products.length,
     photos: state.products.length,
     deals: state.products.length,
     orders: state.orders.length,
@@ -168,9 +171,10 @@ function image(url, description = "") {
 
 function renderProducts() {
   const terms = searchText($("product-search").value).split(/\s+/);
+  const category = $("product-categories").querySelector('[aria-pressed="true"]').dataset.brand;
   const products = state.products.filter((p) => {
     const haystack = searchText([p.details.model, p.details.brand, p.slug, ...p.formex_variants.map((v) => v.storage)].join(" "));
-    return terms.every((term) => haystack.includes(term));
+    return (!category || p.details.brand === category) && terms.every((term) => haystack.includes(term));
   });
   $("product-count").textContent = products.length + (products.length === 1 ? " model" : " models");
   const rows = products.map((product) => {
@@ -298,6 +302,7 @@ function promotionFields() {
 function render(selected = selectedSlug, storage = selected === selectedSlug ? $("variantSelect").value : undefined) {
   renderOverview();
   renderProducts();
+  renderBulkPrices(state.products);
   selectProduct(selected, storage);
   renderOrders();
   const enquiries = state.enquiries.map((enquiry) =>
@@ -326,7 +331,6 @@ async function save(body, button) {
       body.action === "product" ? body.slug : selectedSlug,
       body.action === "variant" ? body.storage : undefined,
     );
-    if (body.action === "image") $("image").elements.photo.value = "";
     note("Saved.");
   } catch (error) {
     note(error.message, true);
@@ -336,6 +340,28 @@ async function save(body, button) {
     pagination();
   }
 }
+
+async function runBatch(work) {
+  if (busy) return;
+  busy = true;
+  pagination();
+  try {
+    const result = await work(call);
+    try {
+      state = await call();
+      render();
+      note(result.message, result.error);
+    } catch {
+      note(result.message + " The updated catalogue could not be reloaded. Sign in again to refresh it.", true);
+    }
+  } finally {
+    busy = false;
+    pagination();
+  }
+}
+
+const renderBulkPrices = setupBulkPrices(runBatch);
+setupPhotoQueue(runBatch, note);
 
 $("login").onsubmit = async (event) => {
   event.preventDefault();
@@ -382,6 +408,13 @@ $("variantSelect").onchange = variant;
 $("deal-product").onchange = promotionFields;
 $("photo-product").onchange = renderPhotos;
 $("product-search").oninput = renderProducts;
+$("product-categories").onclick = (event) => {
+  const button = event.target.closest("[data-brand]");
+  if (!button) return;
+  for (const option of $("product-categories").querySelectorAll("[data-brand]"))
+    option.setAttribute("aria-pressed", String(option === button));
+  renderProducts();
+};
 $("order-search").oninput = renderOrders;
 $("order-filter").onchange = renderOrders;
 
@@ -403,7 +436,7 @@ for (const [id, offset] of [["prev", -1], ["next", 1]]) {
   };
 }
 
-for (const action of ["product", "variant", "settings", "image", "promotion"]) {
+for (const action of ["product", "variant", "settings", "promotion"]) {
   $(action).onsubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -425,17 +458,6 @@ for (const action of ["product", "variant", "settings", "image", "promotion"]) {
       body.featured = fields.featured.checked;
     }
     if (action === "settings") body.fee = body.fee === "" ? null : Number(body.fee);
-    if (action === "image") {
-      if (body.photo.size > 2097152) {
-        note("Choose an image under 2 MB.", true);
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = () => save({ action, slug: body.slug, data: reader.result.split(",")[1] }, button);
-      reader.onerror = () => note("The photo could not be read. Select it again.", true);
-      reader.readAsDataURL(body.photo);
-      return;
-    }
     save(body, button);
   };
 }

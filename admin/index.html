@@ -52,6 +52,7 @@
       <nav id="sections" aria-label="Store manager">
         <button type="button" data-section="overview" aria-current="page"><svg><use href="#i-home"/></svg> Overview</button>
         <button type="button" data-section="products"><svg><use href="#i-box"/></svg> Prices &amp; products</button>
+        <button type="button" data-section="bulk"><svg><use href="#i-box"/></svg> Bulk editing</button>
         <button type="button" data-section="orders"><svg><use href="#i-order"/></svg> Orders</button>
         <button type="button" data-section="enquiries"><svg><use href="#i-chat"/></svg> Enquiries</button>
         <button type="button" data-section="deals"><svg><use href="#i-deal"/></svg> Hot Deals</button>
@@ -91,6 +92,12 @@
             <section class="surface catalogue">
               <div class="surface-heading"><h2>Catalogue</h2><button class="button quiet" id="new-product" type="button"><svg><use href="#i-plus"/></svg> Add product</button></div>
               <label class="search">Find a product<span><svg><use href="#i-search"/></svg><input id="product-search" type="search" placeholder="Search model, brand or storage"></span></label>
+              <div class="category-tabs" id="product-categories" aria-label="Phone categories">
+                <button type="button" class="button quiet" data-brand="" aria-pressed="true">All phones</button>
+                <button type="button" class="button quiet" data-brand="Apple" aria-pressed="false">iPhones</button>
+                <button type="button" class="button quiet" data-brand="Samsung" aria-pressed="false">Samsung</button>
+                <button type="button" class="button quiet" data-brand="Google" aria-pressed="false">Google Pixel</button>
+              </div>
               <p id="product-count" class="meta"></p>
               <div id="product-list" class="product-list"></div>
             </section>
@@ -129,6 +136,23 @@
             </div>
           </div>
         </section>
+        <section data-panel="bulk" hidden>
+          <header class="page-heading"><div><h1>Bulk editing</h1><p class="muted">Edit prices and checkout availability for multiple phone variants.</p></div></header>
+          <form id="bulk-prices" class="surface">
+            <div class="list-tools">
+              <label class="search">Find a variant<span><svg><use href="#i-search"/></svg><input id="bulk-search" type="search" placeholder="Search model or storage"></span></label>
+              <label>Category<select id="bulk-brand"><option value="Apple">iPhones</option><option value="Samsung">Samsung</option><option value="Google">Google Pixel</option><option value="">All phones</option></select></label>
+            </div>
+            <p class="meta">Selling price is what customers pay. Regular price is optional and must be higher. Blank prices are shown as price on request.</p>
+            <div id="bulk-variants" class="bulk-list"></div>
+            <div class="bulk-actions">
+              <button type="submit" class="button primary" disabled>Save changes</button>
+              <button type="button" class="button quiet" id="bulk-discard" disabled>Discard changes</button>
+              <p id="bulk-count" role="status"></p>
+            </div>
+            <ul id="bulk-errors" class="bulk-errors" hidden></ul>
+          </form>
+        </section>
         <section data-panel="orders" hidden>
           <header class="page-heading"><div><h1>Orders</h1><p class="muted">Review customer payments and update fulfilment.</p></div></header>
           <div class="surface list-surface">
@@ -150,13 +174,17 @@
           </form>
         </section>
         <section data-panel="photos" hidden>
-          <header class="page-heading"><div><h1>Product photos</h1><p class="muted">Upload a JPEG, PNG or WebP image up to 2 MB.</p></div></header>
+          <header class="page-heading"><div><h1>Product photos</h1><p class="muted">Queue several images for one or more products, then upload together.</p></div></header>
           <form id="image" class="surface narrow">
             <label>Product<select id="photo-product" name="slug" required></select></label>
             <div id="product-photos" class="photos"></div>
-            <label class="upload"><svg><use href="#i-photo"/></svg> Choose a product photo<input type="file" accept="image/jpeg,image/png,image/webp" name="photo" required></label>
-            <button class="button primary" type="submit">Upload photo</button>
+            <label class="upload"><svg><use href="#i-photo"/></svg> Choose photos (JPEG, PNG or WebP, up to 2 MB each)<input type="file" accept="image/jpeg,image/png,image/webp" name="photo" multiple required></label>
+            <button class="button quiet" type="submit">Add to upload queue</button>
           </form>
+          <section class="surface narrow photo-queue" id="photo-queue" hidden>
+            <h2>Upload queue</h2><ul id="queued-photos"></ul>
+            <div class="bulk-actions"><button type="button" id="upload-photos" class="button primary">Upload queued photos</button><p id="photo-progress" role="status"></p></div>
+          </section>
         </section>
         <section data-panel="settings" hidden>
           <header class="page-heading"><div><h1>Shop settings</h1><p class="muted">Manage the delivery fee and pickup instructions shown at checkout.</p></div></header>
