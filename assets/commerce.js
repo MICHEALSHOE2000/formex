@@ -318,7 +318,7 @@ if (productDataElement) {
         : variant.priceNeedsExtraConfirmation
         ? "This supplied guide price needs extra confirmation. Ask Formex Communication for today’s exact price before planning."
         : variant.price
-          ? (variant.offerId ? `Hot Deal · regular price ${naira.format(variant.regularPrice)}. Confirm the exact unit before payment.` : "Confirm today’s price, condition and stock before payment.")
+          ? (variant.offerId && variant.regularPrice > variant.price ? `Hot Deal · regular price ${naira.format(variant.regularPrice)}. Confirm the exact unit before payment.` : "Confirm today’s price, condition and stock before payment.")
           : "No price was supplied for this variant. Request today’s exact price before payment.";
     }
 
