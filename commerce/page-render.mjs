@@ -370,7 +370,9 @@ const renderFooter = () => `
     <p class="footer-legal">© 2026 Formex Communication. Prices, stock, warranty and Easy Buy terms must be confirmed before payment.</p>
   </footer>`;
 
-export const renderProductPage = (product,products) => {
+export const renderProductPage = (product,products,requestedStorage) => {
+  if (typeof requestedStorage === "string" && product.variants.some(variant => variant.storage === requestedStorage))
+    product = { ...product, defaultStorage: requestedStorage };
   const faqs = productFaqs(product);
   const canonical = `${commerceSite.baseUrl}${product.route}`;
   const breadcrumbs = [
