@@ -1,112 +1,176 @@
 <!doctype html>
 <html lang="en-NG">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="robots" content="noindex" />
-    <title>Shop administration | Formex Communication</title>
-    <link rel="icon" href="/favicon.svg" />
-    <link rel="stylesheet" href="/assets/commerce.css" />
-    <link rel="stylesheet" href="/assets/formex-service.css" />
-  </head>
-  <body>
-    <main class="service">
-      <a href="/" class="wordmark">Formex Communication</a>
-      <h1>Shop administration</h1>
-      <p id="notice" role="status" aria-live="polite"></p>
-      <form id="login">
-        <label
-          >Staff email<input
-            name="email"
-            type="email"
-            autocomplete="username"
-            required /></label
-        ><label
-          >Password<input
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            required /></label
-        ><button>Sign in</button>
-      </form>
-      <section id="desk" hidden>
-        <button id="logout">Sign out</button>
-        <h2>Catalogue</h2>
-        <label
-          >Select a product or add a model<select id="selection"></select
-        ></label>
-        <form id="product">
-          <label
-            >Permanent slug<input
-              name="slug"
-              placeholder="formex-device-model"
-              required /></label
-          ><label>Model<input name="model" required /></label
-          ><label
-            >Brand<select name="brand">
-              <option>Apple</option>
-              <option>Samsung</option>
-              <option>Google</option>
-            </select></label
-          ><label
-            >Conditions (comma separated)<input
-              name="conditions"
-              required /></label
-          ><label><input type="checkbox" name="archived" /> Archived</label
-          ><label><input type="checkbox" name="featured" /> Featured</label
-          ><label><input type="checkbox" name="hot" /> Hot Deal</label
-          ><button>Save product</button>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#10271f">
+  <title>Store manager | Formex Communication</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/formex-admin.css">
+</head>
+<body>
+  <svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 11 9-7 9 7M5 10v10h14V10M10 20v-6h4v6"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 9 5v8l-9 5-9-5V8Zm0 9v9M3 8l9 4 9-4M7.5 5.5l9 4.5"/></symbol>
+    <symbol id="i-order" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2ZM9 8h6m-6 4h6m-6 4h3"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4ZM8 9h8m-8 3h5"/></symbol>
+    <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m3 16 5-5 4 4 3-3 6 6"/><circle cx="16" cy="8" r="1"/></symbol>
+    <symbol id="i-deal" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8Z"/><circle cx="7.5" cy="8.5" r="1.5"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor"/><circle cx="15" cy="17" r="2" fill="currentColor"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M13 5h6v6m0-6-9 9m7-1v6H5V7h6"/></symbol>
+    <symbol id="i-exit" viewBox="0 0 24 24"><path d="M10 4H5v16h5m-1-8h12m-4-4 4 4-4 4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="5.5"/><path d="m14 14 5 5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  </svg>
+  <section class="signin" id="signin">
+    <div class="signin-card">
+      <div class="signin-brand">
+        <a class="brand" href="/"><span class="brand-mark">F</span><span>Formex Communication<small>Store manager</small></span></a>
+        <div class="signin-work"><p>Manage your store from one place.</p><ul><li><svg><use href="#i-box"/></svg> Prices &amp; products</li><li><svg><use href="#i-order"/></svg> Orders &amp; pickup</li><li><svg><use href="#i-chat"/></svg> Customer enquiries</li></ul></div>
+      </div>
+      <div class="signin-form">
+        <h1>Welcome back</h1>
+        <p class="muted">Sign in with your Formex staff account.</p>
+        <form id="login">
+          <label>Staff email<input name="email" type="email" autocomplete="username" required></label>
+          <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+          <button class="button primary" type="submit">Sign in <svg><use href="#i-arrow"/></svg></button>
         </form>
-        <section id="editor">
-          <h3>Variants</h3>
-          <select id="variantSelect" aria-label="Select variant"></select>
-          <form id="variant">
-            <label
-              >Storage / colour group<input name="storage" required /></label
-            ><label>Variant condition<select name="condition"></select></label
-            ><label
-              >Selling price (₦)<input
-                type="number"
-                min="1"
-                name="price" /></label
-            ><label
-              >Regular price before discount (₦)<input
-                type="number"
-                min="1"
-                name="regular" /></label
-            ><label
-              ><input type="checkbox" name="available" /> Staff confirmed this
-              variant for checkout</label
-            ><button>Save variant</button>
-          </form>
-          <form id="image">
-            <label
-              >Product photo (up to 2 MB)<input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                name="photo"
-                required /></label
-            ><button>Upload photo</button>
+        <p id="login-notice" class="message" role="status" hidden></p>
+      </div>
+    </div>
+  </section>
+  <div class="workspace" id="desk" hidden>
+    <aside class="sidebar">
+      <a class="brand" href="/admin/"><span class="brand-mark">F</span><span>Formex Communication<small>Store manager</small></span></a>
+      <nav id="sections" aria-label="Store manager">
+        <button type="button" data-section="overview" aria-current="page"><svg><use href="#i-home"/></svg> Overview</button>
+        <button type="button" data-section="products"><svg><use href="#i-box"/></svg> Prices &amp; products</button>
+        <button type="button" data-section="orders"><svg><use href="#i-order"/></svg> Orders</button>
+        <button type="button" data-section="enquiries"><svg><use href="#i-chat"/></svg> Enquiries</button>
+        <button type="button" data-section="deals"><svg><use href="#i-deal"/></svg> Hot Deals</button>
+        <button type="button" data-section="photos"><svg><use href="#i-photo"/></svg> Photos</button>
+        <button type="button" data-section="settings"><svg><use href="#i-settings"/></svg> Settings</button>
+      </nav>
+      <a class="store-link" href="/" target="_blank" rel="noopener">View storefront <svg><use href="#i-external"/></svg></a>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <p><span>Store manager</span><span aria-hidden="true">/</span><strong id="current-section">Overview</strong></p>
+        <button id="logout" class="button quiet" type="button"><svg><use href="#i-exit"/></svg> Sign out</button>
+      </header>
+      <div class="content">
+        <section data-panel="overview">
+          <header class="welcome">
+            <div><h1>Store overview</h1><p>Check orders, update prices and see what needs attention.</p></div>
+            <button class="button gold" type="button" data-go="products"><svg><use href="#i-box"/></svg> Manage catalogue <svg><use href="#i-arrow"/></svg></button>
+          </header>
+          <div class="metrics" id="metrics"></div>
+          <div class="overview-grid">
+            <section class="surface">
+              <div class="surface-heading"><h2>Recent orders</h2><button class="text-button" type="button" data-go="orders">View orders <svg><use href="#i-arrow"/></svg></button></div>
+              <div id="recent-orders"></div>
+            </section>
+            <section class="surface shortcuts">
+              <h2>Quick actions</h2>
+              <button type="button" data-go="products" id="quick-add"><svg><use href="#i-plus"/></svg><span>Add a product</span><svg><use href="#i-arrow"/></svg></button>
+              <button type="button" data-go="deals"><svg><use href="#i-deal"/></svg><span>Manage Hot Deals</span><svg><use href="#i-arrow"/></svg></button>
+              <button type="button" data-go="photos"><svg><use href="#i-photo"/></svg><span>Upload a photo</span><svg><use href="#i-arrow"/></svg></button>
+            </section>
+          </div>
+        </section>
+        <section data-panel="products" hidden>
+          <header class="page-heading"><div><h1>Prices &amp; products</h1><p class="muted">Manage product details, variant prices and checkout availability.</p></div></header>
+          <div class="catalogue-layout">
+            <section class="surface catalogue">
+              <div class="surface-heading"><h2>Catalogue</h2><button class="button quiet" id="new-product" type="button"><svg><use href="#i-plus"/></svg> Add product</button></div>
+              <label class="search">Find a product<span><svg><use href="#i-search"/></svg><input id="product-search" type="search" placeholder="Search model, brand or storage"></span></label>
+              <p id="product-count" class="meta"></p>
+              <div id="product-list" class="product-list"></div>
+            </section>
+            <div class="editor-stack">
+              <section class="surface">
+                <h2 id="product-heading">Product details</h2>
+                <form id="product">
+                  <div class="fields">
+                    <label>Model<input name="model" required></label>
+                    <label>Brand<select name="brand"><option>Apple</option><option>Samsung</option><option>Google</option></select></label>
+                    <label class="wide">Product slug<input name="slug" placeholder="formex-device-model" required></label>
+                    <label class="wide">Conditions <span class="meta">Separate each with a comma</span><input name="conditions" required></label>
+                  </div>
+                  <div class="flags">
+                    <label><input type="checkbox" name="featured"> Featured</label>
+                    <label><input type="checkbox" name="hot"> Hot Deal</label>
+                    <label><input type="checkbox" name="archived"> Archived</label>
+                  </div>
+                  <button class="button primary" type="submit">Save product</button>
+                </form>
+              </section>
+              <section class="surface" id="editor" hidden>
+                <h2>Variants &amp; pricing</h2>
+                <label>Variant<select id="variantSelect"></select></label>
+                <form id="variant">
+                  <div class="fields">
+                    <label>Storage / colour group<input name="storage" required></label>
+                    <label>Variant condition<select name="condition"></select></label>
+                    <label>Selling price (₦)<input type="number" min="1" name="price"></label>
+                    <label>Regular price (₦)<input type="number" min="1" name="regular"></label>
+                  </div>
+                  <div class="flags"><label><input type="checkbox" name="available"> Available for checkout</label></div>
+                  <button class="button primary" type="submit">Save variant</button>
+                </form>
+              </section>
+            </div>
+          </div>
+        </section>
+        <section data-panel="orders" hidden>
+          <header class="page-heading"><div><h1>Orders</h1><p class="muted">Review customer payments and update fulfilment.</p></div></header>
+          <div class="surface list-surface">
+            <div class="list-tools"><label class="search">Find an order<span><svg><use href="#i-search"/></svg><input type="search" id="order-search" placeholder="Customer, product or reference"></span></label>
+            <label>Payment<select id="order-filter"><option value="">All orders</option><option value="unpaid">Unpaid</option><option value="paid">Paid</option><option value="pickup">Pickup</option></select></label></div>
+            <div id="orders"></div>
+          </div>
+        </section>
+        <section data-panel="enquiries" hidden>
+          <header class="page-heading"><div><h1>Customer enquiries</h1><p class="muted">Read customer messages and mark them resolved.</p></div></header>
+          <div class="surface list-surface" id="enquiries"></div>
+        </section>
+        <section data-panel="deals" hidden>
+          <header class="page-heading"><div><h1>Hot Deals &amp; homepage</h1><p class="muted">Choose which products to promote, then save your selection.</p></div></header>
+          <form id="promotion" class="surface narrow">
+            <label>Product<select id="deal-product" name="slug" required></select></label>
+            <div class="flags"><label><input type="checkbox" name="hot"> Hot Deal</label><label><input type="checkbox" name="featured"> Featured on homepage</label></div>
+            <button class="button primary" type="submit">Save selection</button>
           </form>
         </section>
-        <h2>Orders</h2>
-        <div id="orders"></div>
-        <h2>Customer enquiries</h2>
-        <div id="enquiries"></div>
-        <button id="prev">Previous page</button>
-        <button id="next">Next page</button>
-        <h2>Shop settings</h2>
-        <form id="settings">
-          <label
-            >Delivery fee in naira (blank disables delivery)<input
-              type="number"
-              min="0"
-              name="fee" /></label
-          ><label>Pickup instructions<textarea name="pickup"></textarea></label
-          ><button>Save settings</button>
-        </form>
-      </section>
+        <section data-panel="photos" hidden>
+          <header class="page-heading"><div><h1>Product photos</h1><p class="muted">Upload a JPEG, PNG or WebP image up to 2 MB.</p></div></header>
+          <form id="image" class="surface narrow">
+            <label>Product<select id="photo-product" name="slug" required></select></label>
+            <div id="product-photos" class="photos"></div>
+            <label class="upload"><svg><use href="#i-photo"/></svg> Choose a product photo<input type="file" accept="image/jpeg,image/png,image/webp" name="photo" required></label>
+            <button class="button primary" type="submit">Upload photo</button>
+          </form>
+        </section>
+        <section data-panel="settings" hidden>
+          <header class="page-heading"><div><h1>Shop settings</h1><p class="muted">Manage the delivery fee and pickup instructions shown at checkout.</p></div></header>
+          <form id="settings" class="surface narrow">
+            <label>Delivery fee (₦) <span class="meta">Leave blank to disable delivery</span><input type="number" min="0" name="fee"></label>
+            <label>Pickup instructions<textarea name="pickup" rows="4" maxlength="400"></textarea></label>
+            <button class="button primary" type="submit">Save settings</button>
+          </form>
+        </section>
+        <footer id="pagination" class="pagination" hidden><button id="prev" type="button" class="button quiet">Previous</button><span id="page-number">Page 1</span><button id="next" type="button" class="button quiet">Next</button></footer>
+      </div>
+      <div class="toast" id="toast" hidden><p id="notice" role="status"></p><button id="dismiss" type="button" aria-label="Dismiss message">×</button></div>
     </main>
-    <script type="module" src="/assets/formex-admin.js"></script>
-  </body>
+  </div>
+  <script type="module" src="/assets/formex-admin.js"></script>
+</body>
 </html>
