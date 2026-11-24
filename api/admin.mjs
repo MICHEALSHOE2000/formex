@@ -35,7 +35,7 @@ export default endpoint(async (req, res) => {
     const paging = "&limit=100&offset=" + page * 100;
     const [products, orders, enquiries, [settings]] = await Promise.all([
       db(
-        "formex_products?select=slug,details,archived,featured,hot,formex_variants(storage,price,available,details)&order=slug" +
+        "formex_products?select=slug,details,archived,featured,hot,formex_variants(storage,price,available,details),formex_images(url,position)&order=slug" +
           paging,
       ),
       db(
@@ -88,6 +88,13 @@ export default endpoint(async (req, res) => {
         stockStatus: "Confirm availability",
       },
     };
+  } else if (b.action === "promotion") {
+    const updated = await db("formex_products?slug=eq." + slug(b.slug), {
+      method: "PATCH",
+      headers: { Prefer: "return=representation" },
+      body: { hot: b.hot === true, featured: b.featured === true },
+    });
+    if (!updated?.length) reject(404, "Product not found.");
   } else if (b.action === "variant") {
     const price = amount(b.price),
       regular = amount(b.regular);
