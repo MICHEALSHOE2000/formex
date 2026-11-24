@@ -1,9 +1,35 @@
 import {minimumDeposit} from '../easy-buy/easy-buy-core.mjs';
 export const escape = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const money = value => new Intl.NumberFormat('en-NG',{style:'currency',currency:'NGN',maximumFractionDigits:0}).format(value);
-export const priceText = item => {const prices=item.variants.map(v=>v.price).filter(Number.isFinite);return prices.length?`${prices.length>1?'From ':''}${money(Math.min(...prices))}`:'Confirm price';};
+export function lowestPricedVariant(variants) {
+  return variants.reduce((lowest, variant) => {
+    if (!Number.isFinite(variant.price) || variant.price <= 0) return lowest;
+    return !lowest || variant.price < lowest.price ? variant : lowest;
+  }, undefined);
+}
+
+export function variantLink(item, variant = lowestPricedVariant(item.variants)) {
+  if (!variant) return item.route;
+  const url = new URL(item.route, 'https://formexcommunication.com.ng');
+  url.searchParams.set('storage', variant.storage);
+  return url.pathname + url.search + url.hash;
+}
+
+export function priceText(item, variant = lowestPricedVariant(item.variants)) {
+  if (!variant) return 'Confirm price';
+  const hasMorePricedVariants = item.variants.some(other =>
+    other !== variant && Number.isFinite(other.price) && other.price > 0
+  );
+  return (hasMorePricedVariants ? 'From ' : '') + money(variant.price);
+}
 export const media = (src,label,priority=false) => `<span class="device-media${src?' is-loading':' is-missing'}"><span class="media-fallback" aria-hidden="true">${escape(label)}</span>${src?`<img src="${escape(src.replace('-720.webp','-360.webp'))}" ${src.includes('-720.webp')?`srcset="${escape(src.replace('-720.webp','-360.webp'))} 360w, ${escape(src)} 720w" sizes="(max-width:600px) 45vw, 280px"`:''} alt="${escape(label)}" width="360" height="400" loading="${priority?'eager':'lazy'}" decoding="async" ${priority?'fetchpriority="high"':''}>`:''}</span>`;
-export const card = item => {const v=item.variants.find(v=>v.price>0),id=`${item.slug}|${v?.storage}`,phone=['iphones','samsung','pixel'].includes(item.category);return `<article class="store-phone" data-model="${escape(item.slug)}"><a class="store-photo" href="${escape(item.route)}">${v?.offerId?'<span class="offer-label">HOT DEAL</span>':''}${media(item.image,item.model)}</a><div class="store-card-copy"><p class="store-condition">${escape(item.conditions.join(' / ')) || 'Ask for available models'}</p><h3><a href="${escape(item.route)}">${escape(item.model)}</a></h3><p class="store-storage">${escape(item.variants.slice(0,3).map(v=>v.storage).join(' · '))}${item.variants.length>3?' + more':''}</p>${v?.regularPrice?`<del class="regular-price">${money(v.regularPrice)}</del>`:''}<strong class="store-price">${priceText(item)}</strong><p class="store-options">${item.easy&&v?`Pay Small Small from ${money(minimumDeposit(v.price,item))} deposit`:''}</p><a class="store-view" href="${escape(item.route)}">${phone?'VIEW PHONE':'VIEW OPTIONS'} <span aria-hidden="true">→</span></a>${phone?`<div class="card-shortcuts">${item.swap?`<a data-buying-path="swap" data-product-id="${escape(id)}" data-value="${v?.price||0}" href="/swap/?target=${encodeURIComponent(id)}">Swap to this phone</a>`:''}${item.easy?`<a data-buying-path="easy" data-product-id="${escape(id)}" data-value="${v?.price||0}" href="/easybuy/?phone=${encodeURIComponent(id)}">Pay Small Small</a>`:''}</div>`:''}</div></article>`;};
+export function card(item) {
+  const variant = lowestPricedVariant(item.variants);
+  const link = variantLink(item, variant);
+  const id = `${item.slug}|${variant?.storage ?? item.variants[0]?.storage}`;
+  const phone = ['iphones', 'samsung', 'pixel'].includes(item.category);
+  return `<article class="store-phone" data-model="${escape(item.slug)}"><a class="store-photo" href="${escape(link)}">${variant?.offerId?'<span class="offer-label">HOT DEAL</span>':''}${media(item.image,item.model)}</a><div class="store-card-copy"><p class="store-condition">${escape(item.conditions.join(' / ')) || 'Ask for available models'}</p><h3><a href="${escape(link)}">${escape(item.model)}</a></h3><p class="store-storage">${escape(item.variants.slice(0,3).map(v=>v.storage).join(' · '))}${item.variants.length>3?' + more':''}</p>${variant && variant.regularPrice > variant.price?`<del class="regular-price">${money(variant.regularPrice)}</del>`:''}<strong class="store-price">${priceText(item, variant)}</strong><p class="store-options">${item.easy&&variant?`Pay Small Small from ${money(minimumDeposit(variant.price,item))} deposit`:''}</p><a class="store-view" href="${escape(link)}">${phone?'VIEW PHONE':'VIEW OPTIONS'} <span aria-hidden="true">→</span></a>${phone?`<div class="card-shortcuts">${item.swap?`<a data-buying-path="swap" data-product-id="${escape(id)}" data-value="${variant?.price||0}" href="/swap/?target=${encodeURIComponent(id)}">Swap to this phone</a>`:''}${item.easy?`<a data-buying-path="easy" data-product-id="${escape(id)}" data-value="${variant?.price||0}" href="/easybuy/?phone=${encodeURIComponent(id)}">Pay Small Small</a>`:''}</div>`:''}</div></article>`;
+}
 const observedImages = new WeakSet();
 export function activateImages(root=document){root.querySelectorAll('.device-media img').forEach(img=>{if(observedImages.has(img))return;observedImages.add(img);const box=img.closest('.device-media');const done=()=>{box.classList.remove('is-loading');box.classList.toggle('is-missing',!img.naturalWidth);};img.addEventListener('load',done);img.addEventListener('error',done);if(img.complete)done();});}
 

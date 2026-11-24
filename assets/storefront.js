@@ -1,5 +1,5 @@
 import {catalogueEnabled} from '../commerce/enabled.mjs';
-import {card,media,priceText,escape,activateImages} from './storefront-ui.mjs';
+import {card,media,priceText,lowestPricedVariant,variantLink,escape,activateImages} from './storefront-ui.mjs';
 const $=id=>document.getElementById(id), params=new URLSearchParams(location.search);
 activateImages();
 const menu=document.querySelector('.menu-toggle'), navigation=$('home-navigation');
@@ -15,8 +15,28 @@ if($('productGrid')) {
  let catalog,loading,limit=8,method=['outright','easy','swap'].includes(params.get('method'))?params.get('method'):'',searchVersion=0;
  const match=(item,term)=>term.toLowerCase().trim().split(/\s+/).filter(Boolean).every(t=>`${item.model} ${item.brand} ${item.category} ${item.variants.map(v=>v.storage).join(' ')}`.toLowerCase().includes(t));
  function loadCatalog(){if(catalog)return Promise.resolve(catalog);if(!loading)loading=fetch(catalogueEnabled?'/api/catalog?view=store':'/assets/store-catalog.json').then(r=>{if(!r.ok)throw new Error('Catalogue unavailable');return r.json();}).then(data=>{catalog=data;if(catalogueEnabled&&$('hotDeals')){$('hotDeals').innerHTML=data.filter(p=>p.variants.some(v=>v.offerId)).slice(0,5).map(card).join('');activateImages($('hotDeals'));}return data;}).catch(e=>{loading=null;throw e;});return loading;}
- function purchaseLink(item){if(!method||!item.variants.some(v=>Number.isFinite(v.price))||!['iphones','samsung','pixel'].includes(item.category))return item.route;const variant=item.variants.find(v=>v.price)||item.variants[0];const q=new URLSearchParams({phone:`${item.slug}|${variant.storage}`});if(method==='swap')q.set('purchase','swap');if(method==='easy')q.set('payment','easy');const condition=$('conditionFilter').value;if(condition)q.set('condition',condition);return method==='swap'?`/swap/?target=${encodeURIComponent(`${item.slug}|${variant.storage}`)}`:method==='easy'?`/easybuy/?${q}`:`/buy/?${q}`;}
- function applyLinks(root,items){root.querySelectorAll('[data-model]').forEach(el=>{const item=items.find(p=>p.slug===el.dataset.model);if(!item)return;el.querySelectorAll('.store-photo, h3 a, .store-view').forEach(a=>a.href=purchaseLink(item));if(method&&item.variants.some(v=>Number.isFinite(v.price))&&['iphones','samsung','pixel'].includes(item.category))el.querySelector('.store-view').firstChild.textContent=method==='easy'?'Pay Small Small ':method==='swap'?'Swap to this phone ':'Buy Outright ';});}
+ function purchaseLink(item) {
+  const variant = lowestPricedVariant(item.variants);
+  if (!method || !variant || !['iphones', 'samsung', 'pixel'].includes(item.category)) return variantLink(item, variant);
+  const variantId = `${item.slug}|${variant.storage}`;
+  if (method === 'swap') return `/swap/?target=${encodeURIComponent(variantId)}`;
+  const query = new URLSearchParams({phone: variantId});
+  if (method === 'easy') query.set('payment', 'easy');
+  const condition = $('conditionFilter').value;
+  if (condition) query.set('condition', condition);
+  return method === 'easy' ? `/easybuy/?${query}` : `/buy/?${query}`;
+ }
+ function applyLinks(root, items) {
+  if (!method) return;
+  const bySlug = new Map(items.map(item => [item.slug, item]));
+  for (const el of root.querySelectorAll('[data-model]')) {
+   const item = bySlug.get(el.dataset.model);
+   if (!item || !lowestPricedVariant(item.variants) || !['iphones','samsung','pixel'].includes(item.category)) continue;
+   el.querySelectorAll('.store-photo, h3 a, .store-view').forEach(a => a.href = purchaseLink(item));
+   el.querySelector('.store-view').firstChild.textContent = method === 'easy'
+    ? 'Pay Small Small ' : method === 'swap' ? 'Swap to this phone ' : 'Buy Outright ';
+  }
+ }
  function filterItems(){const [min,max]=$('budgetFilter').value==='all'?[0,Infinity]:$('budgetFilter').value.split('-').map(Number);return catalog.filter(item=>(!!$('categoryFilter').value || !!$('searchInput').value.trim() || item.variants.some(v=>v.price>0))&&(!$('seriesFilter').value||item.series===$('seriesFilter').value)&&match(item,$('searchInput').value)&&(!$('categoryFilter').value||item.category===$('categoryFilter').value)&&(!$('brandFilter').value||item.brand===$('brandFilter').value)&&(!$('conditionFilter').value||item.conditions.includes($('conditionFilter').value))).map(item=>({...item,variants:item.variants.filter(v=>(!$('storageFilter').value||v.storage.split(/\s*[·—]\s*/)[0]===$('storageFilter').value)&&($('budgetFilter').value==='all'||(Number.isFinite(v.price)&&v.price>=min&&v.price<max)))})).filter(item=>item.variants.length);}
  function render(){const items=filterItems();$('productGrid').innerHTML=items.length?items.slice(0,limit).map(card).join(''):'<div class="catalog-empty"><h3>No devices match just yet.</h3><p>Try a different model, storage or budget.</p><button type="button" id="clearEmpty">Clear filters</button></div>';$('resultsCount').textContent=`${items.length} ${items.length===1?'model':'models'} · ${method==='easy'?'EasyBuy selected':method==='swap'?'Swap selected':method==='outright'?'Outright selected':'newest first'}`;$('showMore').hidden=items.length<=limit;activateImages($('productGrid'));applyLinks($('productGrid'),items);document.querySelectorAll('[data-category]').forEach(link=>link.setAttribute('aria-current',String(link.dataset.category===$('categoryFilter').value)));$('clearEmpty')?.addEventListener('click',()=>{$('catalogFilters').reset();});}
  async function update(){try{await loadCatalog();render();}catch{$('resultsCount').textContent='Couldn’t load filters. Your device links still work.';}}

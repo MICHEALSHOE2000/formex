@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
 import {products} from '../commerce/catalog.mjs';
-import {storeItems} from '../commerce/storefront-data.mjs';
+import {storeItems,storefrontItems} from '../commerce/storefront-data.mjs';
+import {card} from '../assets/storefront-ui.mjs';
+import {renderProductPage} from '../commerce/page-render.mjs';
 import {featuredDeals,offerProduct,promotion,HOT_DEALS_LIMIT} from '../commerce/offers.mjs';
 import {choices,financePlan} from '../commerce/upgrade-core.mjs';
 import {selectedCondition} from '../commerce/conditions.mjs';
@@ -28,6 +30,36 @@ test('homepage promotes exactly five unique phones, including both 18 Pro models
  assert.deepEqual(cards.map(card=>card.dataset.model),deals.map(phone=>phone.slug));
  assert.doesNotMatch(dom.window.document.getElementById('deals').textContent,/\d+%\s*(?:off|discount)/i);
  dom.window.close();
+});
+
+test('homepage price, deposit and product link use the same storage variant',()=>{
+ const original=products.find(product=>product.slug==='iphone-11');
+ const prices={'64GB':[225000,230000],'128GB':[280000,300000],'256GB':[280000,285000]};
+ const product={...original,defaultStorage:'128GB',variants:['128GB','256GB','64GB'].map(storage=>({
+  ...original.variants.find(variant=>variant.storage===storage),
+  price:prices[storage][0],regularPrice:prices[storage][1]
+ }))};
+ const item=storefrontItems([product]).find(item=>item.slug===product.slug);
+ const home=new JSDOM(card(item),{url:'https://www.formexcommunication.com.ng/'});
+ const {document}=home.window;
+ assert.match(document.querySelector('.store-price').textContent,/225,000/);
+ assert.match(document.querySelector('.regular-price').textContent,/230,000/);
+ assert.match(document.querySelector('.store-options').textContent,/112,500/);
+ for(const selector of ['.store-photo','h3 a','.store-view']){
+  const link=new URL(document.querySelector(selector).href);
+  assert.equal(link.pathname,'/iphone-11');
+  assert.equal(link.searchParams.get('storage'),'64GB');
+ }
+ assert.equal(document.querySelector('[data-buying-path="easy"]').dataset.productId,'iphone-11|64GB');
+ const storage=new URL(document.querySelector('.store-view').href).searchParams.get('storage');
+ const linked=new JSDOM(renderProductPage(product,[product],storage));
+ assert.match(linked.window.document.querySelector('[data-product-price]').textContent,/225,000/);
+ assert.equal(linked.window.document.querySelector('[data-storage="64GB"]').getAttribute('aria-pressed'),'true');
+ assert.equal(linked.window.document.querySelector('[rel=canonical]').getAttribute('href'),'https://www.formexcommunication.com.ng/iphone-11');
+ const direct=new JSDOM(renderProductPage(product,[product],'unknown'));
+ assert.match(direct.window.document.querySelector('[data-product-price]').textContent,/280,000/);
+ assert.match(card({...item,variants:[{storage:'64GB',price:null}]}),/Confirm price/);
+ for(const dom of [home,linked,direct])dom.window.close();
 });
 
 test('iPhone 11–15 pages label UK Used without a selector; later models expose only recorded choices',async()=>{

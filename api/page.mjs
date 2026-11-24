@@ -23,7 +23,7 @@ export default endpoint(async (req, res) => {
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.send(
     product
-      ? renderProductPage(product, rows)
+      ? renderProductPage(product, rows, req.query.storage)
       : renderCategoryPage(category, rows),
   );
 });
