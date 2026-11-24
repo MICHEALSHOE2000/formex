@@ -119,8 +119,8 @@
                   <div class="fields">
                     <label>Storage / colour group<input name="storage" required></label>
                     <label>Variant condition<select name="condition"></select></label>
-                    <label>Selling price (₦)<input type="number" min="1" name="price"></label>
-                    <label>Regular price (₦)<input type="number" min="1" name="regular"></label>
+                    <label>Selling price (₦) <span class="meta">Current price shown to customers</span><input type="number" min="1" name="price"></label>
+                    <label>Regular price (₦) <span class="meta">Price before discount. Leave blank when there is no discount.</span><input type="number" min="1" name="regular"></label>
                   </div>
                   <div class="flags"><label><input type="checkbox" name="available"> Available for checkout</label></div>
                   <button class="button primary" type="submit">Save variant</button>

@@ -121,7 +121,7 @@ function variant() {
   fields.available.checked = !!row?.available;
 }
 
-function selectProduct(slug, storage = "") {
+function selectProduct(slug, storage) {
   const row = state.products.find((product) => product.slug === slug);
   selectedSlug = row?.slug || "";
   const fields = $("product").elements;
@@ -134,10 +134,17 @@ function selectProduct(slug, storage = "") {
   for (const flag of ["featured", "archived", "hot"])
     fields[flag].checked = !!row?.[flag];
   $("editor").hidden = !row;
+  const variants = row?.formex_variants || [];
+  const defaultVariant = variants.find((v) => v.storage === row.details.defaultStorage && v.price != null)
+    || variants.find((v) => v.price != null)
+    || variants[0];
+  const selectedStorage = storage === "" || variants.some((v) => v.storage === storage)
+    ? storage
+    : defaultVariant?.storage ?? "";
   fill($("variantSelect"), [
     ["", "Add variant"],
-    ...(row?.formex_variants || []).map((v) => [v.storage, v.storage]),
-  ], storage);
+    ...variants.map((v) => [v.storage, v.storage + " · " + (v.price == null ? "Price on request" : money.format(v.price))]),
+  ], selectedStorage);
   variant();
   for (const button of $("product-list").querySelectorAll("button"))
     button.setAttribute("aria-pressed", String(button.dataset.slug === selectedSlug));
@@ -288,7 +295,7 @@ function promotionFields() {
   for (const name of ["hot", "featured"]) $("promotion").elements[name].checked = !!product?.[name];
 }
 
-function render(selected = selectedSlug, storage = $("variantSelect").value) {
+function render(selected = selectedSlug, storage = selected === selectedSlug ? $("variantSelect").value : undefined) {
   renderOverview();
   renderProducts();
   selectProduct(selected, storage);
@@ -315,7 +322,10 @@ async function save(body, button) {
   try {
     await call(body);
     state = await call();
-    render(body.action === "product" ? body.slug : selectedSlug, body.action === "variant" ? body.storage : $("variantSelect").value);
+    render(
+      body.action === "product" ? body.slug : selectedSlug,
+      body.action === "variant" ? body.storage : undefined,
+    );
     if (body.action === "image") $("image").elements.photo.value = "";
     note("Saved.");
   } catch (error) {
